@@ -1,6 +1,14 @@
-form-navigation{display:block;position:fixed;bottom:calc(var(--nav-inset) + env(safe-area-inset-bottom,0px));z-index:10;background:var(--surface);border:1px solid var(--glass-edge);border-radius:var(--glass-radius);box-shadow:var(--glass-shadow),inset 0 1px 0 var(--glass-highlight)}@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){form-navigation{background:var(--glass);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%)}}.form-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:5px;align-items:center}.form-tab{border:0;background:transparent;color:var(--muted);min-height:var(--tab-height);border-radius:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:600;cursor:pointer;transition:background-color .15s,color .15s}.form-tab svg{width:var(--icon-size);height:var(--icon-size);flex:none}.form-tab[aria-current=page]{background:var(--selected);color:var(--accent)}.form-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}@media(prefers-reduced-motion:reduce){.form-tab{transition:none}}
-@media(min-width:650px){.form-tab{min-width:0}}
-
+form-navigation{display:block;position:fixed;bottom:calc(var(--nav-inset) + env(safe-area-inset-bottom,0px));z-index:10;background:var(--surface);border:1px solid var(--glass-edge);border-radius:var(--button-radius);box-shadow:var(--glass-shadow)}
+.form-nav{display:flex;gap:4px;padding:5px;align-items:center}
+.form-tab{flex:1 1 0;min-width:44px;min-height:var(--tab-height);border:0;background:transparent;color:var(--muted);border-radius:var(--button-radius);display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:600;cursor:pointer;padding:0 8px;transition:background-color .15s,color .15s}
+.form-tab svg{width:var(--icon-size);height:var(--icon-size);flex:none}
+.form-tab span{display:none;white-space:nowrap}
+.form-tab[aria-current=page]{flex:2.2 0 auto;background:var(--accent);color:var(--on-accent)}
+.form-tab[aria-current=page] span{display:inline}
+.form-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+@media(min-width:650px){.form-tab{flex:1 1 0;min-width:0}.form-tab[aria-current=page]{flex:1 1 0}.form-tab span{display:inline;font-size:12px}.form-tab{gap:5px;padding:0 5px}}
+@media(max-width:320px){.form-tab{padding:0 4px;gap:4px}.form-tab[aria-current=page]{flex:1.8 0 auto}}
+@media(prefers-reduced-motion:reduce){.form-tab{transition:none}}
 /* Separate full-width, non-interactive backdrop beneath the fixed glass navigation. */
 body::after{content:"";position:fixed;inset:auto 0 0;height:calc(var(--nav-fade-height) + env(safe-area-inset-bottom,0px));z-index:9;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--nav-fade-tint));}
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
