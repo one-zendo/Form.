@@ -1,1 +1,0 @@
-export function position(x:number,left:number,width:number,count=4){return Math.max(0,Math.min(count-1,(x-left)/(width/count)-.5))}export function nearest(x:number){return Math.round(x)}
