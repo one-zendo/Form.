@@ -1,5 +1,10 @@
 # FORM — Development checkpoint
 
-Clean slate after retired v0.1.0 Build 009. No app implementation remains. No separate backup created; Git history retained. Read DESIGN.md before rebuilding. Next: approve clean architecture and design-system foundation, then implement first new build. All pages and features pending. Existing browser storage was not cleared. Deployment not verified; old preview may stop working or serve cached content.
+New architecture approved: React, TypeScript, Vite, shared CSS tokens and official bundled Lucide React 0.468.0. Future offline IndexedDB, Zustand if needed, workout engine and automated browser tests. Retired Build 009 remains in Git history only.
 
-Record each build, changed files, actual tests, known issues and next task. Never claim untested behavior verified.
+## Current: v0.1.0 · Build 001
+Application shell and shared swipeable navigation committed. Four placeholder pages; Profile includes persisted theme selection. Soft Spectrum default, Graphite Lime and Monochrome. Continuous pointer tracking, snap on release, cancellation, keyboard activation, safe-area-aware fixed pill dock, progressive blur, reduced-motion and transparency fallback. Visible build indicator. No workout data changes. Cloudflare asset configuration targets dist; deployment must build with npm install and npm run build before deploying.
+
+Verification: five pure geometry assertions executed and passed; Vitest test file committed but full dependency install, TypeScript compilation, Vite build, browser/device tests and live deployment not executed. No lockfile yet. Next: verify build and deployment, test swipe/tap/keyboard and all Duo orientations; refine navigation before other components.
+
+Read DESIGN.md before changes. Record build, tests, limitations and next task. Increment visible build for each code update.
