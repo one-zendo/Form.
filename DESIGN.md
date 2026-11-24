@@ -119,3 +119,6 @@ For every UI adjustment, provide a concise interactive in-chat wireframe of the 
 
 ## Mandatory three-configuration wireframe presentation
 Supersedes the shared-example allowance in Wireframe delivery for UI adjustments. For every UI adjustment, show three distinct visual in-chat wireframes: folded/compact, unfolded portrait, and unfolded landscape, even when the shared adjustment is identical. Preserve each configuration's proportions, existing screen composition and FORM theme. Where practical, provide a shared Original/Proposed control that updates all three previews together. Do not substitute a table or checklist for the three visual previews. Use simplified interactive components, not generated images. Preview-only requests do not authorize application code changes.
+
+## Component-focused preview exception
+For discussion or refinement of an individual UI component, show only the affected component by default, with variants or interactive states as useful. Full folded, unfolded portrait and unfolded landscape screen wireframes are required for screen-level or responsive composition changes, or when explicitly requested. This supersedes the mandatory three-configuration presentation rule for component-only previews, but does not change automatic cross-layout implementation, theme adaptation or testing requirements.
