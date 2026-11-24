@@ -87,3 +87,28 @@
 #routine-exercises .routine-grip:active{cursor:grabbing}
 #routine-exercises .routine-dragging{opacity:.65}
 #routine-exercises .routine-drop-target{outline:2px solid var(--action);outline-offset:-2px}
+
+/* Progress and saved-session summaries share the app's geometry and palette. */
+#progress-page{display:grid;gap:16px;min-width:0}
+#progress-page header{min-height:44px}
+#progress-page select{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-control);min-height:44px;padding:8px 12px;max-width:100%}
+.progress-layout,.progress-primary,.progress-support{display:grid;gap:16px;min-width:0;align-content:start}
+.progress-layout .card{display:grid;gap:12px}
+.progress-layout .card h3{font-size:19px;font-weight:650}
+.progress-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.progress-stat{min-width:0;background:var(--canvas);border-radius:var(--radius-control);padding:12px;display:grid;gap:4px}
+.progress-stat strong{font-size:clamp(18px,3vw,24px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#progress-exercise{display:block;width:100%;margin-top:6px}
+#progress-trend{display:grid;gap:8px}
+.progress-chart{width:100%;height:auto;max-height:160px;margin-top:8px}
+.progress-record,.progress-history-row,.summary-exercise{padding:10px 0;border-bottom:1px solid var(--line)}
+.progress-record:last-child,.progress-history-row:last-child,.summary-exercise:last-child{border-bottom:0}
+.progress-record strong{white-space:nowrap}
+.progress-history-row{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;border-radius:var(--radius-none);gap:12px;min-height:56px}
+.progress-history-row>span:first-child{display:grid;gap:3px}
+#workout-summary{max-height:85dvh;overflow:auto;overscroll-behavior:contain;width:min(460px,calc(100% - 32px))}
+#workout-summary h2{font-size:22px;overflow-wrap:anywhere}
+#summary-exercises{margin:12px 0}
+.summary-exercise{display:grid;gap:6px}
+#summary-done{margin-top:12px}
+@media(min-width:760px) and (orientation:landscape){.progress-layout{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}#workout-summary{width:min(640px,calc(100% - 32px))}}
