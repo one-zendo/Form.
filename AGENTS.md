@@ -1,0 +1,3 @@
+# FORM development instructions
+
+Read docs/DESIGN.md and docs/DEVELOPMENT.md before changes. Every new asset, UI and code change must support both Soft Spectrum and Graphite Lime using semantic tokens; do not hardcode component colors. Use official locally bundled Lucide SVGs with currentColor. Keep components modular and navigation stable. Test both themes, accessibility, responsive layouts and regressions. Update development registry with changes and actual verification status. Do not claim runtime verification without evidence. Version deployed asset URLs when changing assets until automated versioning is established. Do not modify the original one-zendo/Form repository; this project is one-zendo/Form. (trailing period).
