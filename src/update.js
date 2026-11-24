@@ -1,18 +1,5 @@
-// Compare deployed asset contents, not commit timestamps, to avoid refreshing before deployment.
-const paths=['./','./src/tokens.css','./src/navigation.css','./src/navigation.js','./src/home.js','./src/home.css','./src/workouts.js','./src/workouts.css','./src/update.js'];
+// Poll only the entry document; versioned imports identify deployed releases.
 let baseline=null,busy=false;
-async function check(){
- if(busy||document.hidden||!navigator.onLine)return;
- busy=true;
- try{
- const snapshots=await Promise.all(paths.map(async p=>{const u=new URL(p,location.href);u.searchParams.set('_form_check',Date.now());const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error('Unavailable');return r.text()}));
- const next=JSON.stringify(snapshots);
- if(baseline===null){baseline=next;return;}
- if(next!==baseline && !document.querySelector('[data-workout-active="true"]') && !window.formWorkoutActive){
- const u=new URL(location.href);u.searchParams.set('_form_version',Date.now());location.replace(u);
- }
- }catch{}finally{busy=false;}
-}
-check();setInterval(check,5000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});
-window.addEventListener('online',check);
+function active(){try{return !!JSON.parse(localStorage.getItem('form.data.v2')||'{}').active}catch{return true}}
+async function check(){if(busy||document.hidden||!navigator.onLine)return;busy=true;try{const u=new URL('./',location.href);u.searchParams.set('_form_check',Date.now());const r=await fetch(u,{cache:'no-store'});if(!r.ok)return;const next=await r.text();if(baseline===null){baseline=next;return}if(next!==baseline&&!active()&&!document.querySelector('dialog[open]')&&!document.activeElement?.matches('input,textarea,select,[contenteditable=true]')){const target=new URL(location.href);target.searchParams.set('_form_version',Date.now());location.replace(target)}}catch{}finally{busy=false}}
+check();setInterval(check,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});window.addEventListener('online',check);
