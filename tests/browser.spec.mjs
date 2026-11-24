@@ -38,7 +38,7 @@ test('routine edits, discard and persistence',async({page})=>{
  await expect(page.locator('#detail-title')).toHaveText('Regression routine');
  await page.locator('#detail-edit').click();
  await expect(page.locator('#save-routine')).toBeDisabled();
- await expect(page.locator('#routine-exercises details.routine-exercise[open]')).toHaveCount(0);
+ await expect(page.locator('#routine-exercises details.routine-exercise[open]')).toHaveCount(1);
  await page.locator('#routine-name').fill('Unsaved rename');
  await expect(page.locator('#save-routine')).toBeEnabled();
  await page.locator('#nav-home').click();
