@@ -107,3 +107,6 @@ Use official Lucide Circle Play (circle-play.svg) for all workout start actions,
 
 ## Engineering architecture
 Worker HTML, shared stylesheet and browser entry are separate assets. Preserve rendered output during extraction. Source checks inspect browser syntax and static DOM references. Production bundling and device interaction tests remain required.
+
+## Mandatory visual cohesion across Duo configurations
+Treat folded/compact, unfolded portrait and unfolded landscape as one visual product, not three independent designs. Share semantic color tokens, typography hierarchy, spacing and radius scales, card and control treatments, icon sizes and strokes, selection/completion states, motion and accessibility behavior. Adapt only composition, dimensions, density and placement when available space requires it. Preserve alignment, consistent surface hierarchy, safe-area clearance and unobstructed content, including persistent controls. Avoid nested rounded separators, conflicting component variants and layout-specific styling drift. Every visual change must be reviewed in all three configurations in both light and dark themes; document intentional responsive exceptions and add regression coverage where practical. Do not mark visual changes fully verified until browser checks and relevant device validation are complete.
