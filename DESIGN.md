@@ -68,3 +68,6 @@ Supersedes earlier standard UI icon stroke width of 2: use official Lucide icons
 
 ## Icon sizing refinement
 Use 20px Profile row and avatar icons, 22px navigation dock icons, and 18px settings chevrons. Retain 1.75 Lucide stroke width and existing touch targets. These contextual sizes supersede the general 24px default for these components across all layouts and themes.
+
+## Appearance menu simplification
+Show only the Appearance label, standalone icon and chevron in Profile. Current theme selection is indicated inside the Appearance page only. Supersedes earlier current-theme row requirements across all layouts.
