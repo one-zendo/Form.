@@ -24,3 +24,5 @@ Train with focus, follow your progress
 - Reference: https://lucide.dev/icons/
 
 - For enlarged standalone icons, reduce SVG stroke width optically; the 64px test icon uses 1.25 viewBox units instead of 2.
+
+- Use the latest verified stable official Lucide release when establishing or upgrading dependencies; pin the version for reproducible deployments and verify builds after upgrades.
