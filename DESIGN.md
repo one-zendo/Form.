@@ -59,3 +59,6 @@ Maintain one shared application core, workout data model, business logic, reusab
 
 ## Wordmark refinement
 The displayed brand wordmark is exactly **FORM.** (uppercase with a terminal period). Apply consistently across all screens, themes and adaptive layouts. The tagline remains unchanged.
+
+## Profile icon refinement
+Use standalone monochrome official Lucide icons in Profile settings rows, without colored background tiles. Follow theme-aware neutral foreground colors; reserve accent colors for meaningful selection and status. Apply across all Duo configurations.
