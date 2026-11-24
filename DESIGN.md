@@ -104,3 +104,6 @@ Filled action and routine quick-start icons use 18px, 1.75 stroke, preserving to
 
 ## Workout play icon
 Use official Lucide Circle Play (circle-play.svg) for all workout start actions, including Home, routine details and quick-start rows. Retain 18px sizing, 1.75 stroke and existing touch targets and theme colors.
+
+## Engineering architecture
+Worker HTML, shared stylesheet and browser entry are separate assets. Preserve rendered output during extraction. Source checks inspect browser syntax and static DOM references. Production bundling and device interaction tests remain required.
