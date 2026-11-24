@@ -50,3 +50,6 @@ Restrained spring-like motion; button feedback 100–150ms, selection 180–250m
 
 ### Validation
 Existing palettes remain unchanged. Validate contrast, responsive behavior, official icon rendering and production motion before implementation approval. Exact responsive breakpoints and final screen designs remain pending.
+
+## Mandatory Duo adaptive layout requirement (2026-11-24)
+Design, wireframe, prototype and test distinct compact/folded, unfolded portrait and unfolded landscape configurations for all relevant screens. Apple specifications: outer 1398×2034 pixels (5.4 inch), inner 1878×2670 pixels (7.6 inch), both up to 120Hz; source https://www.apple.com/ca/iphone-duo/specs/. Provisional 3× logical canvases: 466×678, 626×890, 890×626 respectively; measure actual viewport, safe areas and scaling on device before finalizing breakpoints. Adapt to available window dimensions including multitasking, not device name alone. Preserve workout state, completed sets, rest timer, unsaved edits, selection, navigation, equivalent scroll location and appearance across folding and rotation. Require no clipping or inaccessible controls; test on actual hardware before declaring compatibility. Specific screen arrangements remain design proposals pending wireframe approval.
