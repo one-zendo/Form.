@@ -1,6 +1,6 @@
 # FORM — Product definition
 
-Version 1.1 · Approved 2026-11-24
+Version 1.2 · Approved 2026-11-24
 
 Train with focus, follow your progress.
 
@@ -65,3 +65,34 @@ Simplicity, focus, clarity, efficiency, transparency and reliability.
 FORM should respect the user's time, attention, money and data.
 
 Pricing and technical synchronization strategy remain to be defined.
+
+## Approved competitive analysis
+Preliminary qualitative assessment of published features, not hands-on testing.
+
+| Competitor | Strengths | FORM opportunity |
+| --- | --- | --- |
+| Hevy | Logging, Apple Watch, Live Activities, exercise library; optional social features | Personal-first experience without a social network |
+| Strong | Focused logging, practical tools, Watch support, history | Contextual interfaces, thoughtful motion, clear insights |
+| Fitbod | Personalized workout generation and recovery insights | User control without mandatory automated coaching |
+| JEFIT | Extensive exercise library, analytics and programs | Advanced capabilities without overwhelming interfaces |
+| Apple Health (design benchmark) | Native hierarchy, recognizable components and integration | Apply its design philosophy to strength training |
+
+Intended positioning: minimal interface and personal focus. Strong is a key competitor because simplicity is already part of its appeal. Removing social features alone is not sufficient differentiation. Competitor positioning is qualitative, not measured performance.
+
+### Competitive strategy
+- Apple-inspired progressive disclosure.
+- No social feed.
+- One-tap set completion when values are correct.
+- Essential insights first; advanced details on demand.
+- No upgrade interruptions during workouts.
+- Offline-first storage, recovery and export capabilities.
+- Thoughtful native Apple integration.
+
+Avoid feature bloat, social engagement mechanics, excessive gamification, unnecessary AI and artificial complexity to justify subscriptions.
+
+## Approved unique value proposition
+**More training. Less distraction.**
+
+FORM delivers a focused, beautifully designed strength-training experience that puts personal progress, effortless logging and reliable data first.
+
+Validate usability and synchronization before claiming superiority over competitors.
