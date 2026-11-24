@@ -43,7 +43,7 @@ body.training #session-rest-card{display:none!important}
 @media (orientation:landscape) and (min-width:700px){body.training .dock{display:grid}body.mini-visible .dock,body.mini-visible .mini-workout{bottom:max(12px,env(safe-area-inset-bottom));width:min(440px,calc((100% - 44px)/2))}body.mini-visible .dock{left:calc(50% - min(225px,calc((100% - 24px)/4)))}body.mini-visible .mini-workout{left:calc(50% + min(225px,calc((100% - 24px)/4)))}body.mini-visible main,body.training main,body.mini-visible main:has(#workouts-page:not([hidden])),body.mini-visible main:has(#profile-shell:not([hidden])){padding-bottom:calc(86px + env(safe-area-inset-bottom))}}
 @media(max-width:360px){.mini-workout{grid-template-columns:80px minmax(0,1fr) 80px;padding-inline:3px}.mini-workout .rest-adjust{min-width:40px;flex-basis:40px}}
 @media(prefers-reduced-motion:reduce){.dock,.mini-workout,.mini-workout::before{transition:none;animation:none}}
-@media(prefers-reduced-transparency:reduce){.mini-workout,.dock{backdrop-filter:none}.mini-workout:not([data-resting=true]),.dock{background:var(--paper)}}
+@media(prefers-reduced-transparency:reduce){.mini-workout,.dock{backdrop-filter:none;-webkit-backdrop-filter:none}.mini-workout:not([data-resting=true]),.dock{background:var(--paper)}}
 body.has-session #start{background:var(--workout-accent);color:var(--workout-on-accent)}
 `;document.head.append(miniStyle);
 function formatElapsed(sec){const h=Math.floor(sec/3600),m=Math.floor(sec/60)%60;return (h?h+":":"")+String(m).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
@@ -106,13 +106,13 @@ body.training.mini-visible #active-workout .session-scroll{
   mask-image:linear-gradient(to bottom,#000 0,#000 max(0px,calc(100% - 156px - env(safe-area-inset-bottom))),rgba(0,0,0,.98) max(0px,calc(100% - 138px - env(safe-area-inset-bottom))),rgba(0,0,0,.80) max(0px,calc(100% - 100px - env(safe-area-inset-bottom))),rgba(0,0,0,.34) max(0px,calc(100% - 52px - env(safe-area-inset-bottom))),transparent 100%);
   isolation:auto;
 }
-body.training.mini-visible::after{
+body::after{
   content:"";position:absolute;z-index:1;inset:auto 0 0;
   height:calc(180px + env(safe-area-inset-bottom));pointer-events:none;
   background:linear-gradient(to bottom,transparent 0%,transparent 15%,color-mix(in srgb,var(--canvas) 12%,transparent) 35%,color-mix(in srgb,var(--canvas) 70%,transparent) 80%,var(--canvas) 100%);
 }
 @supports ((-webkit-mask-image:linear-gradient(transparent,#000)) or (mask-image:linear-gradient(transparent,#000))){
-  body.training.mini-visible::after{
+  body::after{
     background:color-mix(in srgb,var(--canvas) 35%,transparent);
     -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
     -webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 12%,rgba(0,0,0,.04) 24%,rgba(0,0,0,.22) 43%,rgba(0,0,0,.62) 68%,#000 92%);
@@ -122,6 +122,6 @@ body.training.mini-visible::after{
 @media(prefers-reduced-transparency:reduce){
   body.training.mini-visible main{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
   body.training.mini-visible #active-workout .session-scroll{padding-bottom:0;scroll-padding-bottom:0;-webkit-mask-image:none;mask-image:none}
-  body.training.mini-visible::after{display:none}
+  body::after{display:none}
 }
 `;document.head.append(style);}
