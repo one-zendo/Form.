@@ -62,3 +62,5 @@ For every change, record affected pages, features, implementation status, verifi
 - v24: consolidated overlapping Home responsive CSS; consistent card anatomy, compact viewport rules, history-derived three-day activity bars and same-period previous-month comparisons (only when data exists). Source audit completed; browser/device checks and workout scheduling integration remain pending.
 
 - v26: approved global progressive bottom blur implemented as a fixed non-interactive layer below navigation, shared by all pages; theme-aware tint, safe areas, compact landscape height, reduced-transparency fallback. Source review only; runtime, contrast and eight Duo/theme configurations pending. Cloudflare live deployment not yet verified.
+
+- v27: shared pill and circular button geometry applied to Home, Workouts, routine dialog and Profile theme selection; preserved swipe segments, cards and glass navigation. Source inspection only; live Cloudflare deployment and eight device/theme checks pending.
