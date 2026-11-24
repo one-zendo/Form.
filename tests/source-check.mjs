@@ -1,0 +1,11 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
+const raw=source.split('<script>')[1].split('</script>')[0];
+const browser=vm.runInNewContext('String.raw' === '' ? '' : '`'+raw+'`');
+new vm.Script(browser);
+const ids=[...source.matchAll(/\bid="([\w-]+)"/g)].map(m=>m[1]);
+assert.equal(new Set(ids).size,ids.length,'Duplicate HTML IDs');
+for(const m of browser.matchAll(/\$\("([\w-]+)"\)/g)) assert.ok(ids.includes(m[1]),'Missing element: '+m[1]);
+console.log('Browser syntax and static DOM references passed');
