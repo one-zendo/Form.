@@ -44,3 +44,12 @@
 
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--workout-accent:#78a5ff;--success-bright:#34e75a}}
 :root[data-theme=dark]{--workout-accent:#78a5ff;--success-bright:#34e75a}
+
+.routine-detail-header{min-width:0;gap:12px}
+.routine-detail-header #detail-title{flex:1;min-width:0;overflow-wrap:anywhere}
+#detail-edit{flex:0 0 44px;width:44px;height:44px;padding:0}
+@media(min-width:760px) and (orientation:landscape){
+  #routine-detail .routine-detail-header{position:sticky;top:0;z-index:5;background:var(--canvas);height:44px;min-height:44px;align-items:center}
+  #routine-detail .routine-detail-header #detail-title{position:static;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  #routine-list>.row:first-child{padding-top:0}
+}
