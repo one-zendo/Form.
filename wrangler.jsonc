@@ -1,5 +1,14 @@
 {
   "name": "form",
   "main": "src/index.js",
-  "compatibility_date": "2026-11-24"
+  "compatibility_date": "2026-11-24",
+  "rules": [
+    {
+      "type": "Text",
+      "globs": [
+        "**/*.svg"
+      ],
+      "fallthrough": true
+    }
+  ]
 }

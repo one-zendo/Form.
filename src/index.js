@@ -1,1 +1,8 @@
-export default { fetch() { return new Response(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FORM</title><style>body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#F2F2F7;color:#0088FF}svg{width:64px;height:64px}</style></head><body><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="FORM deployment test dumbbell"><path d="m6.5 6.5 11 11M21 21l-1-1M3 3l1 1m17-6 1 1M3 21l1-1"/><path d="m9 3 12 12a2 2 0 0 1 0 3l-3 3a2 2 0 0 1-3 0L3 9a2 2 0 0 1 0-3l3-3a2 2 0 0 1 3 0Z" transform="rotate(0)" style="display:none"/><path d="m6.5 6.5-3 3a2 2 0 0 0 0 3l1 1a2 2 0 0 0 3 0l6-6a2 2 0 0 0 0-3l-1-1a2 2 0 0 0-3 0zm11 11 3-3a2 2 0 0 0 0-3l-1-1a2 2 0 0 0-3 0l-6 6a2 2 0 0 0 0 3l1 1a2 2 0 0 0 3 0z"/></svg></body></html>`, {headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}}); } };
+import dumbbell from "lucide/icons/dumbbell.svg";
+
+export default {
+  fetch() {
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FORM</title><style>body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#F2F2F7;color:#0088FF}svg{width:64px;height:64px}</style></head><body><div role="img" aria-label="FORM deployment test dumbbell">${dumbbell}</div></body></html>`;
+    return new Response(html, {headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
+  }
+};

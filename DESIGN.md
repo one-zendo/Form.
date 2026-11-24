@@ -17,3 +17,8 @@ Train with focus, follow your progress
 ## Branding
 - FORM wordmark at upper left with the tagline directly below.
 - Prioritize clarity, focus and progress over decorative clutter.
+
+## Official icon system
+- Use official Lucide icons exclusively for web interface icons, sourced from the published Lucide packages (lucide-static for the Worker test; lucide-react if React is adopted).
+- Do not redraw or approximate existing icons. Default to 24px, 2px stroke, rounded caps and joins, consistent optical sizing and semantic color. Provide accessible labels for icon-only controls.
+- Reference: https://lucide.dev/icons/
