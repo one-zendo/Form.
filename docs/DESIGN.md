@@ -1,3 +1,3 @@
 # Design reference
 
-The authoritative design specification is now [DESIGN.md](../DESIGN.md) at repository root.
+The authoritative specification is [DESIGN.md](../DESIGN.md). Historical colors and tokens are in [PALETTES.md](PALETTES.md). This file is a compatibility pointer, not a second specification.
