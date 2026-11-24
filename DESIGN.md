@@ -136,3 +136,7 @@ Use Title Case for all app-authored button labels, including navigation, icon-bu
 ## Semantic color palette
 
 Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, accessible deep olive #426500 in light mode. Electric blue #0088FF is reserved for active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #237A39 light). Dark canvas #17171F, surface #24242E, muted #92929C; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
+
+## Active workout focus
+
+One exercise is expanded in portrait; landscape retains list/detail layout with the same selected exercise. Selecting a card never collapses it. Completing its last set advances to the next unfinished exercise, wrapping if necessary. Completed exercises remain selectable for corrections. Inline set counts and completion checks replace collapse chevrons. Selection is UI-only; workout persistence and rest timing remain independent.
