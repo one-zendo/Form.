@@ -5,7 +5,7 @@ Source of truth for development status. Update this file with every feature or p
 ## Pages
 | Page | Status |
 |---|---|
-| Home | Scaffolded |
+| Home | Implemented; runtime verification pending |
 | Workouts | Scaffolded |
 | Progress | Scaffolded |
 | Profile | Scaffolded |
@@ -50,3 +50,5 @@ For every change, record affected pages, features, implementation status, verifi
 - User confirmed official local Lucide animal test renders after asset cache bust v17. Material foundation committed: paper, glass and accent tokens/classes, translucent persistent navigation, both palettes, opaque fallback; asset version v18. Runtime and eight-configuration checks pending. Home content remains scaffolded.
 
 - Restored official house, dumbbell, chart-no-axes-column-increasing and user-round navigation icons from pinned Lucide integration after successful animal test. Asset version v19; restored icons runtime check pending.
+
+- v20 Home: responsive paper layout, greeting, workout navigation, expandable calendar, history-derived streak/month totals and journal, official local Lucide icons. Reads form.data.v2; no seeded history. Workout and Progress destinations remain scaffolded; workout engine and data migration pending. Device verification pending.
