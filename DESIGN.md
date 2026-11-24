@@ -71,3 +71,6 @@ Use 20px Profile row and avatar icons, 22px navigation dock icons, and 18px sett
 
 ## Appearance menu simplification
 Show only the Appearance label, standalone icon and chevron in Profile. Current theme selection is indicated inside the Appearance page only. Supersedes earlier current-theme row requirements across all layouts.
+
+## Persistent Profile workspace
+Supersedes landscape overview cards: unfolded landscape always shows the Profile settings sidebar on the left and selected detail on the right, defaulting to My profile when entering via the dock. Compact and unfolded portrait retain the main settings menu and dedicated detail pages. Preserve explicit detail selection and personal inputs during layout changes. My profile supports locally saved name and training goal; no account required. Keep navigation dock anchored to the non-scrolling shell. Device validation pending.
