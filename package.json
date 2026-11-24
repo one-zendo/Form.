@@ -4,10 +4,12 @@
   "scripts": {
     "build": "node --check src/index.js && npm test",
     "deploy": "wrangler deploy",
-    "test": "node tests/source-check.mjs"
+    "test": "node tests/source-check.mjs",
+    "test:browser": "playwright test"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.0.0",
+    "@playwright/test": "^1.51.1"
   },
   "type": "module",
   "dependencies": {
