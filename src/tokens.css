@@ -14,3 +14,6 @@ html,body{touch-action:pan-x pan-y}button{touch-action:manipulation}input,select
 /* Shared material accessibility and control geometry. */
 @media(prefers-reduced-transparency:reduce){.material-glass,form-navigation,.global-rest,.workout-dialog{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Precision Paper shared scale. */
+:root{--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--text-meta:13px;--text-body:16px;--text-section:20px;--touch-target:44px;--nav-selection:color-mix(in srgb,var(--accent) 15%,var(--surface));}
