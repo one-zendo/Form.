@@ -33,3 +33,5 @@ v0.1.0 · Build 001. React, TypeScript, Vite, shared CSS tokens and bundled Luci
 - Documentation audit: reorganized design handbook, preserved historical token archive verbatim, corrected stale README and legacy pointers, consolidated workflow and verification. No app code changes; Build 001 unchanged.
 
 See [DESIGN.md](DESIGN.md), [AGENTS.md](AGENTS.md), [deployment guide](docs/DEPLOYMENT.md).
+
+- Theme decision: Unified Apple 2.0 and Graphite Lime approved as two primary target themes; white action text preferred for Unified Apple, subject to contrast review. Existing Build 001 themes unchanged pending implementation. Historical palettes retained.
