@@ -4,7 +4,7 @@ Authoritative visual and interaction specification. Historical palettes and toke
 
 ## 1. Identity
 - Brand: FORM. Tagline: Train with focus, follow your progress.
-- Modern electronic training notebook: Notion and ChatGPT content intelligence with an Apple-inspired functional shell.
+- The intelligent training notebook: distinct FORM identity, editorial precision, clarity and cohesion above decoration. Apple informs execution quality, not appearance.
 - Paper holds information; Glass controls the experience; intelligence connects them.
 - Compact, readable, fresh, timeless; modernized spreadsheet with purposeful motion.
 
@@ -14,7 +14,7 @@ Authoritative visual and interaction specification. Historical palettes and toke
 - Solid accent primary actions; shared geometry and materials across themes.
 
 ## 3. Themes and semantic color
-Approved target themes: Unified Apple 2.0 (default) and Graphite Lime (performance dark). Unified Apple uses updated Apple-inspired system palette: light blue #0088FF, green #34C759, purple #CB30E0, red #FF383C, orange #FF8D28, yellow #FFCC00; canvas #F2F2F7, paper #FFFFFF, ink #000000. White text and icons are the preferred solid action treatment; validate contrast and obtain approval for accessible fill variants. Graphite Lime retains its existing palette and dark foreground on lime. Soft Spectrum and Monochrome remain archived; other historical palettes require approval. This is the target design, not yet implemented in Build 001.
+Approved target themes: Unified Apple 2.0 (default) and Graphite Lime (performance dark). Unified Apple uses updated Apple-inspired system palette: light blue #0088FF, green #34C759, purple #CB30E0, red #FF383C, orange #FF8D28, yellow #FFCC00; canvas #F2F2F7, paper #FFFFFF, ink #000000. White text and icons are the preferred solid action treatment; validate contrast and obtain approval for accessible fill variants. Graphite Lime retains its existing palette and dark foreground on lime. Soft Spectrum and Monochrome remain archived; other historical palettes require approval. Build 002 implements the two target themes and approved Home preview action fill #006DD6 with white; original blue #0088FF remains the brand swatch. Graphite supporting accents: blue #69A5F8, violet #B69CFF, amber #E9B75B, red #F43A50.
 - Soft Spectrum original canvas #F5F7FA (later #F0F5FB), paper #FFFFFF, ink #2A3035, muted #828384, divider #E5E7EB, control #E9EAEA.
 - Original brand blue #58A5F8, green #65CA79, purple #7D2DF2, red #EC6568; tints #EDF6FE, #EDF9F1, #FCEFF0, #D2E8FD.
 - Preserve original soft fills and preferred white action text/icons as visual references. White normal text on original blue, green and red fails 4.5:1. Review contrast explicitly before implementation; do not silently darken brand colors. Accessible alternatives from Build 009: #2875C9, #258044, #C63E49 with white (4.69, 4.94, 5.02); Build 008 dark foreground alternatives #172B40, #153B21, #35151A respectively.
@@ -22,7 +22,7 @@ Approved target themes: Unified Apple 2.0 (default) and Graphite Lime (performan
 - Use currentColor for monochrome SVG; semantic fills or variants for multicolor assets. Never use color alone to communicate state. Keep layout, typography and behavior consistent; test theme persistence.
 
 ## 4. Typography and geometry
-Shared design targets (CSS px; subject to visual approval):
+Single native system sans-serif stack, tabular digits, sentence case, readable hierarchy. Shared design targets (CSS px; subject to visual approval):
 
 | Role | Target |
 |---|---|
@@ -63,3 +63,6 @@ References: [Apple typography](https://developer.apple.com/design/human-interfac
 
 ## 8. Engineering and change control
 Shared reusable components and semantic tokens; minimal dependencies; consistency over isolated overrides. Original FORM is a visual reference, not architectural authority. Obtain approval before major visual changes. Record implementation and verification in DEVELOPMENT.md. Historical values are references, not automatic defaults.
+
+## 9. Approved Home concept
+One dominant next-workout card; open weekly metrics and dated training journal; grouped set segments, inline journal expansion and week browsing. Matte digital notebook, intelligently compact rather than sparse or crowded. Reflow at 600px into approximately 53:47 columns; actual Duo proportions require device review. Sample data explicitly labeled; demo start is not a workout engine.
