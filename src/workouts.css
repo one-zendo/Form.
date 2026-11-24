@@ -41,3 +41,8 @@
 @media(max-width:759px){.active-layout{display:flex;flex-direction:column}.active-timer{position:sticky;bottom:calc(var(--nav-height) + env(safe-area-inset-bottom,0px) + 10px);z-index:5;align-self:stretch;box-shadow:var(--glass-shadow)}.active-exercises{gap:10px}}
 @media(min-width:760px){.active-layout{grid-template-columns:minmax(0,1.65fr) minmax(220px,1fr);align-items:start}.active-timer{position:sticky;bottom:calc(var(--nav-height) + env(safe-area-inset-bottom,0px) + 10px);align-self:end}}
 @media(prefers-reduced-motion:reduce){.active-exercise-heading svg,.active-timer-track span{transition:none}}
+
+/* Graphite Lime: neutral action labels, semantic lime icons. */
+:root[data-theme="graphite-lime"] .active-add,:root[data-theme="graphite-lime"] .active-card-footer button,:root[data-theme="graphite-lime"] .workout-start-button{color:var(--ink)}
+:root[data-theme="graphite-lime"] .active-add svg,:root[data-theme="graphite-lime"] .active-card-footer button svg,:root[data-theme="graphite-lime"] .workout-start-button svg{color:var(--accent)}
+:root[data-theme="graphite-lime"] .active-timer .active-icon{color:var(--ink)}
