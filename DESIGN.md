@@ -101,3 +101,6 @@ Completed day markers use the theme action accent (lime in dark mode, blue in li
 
 ## Action icon refinement
 Filled action and routine quick-start icons use 18px, 1.75 stroke, preserving touch targets. Remove redundant decorative dumbbell tile from Home workout hero across all layouts.
+
+## Workout play icon
+Use official Lucide Circle Play (circle-play.svg) for all workout start actions, including Home, routine details and quick-start rows. Retain 18px sizing, 1.75 stroke and existing touch targets and theme colors.
