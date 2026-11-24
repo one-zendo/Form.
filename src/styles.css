@@ -53,3 +53,26 @@
   #routine-detail .routine-detail-header #detail-title{position:static;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   #routine-list>.row:first-child{padding-top:0}
 }
+
+/* Inline editing shares the routine detail geometry. */
+#routine-editor .routine-editor-header{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;background:var(--canvas)}
+#routine-editor .inline-edit-title{height:44px;min-height:44px;gap:12px}
+#routine-editor #routine-name{font-size:28px;font-weight:700;letter-spacing:-.7px;border:0;border-bottom:1px solid var(--line);border-radius:var(--radius-none);background:transparent;padding:0;margin:0;min-width:0;flex:1}
+#routine-cancel{flex:0 0 44px;width:44px;height:44px;color:var(--muted);font-size:26px}
+#edit-meta{height:28px;line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#save-routine{width:100%;height:48px;min-height:48px;margin:0 0 12px;border-radius:var(--radius-control);color:var(--on-action)}
+#save-routine:disabled{background:var(--paper);color:var(--muted);opacity:1}
+#routine-editor .detail-heading{height:44px;margin:0 0 12px}
+#routine-editor .detail-heading h3{font-size:19px;font-weight:600}
+#routine-exercises{margin:0 0 12px;gap:12px}
+#routine-exercises .routine-exercise{display:block;padding:0 16px;margin:0}
+#routine-exercises .routine-exercise[open]{padding-bottom:16px}
+#routine-exercises .routine-exercise>summary{min-height:76px;padding:16px 0}
+#routine-exercises .routine-exercise>summary>span:first-child{display:none}
+#routine-exercises .routine-exercise>summary .detail-chevron{transform:none}
+#routine-exercises .routine-exercise[open]>summary .detail-chevron{transform:rotate(180deg)}
+#routine-exercises .exercise-menu>summary{min-height:44px;font-size:14px;color:var(--muted)}
+#routine-exercises .set-line input{text-align:center}
+#routine-exercises .set-line button{color:var(--muted)}
+#exercise-picker[hidden]{display:none}
+@media(min-width:760px) and (orientation:landscape){#routine-editor .routine-editor-header{top:0;z-index:5}#routine-editor .detail-heading{margin:0 0 12px}}
