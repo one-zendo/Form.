@@ -74,3 +74,6 @@ Show only the Appearance label, standalone icon and chevron in Profile. Current 
 
 ## Persistent Profile workspace
 Supersedes landscape overview cards: unfolded landscape always shows the Profile settings sidebar on the left and selected detail on the right, defaulting to My profile when entering via the dock. Compact and unfolded portrait retain the main settings menu and dedicated detail pages. Preserve explicit detail selection and personal inputs during layout changes. My profile supports locally saved name and training goal; no account required. Keep navigation dock anchored to the non-scrolling shell. Device validation pending.
+
+## Independent workspace scrolling
+In unfolded landscape master-detail workspaces, each panel owns its vertical scroll position. Scrolling one panel must not move its neighbor or the navigation dock. Reserve dock clearance below both panels. Compact and portrait detail pages retain single-page scrolling. Verify on device before declaring complete.
