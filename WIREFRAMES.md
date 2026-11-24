@@ -36,3 +36,6 @@ Home, Workouts, Progress and Profile approved for all three configurations. Phas
 
 ## Wireframe presentation standard — approved
 Use interactive grayscale wireframes with proportional device canvases for all Duo screens: folded 466:678, unfolded portrait 626:890, unfolded landscape 890:626 (provisional logical dimensions). Preserve the actual aspect ratio in chat; do not merely rearrange content within a portrait container. Provide layout switching and relevant interaction controls. Profile Appearance shows the current theme in the category row; folded and unfolded portrait open a dedicated settings page with back navigation, while landscape uses a category/detail split. Show System, Light and Dark as visual theme choices. Keep the dock anchored and selection consistent. Focused workout appearance remains a later feature. This is a wireframe standard, not a claim of implemented or hardware-tested behavior.
+
+## Profile navigation refinement
+Tapping the Profile dock button returns to the main Profile menu, including from Appearance, in all three layouts. Use concise category labels without repetitive descriptions; retain the current theme value in the Appearance row. Keep explanatory text only where needed within settings pages.
