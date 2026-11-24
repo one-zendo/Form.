@@ -82,3 +82,8 @@
 #routine-editor .exercise-menu>summary{padding:4px 0;min-height:44px}
 #routine-editor #save-routine{transition:background-color 180ms ease,color 180ms ease}
 @media(prefers-reduced-motion:reduce){#routine-editor #save-routine{transition:none}}
+
+#routine-exercises .routine-grip{flex:0 0 28px;width:28px;min-width:28px;height:44px;padding:0;background:transparent;color:var(--muted);font-size:24px;cursor:grab;touch-action:none;user-select:none}
+#routine-exercises .routine-grip:active{cursor:grabbing}
+#routine-exercises .routine-dragging{opacity:.65}
+#routine-exercises .routine-drop-target{outline:2px solid var(--action);outline-offset:-2px}
