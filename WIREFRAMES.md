@@ -23,3 +23,13 @@ Shared: week/month/year date filters, workouts/training duration/PR count/volume
 - Unfolded portrait: expanded metrics, full-width charts and additional insight space.
 - Unfolded landscape: metrics and charts left, personal records, consistency and detail links right.
 Progressive disclosure: overview → metric detail → exercise performance → original workout record. Chart inspection via touch/drag, accessible labels, consistent units and dates. Preserve period, metric, exercise and inspected point across layouts. Strength includes weight/reps/estimated 1RM; volume, frequency, duration and PRs derive from real records. No invented measurements or trends. States: empty history, insufficient data, offline local calculation, recalculation after edits/deletions, unavailable metric explanation. Exact formulas, MVP scope, viewport and hardware validation pending. Illustrative wireframe values only.
+
+## Profile — approved 2026-11-24
+Shared: optional personal profile (name, image, goals), workout preferences (weight/distance units, rest defaults, automatic timers, previous performance, RPE/RIR), appearance (system/light/dark/focused workout), Apple integrations, notifications/haptics, data management, privacy, support and floating dock.
+- Folded: single-column grouped settings with dedicated category pages and back navigation.
+- Unfolded portrait: full-width profile header, paired preference cards with descriptions, grouped data/support.
+- Unfolded landscape: category list left, editable selected settings right.
+Single shared preference store; preserve selected category, input, appearance and scroll context across folding/rotation. Autosave preferences; preserve failed saves for recovery. Convert displayed units without changing physical measurements; defaults apply to future applicable sets; hiding RPE/RIR does not delete records. Respect permissions; explicit confirmation for data deletion. Core training requires neither account nor internet. Native integrations must not be falsely shown connected in web prototype. Actual viewport and hardware validation pending.
+
+## Phase 5.1 — complete
+Home, Workouts, Progress and Profile approved for all three configurations. Phase 5.2 begins with Routine Builder; all secondary screens require cross-layout parity and review.
