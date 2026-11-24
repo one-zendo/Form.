@@ -127,3 +127,11 @@ for(const theme of ['light','dark'])for(const [width,height] of [[466,678],[626,
   await expect(timer).toHaveAttribute('data-resting','true');await expect.poll(()=>timer.evaluate(e=>getComputedStyle(e,'::before').backgroundColor)).toBe('rgb(0, 136, 255)');const t=await timer.boundingBox(),p=await timer.locator('.mini-copy').boundingBox();expect(Math.abs(t.x+t.width/2-p.x-p.width/2)).toBeLessThan(2);await timer.getByRole('button',{name:'Skip rest'}).click();await expect(timer).toHaveAttribute('data-resting','false');await expect(timer.locator('.mini-clock')).toBeHidden();await expect(timer.locator('.mini-copy')).toContainText('Ready for next set');await expect(timer).toHaveCSS('height','56px');
  });
 }
+
+for(const theme of ['light','dark'])for(const [width,height] of [[466,678],[626,890],[890,626]]){
+ test('shared card radius '+theme+' '+width,async({page})=>{
+  await page.setViewportSize({width,height});await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);await page.goto(url);
+  await expect(page.locator('#home-page .hero')).toHaveCSS('border-top-left-radius','20px');await expect(page.locator('#start')).toHaveCSS('border-top-left-radius','12px');await expect(page.locator('.dock')).toHaveCSS('border-top-left-radius','999px');
+  await page.locator('#nav-workouts').click();await expect(page.locator('#routine-items .routine-row').first()).toHaveCSS('border-top-left-radius','20px');
+ });
+}
