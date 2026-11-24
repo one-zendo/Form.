@@ -165,3 +165,11 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   expect(Math.abs(after.y-before.y)).toBeLessThan(1);expect(Math.abs(timerAfter.y-timerBefore.y)).toBeLessThan(1);expect(clip.y).toBeGreaterThanOrEqual(after.y+after.height-1);
  });
 }
+
+ test('routine draft retains valid set values during invalid input',async({page})=>{
+ await page.goto('/');
+ await page.evaluate(()=>localStorage.setItem('form-routines',JSON.stringify([{id:'validation-test',name:'Validation routine',description:'',exercises:[{name:'Squat',sets:[{weight:20,reps:10,rest:90}]}]}])));
+ await page.reload();await page.locator('#nav-workouts').click();await page.locator('#routine-items .routine-entry').filter({hasText:'Validation routine'}).click();await page.locator('#detail-edit').click();
+ const reps=page.getByRole('spinbutton',{name:'Squat set 1 reps'});await reps.fill('0');await expect(reps).toHaveAttribute('aria-invalid','true');await reps.fill('2.5');await expect(reps).toHaveAttribute('aria-invalid','true');await reps.blur();await expect(reps).toHaveValue('10');await reps.fill('12');await expect(reps).toHaveAttribute('aria-invalid','false');
+ const draft=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-routine-draft')).data);expect(draft.exercises[0].sets[0].reps).toBe(12);await page.locator('#save-routine').click();await expect(page.locator('#detail-title')).toHaveText('Validation routine');
+ });
