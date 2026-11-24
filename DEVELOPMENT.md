@@ -8,3 +8,5 @@ Application shell and shared swipeable navigation committed. Four placeholder pa
 Verification: five pure geometry assertions executed and passed; Vitest test file committed but full dependency install, TypeScript compilation, Vite build, browser/device tests and live deployment not executed. No lockfile yet. Next: verify build and deployment, test swipe/tap/keyboard and all Duo orientations; refine navigation before other components.
 
 Read DESIGN.md before changes. Record build, tests, limitations and next task. Increment visible build for each code update.
+
+Deployment readiness review: inspected package, entry point, TS config, navigation, tokens and Wrangler config; six geometry assertions passed independently. Cloudflare settings documented in docs/DEPLOYMENT.md. No Cloudflare account connector available; dashboard update, dependency installation, compilation, CI and live verification pending. Documentation-only changes; Build 001 unchanged.
