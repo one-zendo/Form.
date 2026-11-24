@@ -161,3 +161,6 @@ These standards govern all future FORM design and implementation decisions, incl
 
 ## Consolidation baseline — shared icon and card rules
 Preserve the existing rendered 20px dock icon size (supersedes historical 22px dock specification); 22px routine play icons and 1.75 stroke remain. Shared icon geometry lives in the stylesheet, not runtime timer CSS. Routine row and detail card base declarations are consolidated without changing responsive composition. Larger layout and dialog consolidation remain separate audited stages.
+
+## Simplified routine list — current standard
+Supersedes all routine-list quick-start/play-control specifications. Routine cards are single-purpose selection controls across compact, unfolded portrait and landscape; tap anywhere on the row to open/select details. Start Workout remains the explicit primary action in details. Retain selected row surface and existing landscape lime selection line. Home quick start and active workout behavior remain unchanged. No replacement icon. Remove obsolete routine-play styles and tests.
