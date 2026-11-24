@@ -125,3 +125,6 @@ For discussion or refinement of an individual UI component, show only the affect
 
 ## Approved floating capsule design
 Navigation dock and workout timer share 56px height, full pill radius, border and surface tokens. Timer countdown and ready-state exercise/status are centered; during rest Electric Blue (#0088FF) fills the entire pill in proportion to remaining time with white foreground, compact minus/plus and Skip controls. Ready state hides countdown and rest controls without changing geometry. Folded and portrait stack above dock; landscape places timer beside dock. Preserve deadlines and theme adaptation; check white text contrast, safe areas and device touch targets. Browser and hardware validation required.
+
+## Shared corner geometry
+Content cards use --radius-card:20px; controls and primary buttons use --radius-control:12px; compact set inputs use --radius-small:8px; floating navigation and timer use --radius-full:999px. Maintain one global radius scale across all layouts and themes; do not hardcode component-specific numeric border radii.
