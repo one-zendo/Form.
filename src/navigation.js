@@ -1,5 +1,5 @@
 import {renderHome} from './home.js?v=29';
-import {renderWorkouts,mountGlobalTimer} from './workouts.js?v=42';
+import {renderWorkouts,mountGlobalTimer} from './workouts.js?v=43';
 const iconPaths={"house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" />\n  <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />","dumbbell":"<path d=\"M14.4 14.4 9.6 9.6\" />\n  <path d=\"M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z\" />\n  <path d=\"m21.5 21.5-1.4-1.4\" />\n  <path d=\"M3.9 3.9 2.5 2.5\" />\n  <path d=\"M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z\" />","chart-no-axes-column-increasing":"<line x1=\"12\" x2=\"12\" y1=\"20\" y2=\"10\" />\n  <line x1=\"18\" x2=\"18\" y1=\"20\" y2=\"4\" />\n  <line x1=\"6\" x2=\"6\" y1=\"20\" y2=\"16\" />","user-round":"<circle cx=\"12\" cy=\"8\" r=\"5\" />\n  <path d=\"M20 21a8 8 0 0 0-16 0\" />"};
 const tabs=[['Home','house'],['Workouts','dumbbell'],['Progress','chart-no-axes-column-increasing'],['Profile','user-round']];
 class FormNavigation extends HTMLElement{
