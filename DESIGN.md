@@ -80,3 +80,6 @@ In unfolded landscape master-detail workspaces, each panel owns its vertical scr
 
 ## Routine quick start
 Use compact grouped routine rows with separate circular official Lucide play controls (20px, 1.75 stroke, 44px target). Row opens details; play starts the selected routine once the active engine exists. Until then show an explicit unavailable message. Preserve full Start Workout action in details and shared behavior across all layouts.
+
+## Workouts dock navigation
+Selecting Workouts returns to its main routine library in every layout, clearing detail selection without discarding unsaved drafts. Create routine offers recovery of an existing draft.
