@@ -98,3 +98,6 @@ Filled primary actions use white text and icons on light theme blue #006DD6, and
 
 ## Weekly activity completion
 Completed day markers use the theme action accent (lime in dark mode, blue in light mode) with contrasting check icons, rather than a separate success green.
+
+## Action icon refinement
+Filled action and routine quick-start icons use 18px, 1.75 stroke, preserving touch targets. Remove redundant decorative dumbbell tile from Home workout hero across all layouts.
