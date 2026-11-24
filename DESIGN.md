@@ -167,3 +167,6 @@ Supersedes all routine-list quick-start/play-control specifications. Routine car
 
 ## Active workout cohesive set controls
 Use neutral input surfaces, semantic success foreground for completed set number, weight and reps, success-filled check control, shared 8px radius and 44px control height. Landscape exercise choices use the routine selection surface and indicator, no outlines, and matching 2:3 workspace proportions. Manual exercise changes use a reduced-motion-aware 180ms fade; existing rendering and timer logic remain unchanged. Full incremental rendering is deferred.
+
+## Persistent workout capsule
+The 56px capsule has three tab-independent states: idle shows Workout in progress and the session name with a semantic success dot; active rest shows the exercise that initiated the rest and countdown; completed rest shows Continue Workout and zero. No navigation chevron. The center resumes the session. Optional restExercise persists alongside existing deadline fields; legacy records without an origin display Resting rather than guessing. Existing countdown, reset and fill architecture retained.
