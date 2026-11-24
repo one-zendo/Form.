@@ -64,3 +64,5 @@ For every change, record affected pages, features, implementation status, verifi
 - v26: approved global progressive bottom blur implemented as a fixed non-interactive layer below navigation, shared by all pages; theme-aware tint, safe areas, compact landscape height, reduced-transparency fallback. Source review only; runtime, contrast and eight Duo/theme configurations pending. Cloudflare live deployment not yet verified.
 
 - v27: shared pill and circular button geometry applied to Home, Workouts, routine dialog and Profile theme selection; preserved swipe segments, cards and glass navigation. Source inspection only; live Cloudflare deployment and eight device/theme checks pending.
+
+- v28: targeted cleanup removed accumulating anonymous submit listener, unreachable action branch, unused icon paths, overwritten navigation height and duplicate CSS declarations; routine menu now uses the existing swipe-action state. Kept approved visuals and local data format. Source audit only; runtime/device and Cloudflare checks pending. Shared icon module still pending.
