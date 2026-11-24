@@ -1,5 +1,5 @@
 // Compare deployed asset contents, not commit timestamps, to avoid refreshing before deployment.
-const paths=['./','./src/tokens.css','./src/navigation.css','./src/navigation.js','./src/home.js','./src/home.css','./src/update.js'];
+const paths=['./','./src/tokens.css','./src/navigation.css','./src/navigation.js','./src/home.js','./src/home.css','./src/workouts.js','./src/workouts.css','./src/update.js'];
 let baseline=null,busy=false;
 async function check(){
  if(busy||document.hidden||!navigator.onLine)return;
