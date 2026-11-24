@@ -10,3 +10,5 @@ Verification: five pure geometry assertions executed and passed; Vitest test fil
 Read DESIGN.md before changes. Record build, tests, limitations and next task. Increment visible build for each code update.
 
 Deployment readiness review: inspected package, entry point, TS config, navigation, tokens and Wrangler config; six geometry assertions passed independently. Cloudflare settings documented in docs/DEPLOYMENT.md. No Cloudflare account connector available; dashboard update, dependency installation, compilation, CI and live verification pending. Documentation-only changes; Build 001 unchanged.
+
+Cloudflare dashboard screenshot confirms Worker name form, repository one-zendo/Form., main branch. Changed Wrangler target from formapp to form and corrected deployment documentation. Deployment configuration only; app Build 001 unchanged. Live deployment pending.
