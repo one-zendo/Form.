@@ -83,3 +83,6 @@ Use compact grouped routine rows with separate circular official Lucide play con
 
 ## Workouts dock navigation
 Selecting Workouts returns to its main routine library in every layout, clearing detail selection without discarding unsaved drafts. Create routine offers recovery of an existing draft.
+
+## Routine editor save state
+Keep Save visible in the sticky editor header across layouts. Disable when unchanged, highlight with theme action color when draft differs from saved routine (or a new draft has content). Validate on save; preserve draft on navigation or failure. Successful save returns to routine details.
