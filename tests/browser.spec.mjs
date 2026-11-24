@@ -77,3 +77,28 @@ for(const mode of ['legacy','backup','invalid']){
   }
  });
 }
+
+for(const [width,height] of [[466,678],[626,890],[890,626]]){
+ test('inline editor cancellation and expansion '+width,async({page})=>{
+  await page.setViewportSize({width,height});
+  await page.goto(url);
+  await page.evaluate(()=>localStorage.setItem('form-routines',JSON.stringify([{id:'inline-test',name:'Inline test',description:'',exercises:['Squat','Bench Press'].map(name=>({name,sets:[{weight:20,reps:10,rest:90}]}))}])));
+  await page.reload();
+  await page.locator('#nav-workouts').click();
+  await page.locator('#routine-items .routine-entry').filter({hasText:'Inline test'}).click();
+  await page.locator('#detail-edit').click();
+  await expect(page.locator('#routine-exercises details.routine-exercise[open]')).toHaveCount(2);
+  await expect(page.locator('#save-routine')).toBeDisabled();
+  await page.locator('#routine-exercises details.routine-exercise > summary').first().click();
+  await expect(page.locator('#save-routine')).toBeDisabled();
+  await page.locator('#routine-cancel').click();
+  await expect(page.locator('#detail-title')).toHaveText('Inline test');
+  await expect(page.locator('#detail-exercises details[open]')).toHaveCount(0);
+  await page.locator('#detail-edit').click();
+  await page.locator('#routine-name').fill('Updated inline test');
+  await page.locator('#routine-cancel').click();
+  await expect(page.locator('#leave-routine')).toBeVisible();
+  await page.locator('#leave-apply').click();
+  await expect(page.locator('#detail-title')).toHaveText('Updated inline test');
+ });
+}
