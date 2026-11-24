@@ -92,3 +92,6 @@ Before leaving a changed routine editor through in-app navigation, present a the
 
 ## Routine selection and exercise disclosure
 Highlight the full selected routine row with a subtle theme action tint, including its separate play control; retain keyboard focus indication. Routine details open with all exercise disclosures collapsed; entire summary is tappable, with official Lucide chevron down when collapsed and up when expanded. Hide set grids completely until expanded. Apply to all layouts.
+
+## Filled action button foreground
+Filled primary actions use white text and icons in both themes. Light fill #006DD6; dark fill #467500 for readable white foreground. Bright lime remains the dark theme accent for navigation and selection. Quiet, disabled and icon-only controls retain semantic foregrounds. Shared across all layouts.
