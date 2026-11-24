@@ -17,7 +17,7 @@ nav.addEventListener('touchstart',e=>{if(e.touches.length===1)begin(e.touches[0]
 nav.addEventListener('touchmove',e=>{if(e.touches.length===1&&move(e.touches[0].clientX,e.touches[0].clientY)&&e.cancelable)e.preventDefault()},{passive:false});
 nav.addEventListener('touchend',e=>{if(gesture?.drag&&e.cancelable)e.preventDefault();finish(false)},{passive:false});
 nav.addEventListener('touchcancel',()=>finish(true));
-nav.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0)return;begin(e.clientX,e.clientY);nav.setPointerCapture(e.pointerId)});
+nav.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0)return;begin(e.clientX,e.clientY);e.target.setPointerCapture(e.pointerId)});
 nav.addEventListener('pointermove',e=>{if(e.pointerType!=='touch')move(e.clientX,e.clientY)});
 nav.addEventListener('pointerup',e=>{if(e.pointerType!=='touch')finish(false)});
 nav.addEventListener('pointercancel',e=>{if(e.pointerType!=='touch')finish(true)});
