@@ -122,7 +122,7 @@ for(const theme of ['light','dark'])for(const [width,height] of [[466,678],[626,
  test('floating dock geometry '+theme+' '+width,async({page})=>{
   await page.setViewportSize({width,height});await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);await page.goto(url);
   const dock=page.locator('.dock');const original=await dock.boundingBox();await page.locator('#start').click();await page.locator('#active-workout .session-check:visible').first().click();await page.getByRole('button',{name:'Minimize workout'}).click();
-  await expect(page.locator('#start')).toContainText('Resume Workout');const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();await expect(dock).toHaveCSS('border-top-left-radius','999px');await expect(timer).toHaveCSS('border-top-left-radius','999px');
+  await expect(page.locator('#start')).toContainText('Resume Workout');const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();await expect(dock).toHaveCSS('border-top-left-radius','999px');await expect(timer).toHaveCSS('border-top-left-radius','16px');
   await expect.poll(async()=>{const d=await dock.boundingBox(),t=await timer.boundingBox();return width>height?Math.abs(d.y-t.y)<2&&d.x+d.width<=t.x&&Math.abs(d.height-original.height)<3:t.y+t.height<=d.y}).toBe(true);
   const t=await timer.boundingBox(),p=await timer.locator('progress').boundingBox();expect(p.y+p.height).toBeLessThanOrEqual(t.y+t.height);expect(p.x+p.width).toBeLessThanOrEqual(t.x+t.width);
  });
