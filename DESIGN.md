@@ -122,3 +122,6 @@ Supersedes the shared-example allowance in Wireframe delivery for UI adjustments
 
 ## Component-focused preview exception
 For discussion or refinement of an individual UI component, show only the affected component by default, with variants or interactive states as useful. Full folded, unfolded portrait and unfolded landscape screen wireframes are required for screen-level or responsive composition changes, or when explicitly requested. This supersedes the mandatory three-configuration presentation rule for component-only previews, but does not change automatic cross-layout implementation, theme adaptation or testing requirements.
+
+## Approved floating capsule design
+Navigation dock and workout timer share 56px height, full pill radius, border and surface tokens. Timer countdown and ready-state exercise/status are centered; during rest Electric Blue (#0088FF) fills the entire pill in proportion to remaining time with white foreground, compact minus/plus and Skip controls. Ready state hides countdown and rest controls without changing geometry. Folded and portrait stack above dock; landscape places timer beside dock. Preserve deadlines and theme adaptation; check white text contrast, safe areas and device touch targets. Browser and hardware validation required.
