@@ -58,3 +58,5 @@ For every change, record affected pages, features, implementation status, verifi
 - v22: unfolded/landscape Home uses shared dashboard grid rows, matched card heights, compact short-viewport spacing and centered width-capped persistent navigation. Folded single-column layout retained. Device verification pending.
 
 - v23: unified Home card anatomy, section headings inside matte surfaces, common padding/radius and aligned wide-layout card edges. Runtime verification pending.
+
+- v24: consolidated overlapping Home responsive CSS; consistent card anatomy, compact viewport rules, history-derived three-day activity bars and same-period previous-month comparisons (only when data exists). Source audit completed; browser/device checks and workout scheduling integration remain pending.
