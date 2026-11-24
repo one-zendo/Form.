@@ -1,13 +1,13 @@
 # FORM — Development tracker and save point
 
 ## Current checkpoint
-- App version: v0.1.0, Build 004 (latest committed app build; deployment and device testing pending).
+- App version: v0.1.0, Build 005 (latest committed app build; deployment and device testing pending).
 - Phase 01: Design system foundation — in progress.
 - Preview: https://formapp.connect-zendo.workers.dev
-- Next task: verify Build 004 on Duo in all orientations and themes, including tap/swipe navigation and rest timer. Then Build 005: shared typography, spacing and control geometry.
+- Next task: device verification of Builds 004–005 (all themes, folded/unfolded and orientations, routine expansion, edit/start, navigation, timer). Then Build 006: consolidate shared controls and responsive layout rules; review outstanding design gaps.
 
 ## Design principles
-Approved direction: Paper + Glass (Build 004). Paper holds information; Glass controls the experience.
+Approved direction: Precision Paper + Glass (Build 005): compact open rows, aligned numbers, selective accent, functional glass. Paper holds information; Glass controls the experience.
 Apple-inspired functional shell and motion; ChatGPT-inspired intelligent UI; Notion-inspired paper notebook content. Official Lucide icons, readable typography, semantic colors, restrained motion, concentric pill controls. Soft Spectrum, Graphite Lime, Monochrome. Optimize for Duo folded/unfolded, portrait/landscape. CSS glass approximation for web; native materials later.
 
 ## Roadmap
@@ -26,6 +26,8 @@ Apple-inspired functional shell and motion; ChatGPT-inspired intelligent UI; Not
 - 003: equal-width icon-only navigation; committed, device verification pending.
 
 - 004: shared glass treatment for navigation, rest timer and dialogs; paper radii for routine and active exercise cards; consolidated equal-width icon navigation CSS; adjusted mouse pointer capture; updated asset versions and visible build. Files: tokens.css, navigation.css, workouts.css, navigation.js, index.html. Readback and JS syntax checks passed; deployment and real-device tests pending. No workout data changes.
+
+- 005: Precision Paper foundation: numbered compact routine rows with expandable exercise lists and retained edit/start controls, active-session summary, open exercise tracking layout, tinted navigation selection, shared spacing/type tokens. Files: tokens.css, navigation.css, workouts.css, workouts.js, navigation.js, index.html. JS syntax and selected readback checks passed; deployment/device testing pending. Concept gaps: previous-performance column, live session summary clock, search and single-row timer remain future tasks. No storage schema changes.
 
 ## Workflow
 Read this file before resuming development. Inspect current source before edits. Design, approve, implement, validate, test, refine and record. Increment visible app build number for every app code update. Record changed files, checks, known issues, deployment/device verification status, and exact next task here. Documentation-only changes do not increment app build. Never mark untested behavior verified. Avoid accumulating overrides; consolidate obsolete code while preserving approved functionality.
