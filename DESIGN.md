@@ -176,3 +176,5 @@ Supersedes earlier green completed-set styling. Set numbers and inputs use muted
 
 ## Final active workout spacing and focus
 Completing a final set retains the selected exercise; only explicit selection switches focus. Supersedes automatic advancement. Set tables share one grid across orientations, 24px set column, equal flexible data columns, 44px completion target, 8px gaps and 16px card horizontal padding using shared tokens. Completed progress segments use the action accent; partial segments use a muted action blend. Selected header spacing is tightened. Timer and set completion visuals remain unchanged.
+
+Light Home workout card: full brand blue idle, orange active, white copy, green pulsing status, 132px minimum height, one semantic button with decorative action capsule. Idle opens explicit routine selection (including labeled samples, empty workout and create routine); active resumes. Dark Home unchanged. Bright approved colors with white text are a contrast exception pending accessibility refinement. Reduced motion disables pulse and transitions.
