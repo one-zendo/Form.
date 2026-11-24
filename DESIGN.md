@@ -128,3 +128,7 @@ Navigation dock and workout timer share 56px height, full pill radius, border an
 
 ## Shared corner geometry
 Content cards use --radius-card:20px; controls and primary buttons use --radius-control:12px; compact set inputs use --radius-small:8px; floating navigation and timer use --radius-full:999px. Maintain one global radius scale across all layouts and themes; do not hardcode component-specific numeric border radii.
+
+## UI capitalization
+
+Use Title Case for all app-authored button labels, including navigation, icon-button accessible names, and dynamically updated actions. Use sentence case for headings, descriptions, and messages. Preserve user-entered routine and exercise names, data values, and input labels. Write labels explicitly in source; do not use CSS text-transform or automatic title casing.
