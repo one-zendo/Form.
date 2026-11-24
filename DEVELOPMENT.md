@@ -38,4 +38,4 @@ See [DESIGN.md](DESIGN.md), [AGENTS.md](AGENTS.md), [deployment guide](docs/DEPL
 
 - Build 002: approved Home component, responsive single/two-column layout, sample week browsing, expandable journal, demo start state, system typography, two target themes. Source files read back verified. No production workout records or engine. Full compilation, browser, deployment and Duo testing pending. Next: review Home on device before further screen work.
 
-- Build 003: approved simplified Home, personal greeting, start workout first, amber weekly streak, last workout. Removed dense analytics and journal browsing from Home source. Sample values only; no streak engine. Source readback pending; production build, deployment and device verification pending.
+- Build 003: approved simplified Home, personal greeting, start workout first, amber weekly streak, last workout. Removed dense analytics and journal browsing from Home source. Sample values only; no streak engine. All six changed files read back verified; production build, deployment and device verification pending.
