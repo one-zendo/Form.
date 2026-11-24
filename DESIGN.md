@@ -164,3 +164,6 @@ Preserve the existing rendered 20px dock icon size (supersedes historical 22px d
 
 ## Simplified routine list — current standard
 Supersedes all routine-list quick-start/play-control specifications. Routine cards are single-purpose selection controls across compact, unfolded portrait and landscape; tap anywhere on the row to open/select details. Start Workout remains the explicit primary action in details. Retain selected row surface and existing landscape lime selection line. Home quick start and active workout behavior remain unchanged. No replacement icon. Remove obsolete routine-play styles and tests.
+
+## Active workout cohesive set controls
+Use neutral input surfaces, semantic success foreground for completed set number, weight and reps, success-filled check control, shared 8px radius and 44px control height. Landscape exercise choices use the routine selection surface and indicator, no outlines, and matching 2:3 workspace proportions. Manual exercise changes use a reduced-motion-aware 180ms fade; existing rendering and timer logic remain unchanged. Full incremental rendering is deferred.
