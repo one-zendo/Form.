@@ -108,13 +108,13 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   await page.setViewportSize({width,height});await page.goto(url);
   await page.locator('#start').click();await expect(page.locator('#active-workout')).toBeVisible();
   await page.locator('#active-workout .session-check:visible').first().click();
-  const landscape=width>height;const timer=page.locator(landscape?'.mini-workout':'#session-rest-card');
+  const landscape=width>height;const timer=page.locator('.mini-workout');
   await expect(timer).toBeVisible();await expect(page.locator('.dock'))[landscape?'toBeVisible':'toBeHidden']();
   const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
   const before=await deadline();await timer.getByRole('button',{name:'Add 15 seconds'}).click();expect(await deadline()).toBe(before+15000);
   await timer.getByRole('button',{name:'Subtract 15 seconds'}).click();expect(await deadline()).toBe(before);
   await timer.getByRole('button',{name:'Skip rest'}).click();expect(await deadline()).toBe(0);
-  if(landscape){await expect(page.locator('#session-rest-card')).toBeHidden();await page.locator('#nav-home').click();await expect(page.locator('.mini-workout')).toBeVisible();await page.getByRole('button',{name:'Resume active workout'}).click();await expect(page.locator('#active-workout')).toBeVisible()}
+  await expect(page.locator('#session-rest-card')).toBeHidden();if(landscape){await page.locator('#nav-home').click();await expect(page.locator('.mini-workout')).toBeVisible();await page.getByRole('button',{name:'Resume active workout'}).click();await expect(page.locator('#active-workout')).toBeVisible()}
  });
 }
 
@@ -147,3 +147,8 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   await page.reload();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-history button')).toHaveCount(1);
  });
 }
+
+test('active floating timer survives folding and unfolding',async({page})=>{
+ await page.setViewportSize({width:890,height:626});await page.goto(url);await page.locator('#start').click();await page.locator('#active-workout .session-check:visible').first().click();const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();const deadline=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+ for(const [width,height] of [[466,678],[626,890],[890,626]]){await page.setViewportSize({width,height});await expect(timer).toBeVisible();await expect(timer).toHaveAttribute('data-resting','true');await expect(page.locator('#session-rest-card')).toBeHidden();await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil)).toBe(deadline);const bounds=await timer.boundingBox();expect(bounds.y+bounds.height).toBeLessThanOrEqual(height);}
+});
