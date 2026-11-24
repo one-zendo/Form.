@@ -119,9 +119,6 @@
 .home-workout-copy{display:grid;gap:var(--space-1);min-width:0;flex:1}
 .home-workout-copy strong{font-size:24px;line-height:1.2;letter-spacing:-.5px;overflow-wrap:anywhere}
 #home-workout-meta{font-size:14px}
-.home-workout-status{display:flex;align-items:center;gap:var(--space-2);font-size:13px}
-.home-workout-status::before{content:"";width:9px;height:9px;flex:none;border-radius:var(--radius-full);background:var(--home-workout-live);animation:home-live-pulse 2.4s ease-out infinite}
-@keyframes home-live-pulse{0%,100%{box-shadow:0 0 0 0 #34c75900}35%{box-shadow:0 0 0 5px #34c75955}70%{box-shadow:0 0 0 7px #34c75900}}
 .has-session .home-workout-card{background:var(--home-workout-active)}
 .home-workout-cta{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-full);background:var(--home-workout-capsule);font-weight:600;flex:none}
 :root[data-theme=light] .home-workout-card{display:flex}
