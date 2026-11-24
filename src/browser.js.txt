@@ -108,9 +108,12 @@ body.training.mini-visible #active-workout .session-scroll{
 }
 body::after{
   content:"";position:absolute;z-index:1;inset:auto 0 0;
-  height:calc(180px + env(safe-area-inset-bottom));pointer-events:none;
+  height:calc(180px + env(safe-area-inset-bottom));pointer-events:none;transition:height 260ms cubic-bezier(.2,.8,.2,1);
   background:linear-gradient(to bottom,transparent 0%,transparent 15%,color-mix(in srgb,var(--canvas) 12%,transparent) 35%,color-mix(in srgb,var(--canvas) 70%,transparent) 80%,var(--canvas) 100%);
 }
+body.mini-visible:not(.training)::after{height:calc(180px + var(--floating-height) + var(--floating-gap) + env(safe-area-inset-bottom))}
+@media (orientation:landscape) and (min-width:700px){body.mini-visible:not(.training)::after{height:calc(180px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){body::after{transition:none}}
 @supports ((-webkit-mask-image:linear-gradient(transparent,#000)) or (mask-image:linear-gradient(transparent,#000))){
   body::after{
     background:color-mix(in srgb,var(--canvas) 35%,transparent);
