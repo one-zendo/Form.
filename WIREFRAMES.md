@@ -33,3 +33,6 @@ Single shared preference store; preserve selected category, input, appearance an
 
 ## Phase 5.1 — complete
 Home, Workouts, Progress and Profile approved for all three configurations. Phase 5.2 begins with Routine Builder; all secondary screens require cross-layout parity and review.
+
+## Wireframe presentation standard — approved
+Use interactive grayscale wireframes with proportional device canvases for all Duo screens: folded 466:678, unfolded portrait 626:890, unfolded landscape 890:626 (provisional logical dimensions). Preserve the actual aspect ratio in chat; do not merely rearrange content within a portrait container. Provide layout switching and relevant interaction controls. Profile Appearance shows the current theme in the category row; folded and unfolded portrait open a dedicated settings page with back navigation, while landscape uses a category/detail split. Show System, Light and Dark as visual theme choices. Keep the dock anchored and selection consistent. Focused workout appearance remains a later feature. This is a wireframe standard, not a claim of implemented or hardware-tested behavior.
