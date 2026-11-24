@@ -95,3 +95,6 @@ Highlight the full selected routine row with a subtle theme action tint, includi
 
 ## Filled action button foreground
 Filled primary actions use white text and icons on light theme blue #006DD6, and dark text and icons #17171F on original dark theme lime #B0FF00. Lime-filled buttons are the approved exception to white foreground. Bright lime remains the dark theme accent for navigation and selection. Quiet, disabled and icon-only controls retain semantic foregrounds. Shared across all layouts.
+
+## Weekly activity completion
+Completed day markers use the theme action accent (lime in dark mode, blue in light mode) with contrasting check icons, rather than a separate success green.
