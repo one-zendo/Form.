@@ -10,7 +10,7 @@ import i1 from "lucide/icons/house.svg";
 import i2 from "lucide/icons/chart-no-axes-combined.svg";
 import i3 from "lucide/icons/user-round.svg";
 import i4 from "lucide/icons/calendar-days.svg";
-import i5 from "lucide/icons/play.svg";
+import i5 from "lucide/icons/circle-play.svg";
 import i6 from "lucide/icons/plus.svg";
 import i7 from "lucide/icons/chevron-right.svg";
 import i8 from "lucide/icons/check.svg";
