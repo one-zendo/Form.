@@ -56,3 +56,6 @@ Design, wireframe, prototype and test distinct compact/folded, unfolded portrait
 
 ## Mandatory cross-layout change parity
 Maintain one shared application core, workout data model, business logic, reusable components and design tokens across folded/compact, unfolded portrait and unfolded landscape. Every applicable feature, design update, interaction improvement and bug fix must propagate across all three configurations. Layout-specific composition and sizing may differ to suit available space; avoid duplicated implementations and divergent functionality. Review and test all three configurations for every applicable change before marking it complete, including state continuity during folding and rotation. Document any necessary layout-specific exception explicitly.
+
+## Wordmark refinement
+The displayed brand wordmark is exactly **FORM.** (uppercase with a terminal period). Apply consistently across all screens, themes and adaptive layouts. The tagline remains unchanged.
