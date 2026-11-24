@@ -89,3 +89,6 @@ Keep Save visible in the sticky editor header across layouts. Disable when uncha
 
 ## Unsaved routine navigation
 Before leaving a changed routine editor through in-app navigation, present a theme-aware modal with Apply changes, Discard changes (destructive), and Keep editing. Apply validates and saves before continuing; failure keeps the editor open. Discard removes the draft, not the saved routine. Cancel preserves the draft. Unchanged editors navigate immediately. Folding and rotation do not trigger confirmation. Browser termination relies on draft recovery. Device testing required.
+
+## Routine selection and exercise disclosure
+Highlight the full selected routine row with a subtle theme action tint, including its separate play control; retain keyboard focus indication. Routine details open with all exercise disclosures collapsed; entire summary is tappable, with official Lucide chevron down when collapsed and up when expanded. Hide set grids completely until expanded. Apply to all layouts.
