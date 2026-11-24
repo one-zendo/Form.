@@ -44,3 +44,5 @@ Modern Apple-inspired, compact, spreadsheet-inspired, Soft Spectrum default, off
 For every change, record affected pages, features, implementation status, verification results, known issues and relevant commits. Do not mark untested behavior verified.
 
 - Added optional Graphite Lime dark theme inspired by supplied reference; shared semantic tokens and persisted Profile selection.
+
+- Navigation icon rendering fix: local inline SVGs replace CDN import; official asset provenance and live rendering still require verification.
