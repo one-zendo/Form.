@@ -17,3 +17,9 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* Precision Paper shared scale. */
 :root{--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--text-meta:13px;--text-body:16px;--text-section:20px;--touch-target:44px;--nav-selection:color-mix(in srgb,var(--accent) 15%,var(--surface));}
+
+/* Precision Controls: shared geometry and responsive gutters. */
+:root{--control-height:44px;--primary-height:48px;--control-gap:8px;--page-gutter:clamp(14px,4vw,24px);--workspace-width:1040px;--rest-dock-height:64px}
+main{padding-inline:var(--page-gutter)}
+:is(.material-accent,.workout-new-button,.workout-empty-button,.workout-start-button,.workout-edit-button,.workout-save,.workout-cancel,.active-finish,.active-add){min-height:var(--primary-height);border-radius:var(--button-radius)}
+:is(.workout-history-button,.workout-sort,.workout-more,.active-icon,.workout-dialog-close,.home-icon-button){min-width:var(--control-height);min-height:var(--control-height);border-radius:var(--icon-button-radius)}
