@@ -1,6 +1,6 @@
 # FORM — Product definition
 
-Version 1.0 · Approved 2026-11-24
+Version 1.1 · Approved 2026-11-24
 
 Train with focus, follow your progress.
 
@@ -47,3 +47,21 @@ FORM should never feel noisy, intimidating, judgmental or unnecessarily complica
 The best workout app is one that lets you concentrate on your workout, not the app.
 
 Every feature we introduce should support that philosophy. FORM should complement the training experience rather than compete for the user's attention.
+
+## Approved problem identification
+
+| Problem | FORM's solution |
+| --- | --- |
+| Complicated user interfaces: crowded screens, confusing navigation and unnecessary controls. | Clean, intuitive interfaces with contextual controls. |
+| Distracting social feeds: likes, followers and social comparisons distract from personal goals. | A private, personal training experience without a social feed. |
+| Overwhelming statistics: too much data without meaningful context. | Clear, relevant insights with detailed statistics available when needed. |
+| Too many taps: logging sets interrupts training. | Effortless set logging, intelligent defaults and contextual actions. |
+| Intrusive subscription prompts: repeated paywalls and upgrade prompts disrupt the experience. | Transparent pricing and nonintrusive subscription management. |
+| Unreliable data and synchronization: lost workouts, inconsistent records and synchronization failures undermine trust. | Offline-first storage, reliable synchronization and workout recovery. |
+
+### Product commitments
+Simplicity, focus, clarity, efficiency, transparency and reliability.
+
+FORM should respect the user's time, attention, money and data.
+
+Pricing and technical synchronization strategy remain to be defined.
