@@ -8,3 +8,5 @@ html,body{touch-action:pan-x pan-y}button{touch-action:manipulation}input,select
 /* Shared progressive navigation backdrop. */
 :root{--nav-fade-height:130px;--nav-fade-blur:14px;--nav-fade-tint:rgba(240,245,251,.86)}
 :root[data-theme="graphite-lime"]{--nav-fade-tint:rgba(23,23,31,.86)}
+
+:root[data-theme="monochrome"]{color-scheme:dark;--canvas:#000000;--surface:#212121;--ink:#FFFFFF;--muted:#999999;--accent:#FFFFFF;--selected:#383838;--line:#383838;--success:#30D158;--danger:#FF453A;--info:#64A8FF;--control:#303030;--on-accent:#000000;--on-success:#000000;--warning:#FFD166;--glass:rgba(33,33,33,.88);--glass-edge:rgba(255,255,255,.16);--glass-highlight:rgba(255,255,255,.08);--glass-shadow:0 5px 24px rgba(0,0,0,.3);--nav-fade-tint:rgba(0,0,0,.86)}
