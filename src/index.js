@@ -23,8 +23,9 @@ import i12 from "lucide/icons/arrow-up-right.svg";
 const icons={search:searchIcon,"palette":p0,"watch":p1,"bell":p2,"database":p3,"shield-check":p4,"circle-help":p5,"dumbbell":i0,"house":i1,"chart-no-axes-combined":i2,"user-round":i3,"calendar-days":i4,"play":i5,"plus":i6,"chevron-right":i7,"check":i8,"sun":i9,"moon":i10,"clock":i11,"arrow-up-right":i12};
 const icon=n=>'<span class="icon" aria-hidden="true">'+icons[n]+'</span>';
 const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>FORM. — Home preview</title>
-<style>${styles}</style></head><body><main>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>FORM. — Home preview</title>
+<style>${styles}html,body{touch-action:pan-x pan-y;} 
+</style></head><body><main>
 <div id="home-page"><header><div><h1>FORM.</h1><p class="muted tag">Train with focus, follow your progress</p></div><button class="round" aria-label="Workout calendar" data-message="Calendar is planned for a later prototype.">${icon("calendar-days")}</button></header>
 <div class="row date"><p class="muted" id="date"></p></div>
 <div class="dashboard"><section class="primary"><article class="card hero"><div class="row"><div><p class="muted" id="hero-label">Today's workout</p><h2 id="hero-title">Push Day</h2><p class="muted" id="hero-sub">6 exercises · 18 sets</p></div></div>
