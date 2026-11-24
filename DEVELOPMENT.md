@@ -1,14 +1,35 @@
 # FORM — Development checkpoint
 
-New architecture approved: React, TypeScript, Vite, shared CSS tokens and official bundled Lucide React 0.468.0. Future offline IndexedDB, Zustand if needed, workout engine and automated browser tests. Retired Build 009 remains in Git history only.
+## Current version
+v0.1.0 · Build 001. React, TypeScript, Vite, shared CSS tokens and bundled Lucide React 0.468.0. Future offline IndexedDB, Zustand if needed, workout engine and browser tests.
 
-## Current: v0.1.0 · Build 001
-Application shell and shared swipeable navigation committed. Four placeholder pages; Profile includes persisted theme selection. Soft Spectrum default, Graphite Lime and Monochrome. Continuous pointer tracking, snap on release, cancellation, keyboard activation, safe-area-aware fixed pill dock, progressive blur, reduced-motion and transparency fallback. Visible build indicator. No workout data changes. Cloudflare asset configuration targets dist; deployment must build with npm install and npm run build before deploying.
+## Implemented source
+- Application shell and four placeholder pages.
+- Shared swipeable navigation: continuous pointer tracking, snap, cancellation, keyboard activation, fixed safe-area-aware pill, progressive blur and reduced-motion/transparency fallback.
+- Profile theme selection and persistence: Soft Spectrum, Graphite Lime, Monochrome.
+- Visible build indicator; no workout data changes.
 
-Verification: five pure geometry assertions executed and passed; Vitest test file committed but full dependency install, TypeScript compilation, Vite build, browser/device tests and live deployment not executed. No lockfile yet. Next: verify build and deployment, test swipe/tap/keyboard and all Duo orientations; refine navigation before other components.
+## Verification
+| Check | Status |
+|---|---|
+| Repository source and tracker | Read back verified |
+| Pure navigation geometry | Six assertions passed independently |
+| Vitest suite | Written; full runner not verified |
+| Dependency installation / lockfile | Not verified / no lockfile |
+| TypeScript / Vite production build | Not independently verified |
+| Cloudflare | Worker target corrected to form; user retried build; live Build 001 not independently verified |
+| Browser, accessibility and Duo testing | Pending |
 
-Read DESIGN.md before changes. Record build, tests, limitations and next task. Increment visible build for each code update.
+## Next steps
+1. Confirm live preview shows Build 001 at https://form.connect-zendo.workers.dev.
+2. Verify build logs, tap/swipe/cancel/keyboard, theme persistence and all Duo orientations.
+3. Refine navigation before building other components.
+4. Establish shared design components and data foundation; then Workouts, Active Workout, Home, Progress and Profile, followed by final QA.
 
-Deployment readiness review: inspected package, entry point, TS config, navigation, tokens and Wrangler config; six geometry assertions passed independently. Cloudflare settings documented in docs/DEPLOYMENT.md. No Cloudflare account connector available; dashboard update, dependency installation, compilation, CI and live verification pending. Documentation-only changes; Build 001 unchanged.
+## History
+- Retired Build 009: clean-slate reset; Git history retained, no separate backup, original repository untouched, browser storage not cleared.
+- Build 001: modular shell, navigation, themes, geometry tests and Wrangler static assets configuration committed. Initial five assertions passed; later six passed.
+- Deployment review: source inspected, deployment instructions saved; user configured Cloudflare and retried build. Dashboard screenshot identified Worker name form rather than formapp; Wrangler and docs corrected. New preview address established; live app verification remains pending.
+- Documentation audit: reorganized design handbook, preserved historical token archive verbatim, corrected stale README and legacy pointers, consolidated workflow and verification. No app code changes; Build 001 unchanged.
 
-Cloudflare dashboard screenshot confirms Worker name form, repository one-zendo/Form., main branch. Changed Wrangler target from formapp to form and corrected deployment documentation. Deployment configuration only; app Build 001 unchanged. Live deployment pending.
+See [DESIGN.md](DESIGN.md), [AGENTS.md](AGENTS.md), [deployment guide](docs/DEPLOYMENT.md).
