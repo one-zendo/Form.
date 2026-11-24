@@ -6,7 +6,9 @@
     {
       "type": "Text",
       "globs": [
-        "**/*.svg"
+        "**/*.svg",
+        "**/*.css",
+        "**/*.js.txt"
       ],
       "fallthrough": true
     }
