@@ -152,3 +152,16 @@ test('active floating timer survives folding and unfolding',async({page})=>{
  await page.setViewportSize({width:890,height:626});await page.goto(url);await page.locator('#start').click();await page.locator('#active-workout .session-check:visible').first().click();const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();const deadline=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
  for(const [width,height] of [[466,678],[626,890],[890,626]]){await page.setViewportSize({width,height});await expect(timer).toBeVisible();await expect(timer).toHaveAttribute('data-resting','true');await expect(page.locator('#session-rest-card')).toBeHidden();await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil)).toBe(deadline);const bounds=await timer.boundingBox();expect(bounds.y+bounds.height).toBeLessThanOrEqual(height);}
 });
+
+for(const [width,height] of [[466,678],[626,890],[890,626]]){
+ test('workout header stays pinned while exercises scroll '+width,async({page})=>{
+  await page.setViewportSize({width,height});await page.goto(url);
+  await page.evaluate(()=>localStorage.setItem('form-routines',JSON.stringify([{id:'scroll-test',name:'Scroll test',description:'',exercises:Array.from({length:12},(_,i)=>({name:'Exercise '+(i+1),sets:Array.from({length:12},()=>({weight:20,reps:10,rest:90}))}))}])));
+  await page.reload();await page.locator('#start').click();
+  const header=page.locator('.session-pinned'),content=page.locator('.session-scroll'),timer=page.locator('.mini-workout');
+  await expect(header).toBeVisible();await expect(timer).toBeVisible();const before=await header.boundingBox(),timerBefore=await timer.boundingBox();
+  await content.evaluate(e=>e.scrollTop=200);await expect.poll(()=>content.evaluate(e=>e.scrollTop)).toBeGreaterThan(0);
+  const after=await header.boundingBox(),timerAfter=await timer.boundingBox(),clip=await content.boundingBox();
+  expect(Math.abs(after.y-before.y)).toBeLessThan(1);expect(Math.abs(timerAfter.y-timerBefore.y)).toBeLessThan(1);expect(clip.y).toBeGreaterThanOrEqual(after.y+after.height-1);
+ });
+}
