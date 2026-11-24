@@ -86,3 +86,6 @@ Selecting Workouts returns to its main routine library in every layout, clearing
 
 ## Routine editor save state
 Keep Save visible in the sticky editor header across layouts. Disable when unchanged, highlight with theme action color when draft differs from saved routine (or a new draft has content). Validate on save; preserve draft on navigation or failure. Successful save returns to routine details.
+
+## Unsaved routine navigation
+Before leaving a changed routine editor through in-app navigation, present a theme-aware modal with Apply changes, Discard changes (destructive), and Keep editing. Apply validates and saves before continuing; failure keeps the editor open. Discard removes the draft, not the saved routine. Cancel preserves the draft. Unchanged editors navigate immediately. Folding and rotation do not trigger confirmation. Browser termination relies on draft recovery. Device testing required.
