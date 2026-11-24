@@ -51,3 +51,25 @@ test('routine edits, discard and persistence',async({page})=>{
  await page.locator('#routine-items .routine-entry').click();
  await expect(page.locator('#detail-title')).toHaveText('Regression routine');
 });
+
+const storedRoutine={id:'storage-test',name:'Recovered routine',description:'',exercises:[{name:'Squat',sets:[{weight:20,reps:10,rest:90}]}]};
+for(const mode of ['legacy','backup','invalid']){
+ test('storage '+mode,async({page})=>{
+  await page.goto(url);
+  await page.evaluate(({mode,routine})=>{
+   localStorage.setItem('form-preview-page','workouts');
+   localStorage.setItem('form-routines',mode==='legacy'?JSON.stringify([routine]):'{broken');
+   if(mode==='backup')localStorage.setItem('form-routines-backup',JSON.stringify({version:1,data:[routine]}));
+  },{mode,routine:storedRoutine});
+  await page.reload();
+  if(mode==='invalid'){
+   await page.locator('#new-routine').click();
+   await expect(page.locator('#routine-status')).toContainText('not being saved');
+   expect(await page.evaluate(()=>localStorage.getItem('form-routines'))).toBe('{broken');
+  }else{
+   await page.locator('#routine-search').fill('Recovered routine');
+   await expect(page.locator('#routine-items .routine-entry')).toHaveCount(1);
+   if(mode==='backup')expect(await page.evaluate(()=>localStorage.getItem('form-routines-quarantine'))).toBe('{broken');
+  }
+ });
+}
