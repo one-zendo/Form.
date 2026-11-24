@@ -132,3 +132,7 @@ Content cards use --radius-card:20px; controls and primary buttons use --radius-
 ## UI capitalization
 
 Use Title Case for all app-authored button labels, including navigation, icon-button accessible names, and dynamically updated actions. Use sentence case for headings, descriptions, and messages. Preserve user-entered routine and exercise names, data values, and input labels. Write labels explicitly in source; do not use CSS text-transform or automatic title casing.
+
+## Semantic color palette
+
+Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, accessible deep olive #426500 in light mode. Electric blue #0088FF is reserved for active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #237A39 light). Dark canvas #17171F, surface #24242E, muted #92929C; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
