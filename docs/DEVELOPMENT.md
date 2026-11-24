@@ -54,3 +54,5 @@ For every change, record affected pages, features, implementation status, verifi
 - v20 Home: responsive paper layout, greeting, workout navigation, expandable calendar, history-derived streak/month totals and journal, official local Lucide icons. Reads form.data.v2; no seeded history. Workout and Progress destinations remain scaffolded; workout engine and data migration pending. Device verification pending.
 
 - v21: Home date aligned upper right beside FORM logo, compact localized date format; runtime verification pending.
+
+- v22: unfolded/landscape Home uses shared dashboard grid rows, matched card heights, compact short-viewport spacing and centered width-capped persistent navigation. Folded single-column layout retained. Device verification pending.
