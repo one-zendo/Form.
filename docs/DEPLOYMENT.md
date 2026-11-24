@@ -1,16 +1,23 @@
-# Cloudflare Workers deployment — FORM
+# FORM — Cloudflare Workers deployment
 
-Worker: form
-Repository: one-zendo/Form.
-Production branch: main
-Root directory: /
-Build command: npm run test && npm run build
-Deploy command: npx wrangler deploy
-Assets: ./dist (configured in wrangler.jsonc)
-Node version: 22 (NODE_VERSION build variable if needed)
+## Settings
+| Setting | Value |
+|---|---|
+| Worker | form |
+| Repository | one-zendo/Form. |
+| Production branch | main |
+| Root directory | / |
+| Build command | npm run test && npm run build |
+| Deploy command | npx wrangler deploy |
+| Assets | ./dist (wrangler.jsonc) |
+| Recommended Node | 22 |
 
-Workers Builds installs dependencies before running the build command. Until a package lock exists, use npm install for manual builds. Never deploy the raw repository or src directory. Vite emits fingerprinted assets. A backend Worker is not required for this static application shell.
+Preview: https://form.connect-zendo.workers.dev. The old formapp address is not the new deployment target.
 
-In Cloudflare dashboard open Workers & Pages > form > Settings > Build, confirm repository and branch, replace old build/deploy commands with the values above, save, and retry a build. A successful build must pass tests and TypeScript compilation. Verify deployed page shows DEV v0.1.0 (001), then test taps, swipe, cancellation, keyboard, theme persistence and Duo orientations.
+## Build and deploy
+Workers Builds installs dependencies before the build command. Until a lockfile exists, use npm install for manual builds. Never deploy raw source; Vite emits fingerprinted assets. A backend Worker is not required for the static shell.
+In Workers & Pages > form > Settings > Build, confirm repository, branch and commands, save and retry. A successful build must pass tests and TypeScript compilation.
 
-Dashboard changes and live deployment require authorized Cloudflare access; not performed in this session.
+## Verify
+Check build logs and live version DEV v0.1.0 (001) or current checkpoint version. Test taps, swipe, cancellation, keyboard, theme persistence and Duo orientations. Record results in [DEVELOPMENT.md](../DEVELOPMENT.md).
+Dashboard settings were reportedly saved by the user; Worker target corrected in repository. Live deployment and build logs not independently verified.
