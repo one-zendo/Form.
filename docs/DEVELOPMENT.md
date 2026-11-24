@@ -48,3 +48,5 @@ For every change, record affected pages, features, implementation status, verifi
 - Navigation icon rendering fix: local inline SVGs replace CDN import; official asset provenance and live rendering still require verification.
 
 - User confirmed official local Lucide animal test renders after asset cache bust v17. Material foundation committed: paper, glass and accent tokens/classes, translucent persistent navigation, both palettes, opaque fallback; asset version v18. Runtime and eight-configuration checks pending. Home content remains scaffolded.
+
+- Restored official house, dumbbell, chart-no-axes-column-increasing and user-round navigation icons from pinned Lucide integration after successful animal test. Asset version v19; restored icons runtime check pending.
