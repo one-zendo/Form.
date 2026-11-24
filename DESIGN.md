@@ -135,8 +135,12 @@ Use Title Case for all app-authored button labels, including navigation, icon-bu
 
 ## Semantic color palette
 
-Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, accessible deep olive #426500 in light mode. Electric blue #0088FF is reserved for active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #237A39 light). Dark canvas #17171F, surface #24242E, muted #92929C; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
+Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, Apple system blue #0088FF as light brand reference, with web contrast-adjusted #0066CC for actions and text. Electric blue #0088FF remains the active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #007A30 light). Dark canvas #17171F, surface #24242E, muted #92929C; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
 
 ## Active workout focus
 
 One exercise is expanded in portrait; landscape retains list/detail layout with the same selected exercise. Selecting a card never collapses it. Completing its last set advances to the next unfinished exercise, wrapping if necessary. Completed exercises remain selectable for corrections. Inline set counts and completion checks replace collapse chevrons. Selection is UI-only; workout persistence and rest timing remain independent.
+
+## Apple light appearance
+
+Reference: https://developer.apple.com/design/human-interface-guidelines/color (system colors). Use grouped canvas #F2F2F7, white surfaces, black primary labels, secondary #636366, Apple blue #0088FF for brand reference, and Apple's increased-contrast purple #B02FC2. Web-specific darker variants #0066CC (action), #007A30 (success), #D51028 (danger) achieve 4.5:1 or better against white and grouped canvas. These are contrast adaptations, not exact native system color values. Preserve the approved dark theme and shared timer (existing white-on-blue contrast exception). Native SwiftUI should use dynamic semantic system APIs rather than fixed hex colors. No component-specific palette overrides.
