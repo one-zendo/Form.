@@ -170,3 +170,6 @@ Use neutral input surfaces, semantic success foreground for completed set number
 
 ## Persistent workout capsule
 The 56px capsule has three tab-independent states: idle shows Workout in progress and the session name with a semantic success dot; active rest shows the exercise that initiated the rest and countdown; completed rest shows Continue Workout and zero. No navigation chevron. The center resumes the session. Optional restExercise persists alongside existing deadline fields; legacy records without an origin display Resting rather than guessing. Existing countdown, reset and fill architecture retained.
+
+## Active set completion refinement
+Supersedes earlier green completed-set styling. Set numbers and inputs use muted text until logged, then primary ink; focused inputs use primary ink. A 32px outlined circle within a 44px accessible button becomes a filled semantic action circle with a check when logged. Compact exercise cards retain numeric progress, including completed counts; expanded cards omit counts and redundant checkmarks. Existing timer and layout remain unchanged.
