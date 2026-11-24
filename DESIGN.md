@@ -77,3 +77,6 @@ Supersedes landscape overview cards: unfolded landscape always shows the Profile
 
 ## Independent workspace scrolling
 In unfolded landscape master-detail workspaces, each panel owns its vertical scroll position. Scrolling one panel must not move its neighbor or the navigation dock. Reserve dock clearance below both panels. Compact and portrait detail pages retain single-page scrolling. Verify on device before declaring complete.
+
+## Routine quick start
+Use compact grouped routine rows with separate circular official Lucide play controls (20px, 1.75 stroke, 44px target). Row opens details; play starts the selected routine once the active engine exists. Until then show an explicit unavailable message. Preserve full Start Workout action in details and shared behavior across all layouts.
