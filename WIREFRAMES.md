@@ -16,3 +16,10 @@ Shared: title, create action, routine search/filter, start empty workout, routin
 - Unfolded landscape: master-detail workspace; routines left, selected routine details, exercise list, start/edit actions right.
 Preserve selected routine, search, filters, unsaved edits and active session across layout changes. All functionality shared.
 States: empty library with create guidance, no results with clear search/filter action, active workout resume and duplicate prevention, offline local routine access/editing, recoverable archived routines, save errors preserving edits. Routine builder and active workout require separate wireframes. Illustrative data only; actual viewport and hardware validation pending.
+
+## Progress — approved 2026-11-24
+Shared: week/month/year date filters, workouts/training duration/PR count/volume summary cards, strength/volume/consistency trend selector, interactive charts, personal records, consistency calendar, exercise performance, volume and history shortcuts, floating dock.
+- Folded: compact two-column metrics and vertically scrolling chart/detail cards.
+- Unfolded portrait: expanded metrics, full-width charts and additional insight space.
+- Unfolded landscape: metrics and charts left, personal records, consistency and detail links right.
+Progressive disclosure: overview → metric detail → exercise performance → original workout record. Chart inspection via touch/drag, accessible labels, consistent units and dates. Preserve period, metric, exercise and inspected point across layouts. Strength includes weight/reps/estimated 1RM; volume, frequency, duration and PRs derive from real records. No invented measurements or trends. States: empty history, insufficient data, offline local calculation, recalculation after edits/deletions, unavailable metric explanation. Exact formulas, MVP scope, viewport and hardware validation pending. Illustrative wireframe values only.
