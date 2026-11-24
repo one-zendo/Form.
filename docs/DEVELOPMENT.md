@@ -29,7 +29,7 @@ Source of truth for development status. Update this file with every feature or p
 | Workout engine | Planned |
 | Rest timer | Planned |
 | Local persistence | Planned |
-| Theme system | Planned |
+| Theme system | Initial Profile selector committed; Soft Spectrum and Graphite Lime; runtime verification pending |
 
 ## Design principles
 Modern Apple-inspired, compact, spreadsheet-inspired, Soft Spectrum default, official Lucide icons, stable navigation, responsive layouts, restrained motion, shared tokens and modular code.
@@ -42,3 +42,5 @@ Modern Apple-inspired, compact, spreadsheet-inspired, Soft Spectrum default, off
 
 ## Workflow
 For every change, record affected pages, features, implementation status, verification results, known issues and relevant commits. Do not mark untested behavior verified.
+
+- Added optional Graphite Lime dark theme inspired by supplied reference; shared semantic tokens and persisted Profile selection.
