@@ -56,3 +56,5 @@ For every change, record affected pages, features, implementation status, verifi
 - v21: Home date aligned upper right beside FORM logo, compact localized date format; runtime verification pending.
 
 - v22: unfolded/landscape Home uses shared dashboard grid rows, matched card heights, compact short-viewport spacing and centered width-capped persistent navigation. Folded single-column layout retained. Device verification pending.
+
+- v23: unified Home card anatomy, section headings inside matte surfaces, common padding/radius and aligned wide-layout card edges. Runtime verification pending.
