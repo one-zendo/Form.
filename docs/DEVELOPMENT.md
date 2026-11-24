@@ -1,3 +1,3 @@
-# Development registry
+# Development reference
 
-Superseded by ../DEVELOPMENT.md following clean-slate reset. All implementation statuses reset to pending.
+The authoritative current checkpoint and history are in [DEVELOPMENT.md](../DEVELOPMENT.md). This file is a compatibility pointer, not a separate tracker.
