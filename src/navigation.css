@@ -18,3 +18,18 @@ body::after{content:"";position:fixed;inset:auto 0 0;height:calc(var(--nav-fade-
 @media(max-height:440px){body::after{height:calc(100px + env(safe-area-inset-bottom,0px))}}
 
 .global-rest,form-navigation{left:max(var(--nav-inset),env(safe-area-inset-left,0px));right:max(var(--nav-inset),env(safe-area-inset-right,0px))}@media(min-width:650px){.global-rest,form-navigation{width:min(480px,calc(100% - max(20px,env(safe-area-inset-left,0px) + env(safe-area-inset-right,0px))));left:0;right:0;margin-inline:auto}}
+
+/* Shared sliding selection; page changes only on release. */
+.form-nav{position:relative;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.form-tab{position:relative;z-index:1;flex:1 1 0}
+.form-tab[aria-current=page]{background:transparent;flex:1 1 0}
+.form-tab[aria-current=page] span{display:inline}
+.form-nav .nav-indicator{position:absolute;top:0;left:0;pointer-events:none;background:var(--accent);border-radius:999px;transition:transform .22s cubic-bezier(.2,.8,.2,1),width .22s,height .22s}
+.form-nav.scrubbing .nav-indicator{transition:transform .08s linear,width .08s,height .08s}
+.form-nav.scrubbing .form-tab{color:var(--muted)}
+.form-nav.scrubbing .form-tab[data-preview]{color:var(--on-accent)}
+.form-nav.scrubbing .form-tab span{display:none}
+.form-nav.scrubbing .form-tab[data-preview] span{display:inline}
+@media(max-width:649px){.form-tab[aria-current=page],.form-nav.scrubbing .form-tab[data-preview]{flex:2.2 0 auto}.form-nav.scrubbing .form-tab:not([data-preview]){flex:1 1 0}}
+@media(min-width:650px){.form-nav.scrubbing .form-tab span{display:inline}}
+@media(prefers-reduced-motion:reduce){.form-nav .nav-indicator,.form-nav.scrubbing .nav-indicator{transition:none}}
