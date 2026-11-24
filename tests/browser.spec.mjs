@@ -102,3 +102,18 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   await expect(page.locator('#detail-title')).toHaveText('Updated inline test');
  });
 }
+
+for(const [width,height] of [[466,678],[626,890],[890,626]]){
+ test('rest controls and navigation '+width,async({page})=>{
+  await page.setViewportSize({width,height});await page.goto(url);
+  await page.locator('#start').click();await expect(page.locator('#active-workout')).toBeVisible();
+  await page.locator('#active-workout .session-check:visible').first().click();
+  const landscape=width>height;const timer=page.locator(landscape?'.mini-workout':'#session-rest-card');
+  await expect(timer).toBeVisible();await expect(page.locator('.dock'))[landscape?'toBeVisible':'toBeHidden']();
+  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+  const before=await deadline();await timer.getByRole('button',{name:'Add 15 seconds'}).click();expect(await deadline()).toBe(before+15000);
+  await timer.getByRole('button',{name:'Subtract 15 seconds'}).click();expect(await deadline()).toBe(before);
+  await timer.getByRole('button',{name:'Skip rest'}).click();expect(await deadline()).toBe(0);
+  if(landscape){await expect(page.locator('#session-rest-card')).toBeHidden();await page.locator('#nav-home').click();await expect(page.locator('.mini-workout')).toBeVisible();await page.getByRole('button',{name:'Resume active workout'}).click();await expect(page.locator('#active-workout')).toBeVisible()}
+ });
+}
