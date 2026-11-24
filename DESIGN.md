@@ -144,3 +144,5 @@ One exercise is expanded in portrait; landscape retains list/detail layout with 
 ## Apple light appearance
 
 Reference: https://developer.apple.com/design/human-interface-guidelines/color (system colors). Use grouped canvas #F2F2F7, white surfaces, black primary labels, secondary #636366, Apple blue #0088FF for brand reference, and Apple's increased-contrast purple #B02FC2. Web-specific darker variants #0066CC (action), #007A30 (success), #D51028 (danger) achieve 4.5:1 or better against white and grouped canvas. These are contrast adaptations, not exact native system color values. Preserve the approved dark theme and shared timer (existing white-on-blue contrast exception). Native SwiftUI should use dynamic semantic system APIs rather than fixed hex colors. No component-specific palette overrides.
+
+Routine list play controls use a 22px outlined icon in a transparent 44px target. Selected routines use the semantic action accent; others use muted foreground. Retain the selection line and existing row highlight.
