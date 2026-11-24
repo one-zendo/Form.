@@ -135,3 +135,15 @@ for(const theme of ['light','dark'])for(const [width,height] of [[466,678],[626,
   await page.locator('#nav-workouts').click();await expect(page.locator('#routine-items .routine-row').first()).toHaveCSS('border-top-left-radius','20px');
  });
 }
+
+for(const [width,height] of [[466,678],[626,890],[890,626]]){
+ test('real progress and saved summary '+width,async({page})=>{
+  await page.setViewportSize({width,height});await page.goto(url);
+  await page.locator('#nav-progress').click();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-trend')).toContainText('Complete a workout');
+  await page.locator('#nav-home').click();await page.locator('#start').click();await page.locator('#active-workout .session-check:visible').first().click();
+  page.once('dialog',dialog=>dialog.accept());await page.locator('.session-toolbar .session-finish').click();
+  await expect(page.locator('#workout-summary')).toBeVisible();await expect(page.locator('#summary-stats')).toContainText('Completed sets');await page.locator('#summary-done').click();
+  await page.locator('#nav-progress').click();await expect(page.locator('#progress-history button')).toHaveCount(1);await page.locator('#progress-history button').first().click();await expect(page.locator('#workout-summary')).toBeVisible();await page.locator('#summary-done').click();
+  await page.reload();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-history button')).toHaveCount(1);
+ });
+}
