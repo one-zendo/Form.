@@ -6,7 +6,7 @@ Train with focus, follow your progress
 - Apple Health-inspired, minimalist, native-feeling interface; spacious layouts, clear hierarchy, Inter typography, subtle separators and rounded controls.
 - Use Lucide icons, restrained semantic colors, translucent surfaces and subtle shadows.
 - Light palette: canvas #F2F2F7, paper #FFFFFF, ink #111114, muted #636366, action #006DD6, brand #0088FF, success #34C759, insight #9339C7, danger #FF383C, warning #FF8D28.
-- Graphite Lime palette: canvas #141414, paper #222222, elevated #2E2E2E, ink #F5F5F5, muted #A3A3A3, accent #B0FF00, danger #FF6961, timer #0088FF, success #30D158, warning #FFB340.
+- Graphite Lime palette: canvas #17171F, paper #24242E, elevated #30303C, ink #F5F5F5, muted #A3A3A3, accent #B0FF00, danger #FF6961, timer #0088FF, success #30D158, warning #FFB340.
 
 ## Interaction
 - Smooth restrained spring-like motion for inline editing, expansion and exercise swaps; preserve scroll position and avoid unnecessary modals.
@@ -135,7 +135,7 @@ Use Title Case for all app-authored button labels, including navigation, icon-bu
 
 ## Semantic color palette
 
-Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, Apple system blue #0088FF as light brand reference, with web contrast-adjusted #0066CC for actions and text. Electric blue #0088FF remains the active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #007A30 light). Dark canvas #17171F, surface #24242E, muted #92929C; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
+Primary actions and selected navigation share --action and --on-action: lime #B0FF00 on dark surfaces, Apple system blue #0088FF as light brand reference, with web contrast-adjusted #0066CC for actions and text. Electric blue #0088FF remains the active rest timer fill, with independent white timer text and dark track. Completion uses green (#34C759 dark, #007A30 light). Dark canvas #17171F, surface #24242E, muted #A3A3A3; destructive actions use the danger token. Do not introduce separate workout accent overrides. The bright timer white small text is a known contrast exception (approximately 3.5:1).
 
 ## Active workout focus
 
@@ -218,3 +218,6 @@ Keep routine, progress, profile and active workout surfaces neutral. Use the sha
 
 ### Inline routine editor — shared geometry
 The editable routine name is a borderless transparent headline, not a separate field card. It inherits .form-headline, the shared partner grid and optical offset; its caret and keyboard focus underline use the theme accent. The viewing and editing title retain identical bounds, typography and alignment. Set rows and fields inherit the global touch-target, field-height, spacing, typography and radius tokens. Preserve inline editing, expanded cards, scroll behavior and existing responsive layout.
+
+### Graphite Lime — cooler surfaces restored
+Restore the approved original cool graphite canvas #17171F and paper #24242E globally. Use #30303C as the coordinated elevated surface for editable fields and raised controls. Derive translucent navigation and rest controls from the same palette. Preserve current soft white #F5F5F5, muted #A3A3A3, restrained lime accents, semantic colors, layout and Default theme.
