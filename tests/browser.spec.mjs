@@ -144,7 +144,7 @@ for(const theme of ['light','dark'])for(const [width,height] of [[466,678],[626,
 for(const [width,height] of [[466,678],[626,890],[890,626]]){
  test('real progress and saved summary '+width,async({page})=>{
   await page.setViewportSize({width,height});await gotoWithRoutines(page);
-  await page.locator('#nav-progress').click();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-trend')).toContainText('Complete a workout');
+  await page.locator('#nav-progress').click();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-trend')).toHaveText('Complete your first workout to begin tracking strength.');
   await page.locator('#nav-home').click();await startFromHome(page);await page.locator('#active-workout .session-check:visible').first().click();
   await page.locator('.session-toolbar .session-finish').click();await expect(page.locator('#finish-workout')).toBeVisible();await page.locator('#finish-confirm').click();
   await expect(page.locator('#workout-summary')).toBeVisible();await expect(page.locator('#summary-stats')).toContainText('Completed sets');await page.locator('#summary-done').click();
