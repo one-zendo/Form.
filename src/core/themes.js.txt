@@ -14,10 +14,12 @@ const formThemes=Object.freeze([
       "brand": "#0088FF",
       "action": "#0066CC",
       "onAction": "#FFFFFF",
-      "success": "#007A30",
+      "success": "#0066CC",
       "warning": "#995000",
       "danger": "#D51028",
-      "completion": "#34C759"
+      "completion": "#0066CC",
+      "recovery": "#0066CC",
+      "streakAccent": "#0066CC"
     }
   },
   {
@@ -34,10 +36,10 @@ const formThemes=Object.freeze([
       "brand": "#1C1C1C",
       "action": "#1C1C1C",
       "onAction": "#FFFFFF",
-      "success": "#45634D",
-      "warning": "#806033",
-      "danger": "#A43D3D",
-      "completion": "#45634D",
+      "success": "#1C1C1C",
+      "warning": "#1C1C1C",
+      "danger": "#1C1C1C",
+      "completion": "#1C1C1C",
       "recovery": "#1C1C1C",
       "streakAccent": "#1C1C1C"
     }
@@ -56,10 +58,12 @@ const formThemes=Object.freeze([
       "brand": "#F45B9C",
       "action": "#AD3665",
       "onAction": "#FFFFFF",
-      "success": "#34784F",
+      "success": "#AD3665",
       "warning": "#8C5900",
       "danger": "#B42335",
-      "completion": "#34784F"
+      "completion": "#AD3665",
+      "recovery": "#AD3665",
+      "streakAccent": "#AD3665"
     }
   },
   {
@@ -76,10 +80,12 @@ const formThemes=Object.freeze([
       "brand": "#6B9665",
       "action": "#426347",
       "onAction": "#FFFFFF",
-      "success": "#326B45",
+      "success": "#426347",
       "warning": "#80591F",
       "danger": "#A33E3E",
-      "completion": "#326B45"
+      "completion": "#426347",
+      "recovery": "#426347",
+      "streakAccent": "#426347"
     }
   },
   {
@@ -96,10 +102,12 @@ const formThemes=Object.freeze([
       "brand": "#FF884D",
       "action": "#A94022",
       "onAction": "#FFFFFF",
-      "success": "#39764B",
+      "success": "#A94022",
       "warning": "#805900",
       "danger": "#B52D38",
-      "completion": "#39764B"
+      "completion": "#A94022",
+      "recovery": "#A94022",
+      "streakAccent": "#A94022"
     }
   },
   {
@@ -116,10 +124,12 @@ const formThemes=Object.freeze([
       "brand": "#B0FF00",
       "action": "#B0FF00",
       "onAction": "#17171F",
-      "success": "#30D158",
+      "success": "#B0FF00",
       "warning": "#FFB340",
       "danger": "#FF6961",
-      "completion": "#B0FF00"
+      "completion": "#B0FF00",
+      "recovery": "#B0FF00",
+      "streakAccent": "#B0FF00"
     }
   },
   {
@@ -136,10 +146,12 @@ const formThemes=Object.freeze([
       "brand": "#F5F5F5",
       "action": "#F5F5F5",
       "onAction": "#141414",
-      "success": "#8DBD9D",
-      "warning": "#D8BC87",
-      "danger": "#E77B7B",
-      "completion": "#8DBD9D"
+      "success": "#F5F5F5",
+      "warning": "#F5F5F5",
+      "danger": "#F5F5F5",
+      "completion": "#F5F5F5",
+      "recovery": "#F5F5F5",
+      "streakAccent": "#F5F5F5"
     }
   },
   {
@@ -156,10 +168,12 @@ const formThemes=Object.freeze([
       "brand": "#B69CFF",
       "action": "#B69CFF",
       "onAction": "#181522",
-      "success": "#83D6AC",
+      "success": "#B69CFF",
       "warning": "#EBC17F",
       "danger": "#F77A9A",
-      "completion": "#83D6AC"
+      "completion": "#B69CFF",
+      "recovery": "#B69CFF",
+      "streakAccent": "#B69CFF"
     }
   },
   {
@@ -176,10 +190,12 @@ const formThemes=Object.freeze([
       "brand": "#568FFF",
       "action": "#568FFF",
       "onAction": "#101522",
-      "success": "#69D9A5",
+      "success": "#568FFF",
       "warning": "#FFCB76",
       "danger": "#FF788B",
-      "completion": "#69D9A5"
+      "completion": "#568FFF",
+      "recovery": "#568FFF",
+      "streakAccent": "#568FFF"
     }
   },
   {
@@ -196,10 +212,12 @@ const formThemes=Object.freeze([
       "brand": "#FF4D5E",
       "action": "#FF4D5E",
       "onAction": "#121212",
-      "success": "#70D59B",
+      "success": "#FF4D5E",
       "warning": "#FFBD69",
       "danger": "#FF9BA4",
-      "completion": "#70D59B"
+      "completion": "#FF4D5E",
+      "recovery": "#FF4D5E",
+      "streakAccent": "#FF4D5E"
     }
   }
 ].map(t=>Object.freeze({...t,palette:Object.freeze(t.palette)})));
