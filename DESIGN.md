@@ -245,3 +245,6 @@ Use device orientation only while visible recovery is running, with bounded ±16
 
 ### Active Workout card interaction architecture
 Exercise selection updates mounted set-body visibility and accessibility attributes directly rather than rebuilding the workout page. Native header clicks toggle the selected card; swipe and hold handling belongs to the card surface, with independent menu and input controls. No synthetic touch clicks. Preserve single expanded card, landscape selection, keyboard reorder and session persistence.
+
+### Vertical Fluid Recovery
+Supersedes horizontal liquid depletion. The blue fill is anchored to the capsule bottom and the waterline descends vertically according to the timestamp-based remaining fraction. A shared 32-segment surface polygon clips both liquid fill and foreground color mask. Screen-relative orientation drives a damped ±16px surface tilt, with subtle standing waves and velocity-responsive ripples. Deformation tapers near full and empty to avoid clipping and preserve perceived volume. Reduced Motion uses a flat vertical inset; unsupported or denied sensors retain gentle wave animation. Preserve the 72px capsule, labels, typography, colors, controls and permission/privacy lifecycle.
