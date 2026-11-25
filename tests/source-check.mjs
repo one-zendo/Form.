@@ -323,3 +323,9 @@ assert.ok(css.includes('#workouts-page:has(#routine-detail:not([hidden])),#worko
 assert.ok(css.includes('#workouts-page:has(#routine-detail:not([hidden])) .workout-layout{align-items:stretch;grid-template-rows:minmax(0,1fr)}'));
 assert.ok(css.includes('overflow:hidden;isolation:isolate;display:grid;grid-template-rows:minmax(0,1fr)'));
 console.log('Routine scrollport definite height across orientations passed');
+
+assert.ok(!browser.includes('Exercise actions ···'));
+assert.ok(css.includes('#routine-detail #detail-start{height:48px;min-height:48px;border-radius:var(--radius-control)'));
+assert.ok(css.includes('#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:24px repeat(3,minmax(0,1fr)) 44px'));
+assert.ok(browser.includes('routine-read-value'));
+console.log('Shared view/edit routine dimensions and simplified exercise card passed');
