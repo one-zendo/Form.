@@ -19,7 +19,7 @@ const miniClock=el("strong","00:00","mini-clock"),miniProgress=el("progress");mi
 function restRemaining(now=Date.now()){return Math.max(0,Math.ceil(((session?.restUntil||0)-now)/1000))}
 function adjustRest(delta){if(!session)return;const next=structuredClone(session);const now=Date.now();const left=Math.max(0,(next.restUntil||0)-now);if(!left&&delta<=0&&delta!==null)return;const remaining=delta===null?(next.restOriginal??next.restTotal??0):delta===0?0:Math.max(0,left+delta*1000);next.restUntil=remaining?now+remaining:0;next.restTotal=delta===null?remaining:remaining?Math.max(remaining,(left?next.restTotal||left:0)+(delta>0?delta*1000:0)):next.restTotal||left;if(storeSession(next))tickSession()}
 function restControl(label,delta,aria){const b=action(label,()=>adjustRest(delta));b.setAttribute("aria-label",aria);b.className="rest-adjust";return b}
-const miniMinus=restControl("−",-15,"Subtract 15 Seconds"),miniPlus=restControl("+",15,"Add 15 Seconds"),miniSkip=action("",()=>adjustRest(restRemaining()?0:null));miniSkip.classList.add("rest-adjust","rest-skip");miniMinus.classList.add("mini-minus");miniName.className="mini-name";miniCopy.append(miniClock);const miniRight=el("div","","mini-right");miniRight.append(miniPlus,miniSkip);mini.append(miniMinus,miniCopy,miniRight,miniProgress);document.querySelector(".dock").before(mini);
+const miniMinus=restControl("−",-15,"Subtract 15 Seconds"),miniPlus=restControl("+",15,"Add 15 Seconds"),miniSkip=action("",()=>adjustRest(restRemaining()?0:null));miniSkip.classList.add("rest-adjust","rest-skip");miniMinus.classList.add("mini-minus");for(const [button,path] of [[miniMinus,"M5 12h14"],[miniPlus,"M12 5v14M5 12h14"]]){button.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+path+'"/></svg>'}miniName.className="mini-name";miniCopy.append(miniClock);const miniRight=el("div","","mini-right");miniRight.append(miniPlus,miniSkip);mini.append(miniMinus,miniCopy,miniRight,miniProgress);document.querySelector(".dock").before(mini);
 const miniMask=el("div","","mini-color-mask");miniMask.setAttribute("aria-hidden","true");miniMask.inert=true;const maskMinus=miniMinus.cloneNode(true),maskCopy=miniCopy.cloneNode(true),maskRight=miniRight.cloneNode(true);miniMask.append(maskMinus,maskCopy,maskRight);mini.append(miniMask);const maskName=maskCopy.querySelector(".mini-name"),maskClock=maskCopy.querySelector(".mini-clock"),maskPlus=maskRight.firstElementChild,maskSkip=maskRight.lastElementChild;
 
 let miniSwipe=null,miniSwipeHandled=false;
@@ -64,6 +64,18 @@ body.training #session-rest-card{display:none!important}
 @media(prefers-reduced-motion:reduce){.dock,.mini-workout,.mini-workout::before{transition:none;animation:none}}
 @media(prefers-reduced-transparency:reduce){.mini-workout,.dock{backdrop-filter:none;-webkit-backdrop-filter:none}.mini-workout:not([data-resting=true]):not([data-ready=true]),.dock{background:var(--paper)}}
 
+
+/* Balanced timer controls and identical countdown-mask geometry. */
+.mini-workout{--rest-track:#D1D1D6;--timer-control-size:44px;grid-template-columns:calc(2 * var(--timer-control-size)) minmax(0,1fr) calc(2 * var(--timer-control-size));}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .mini-workout{--rest-track:#3A3A3C}}
+:root[data-theme=dark] .mini-workout{--rest-track:#3A3A3C}
+.mini-workout .rest-adjust{display:grid;place-items:center;width:var(--timer-control-size);height:44px;min-width:var(--timer-control-size);min-height:44px;flex:0 0 var(--timer-control-size);line-height:1;margin:0;padding:0}
+.mini-workout .rest-adjust svg{display:block;width:20px;height:20px;flex:none}
+.mini-workout .rest-adjust:not(.rest-skip)::before{inset:4px;border-radius:var(--radius-full)}
+.mini-workout .mini-right{gap:0}
+.mini-workout .mini-copy{min-width:0;justify-self:stretch;margin:0}
+.mini-workout .mini-color-mask{grid-template-columns:inherit;padding:inherit}
+@media(max-width:360px){.mini-workout{grid-template-columns:88px minmax(0,1fr) 88px;padding-inline:3px}}
 `;document.head.append(miniStyle);
 function formatElapsed(sec){const h=Math.floor(sec/3600),m=Math.floor(sec/60)%60;return (h?h+":":"")+String(m).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
 function homeRoutine(){return routines[0]||(showSamples?samples[0]:null)}
