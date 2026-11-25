@@ -282,3 +282,8 @@ assert.ok(browser.includes('if(done||rest)dot.append(streakIcon("check"))'));
 assert.ok(css.includes('.dot.rest{background:var(--system-blue);color:#fff}'));
 assert.ok(css.includes('.streak-flame-button svg{width:24px;height:24px;stroke:currentColor'));
 console.log('Compact streak flame and recovery checkmark styling passed');
+
+assert.ok(browser.includes('dot.append(streakIcon(selected?"check":"dumbbell"))'));
+assert.ok(css.includes('.rest-day-option[aria-pressed=true] .dot{background:var(--system-blue);color:#fff}'));
+assert.ok(source.includes('class="rest-total-icon recovery-total-icon"'));
+console.log('Rest-day picker matches streak styling and recovery summary');
