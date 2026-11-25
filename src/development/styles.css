@@ -1,0 +1,1 @@
+#clean-slate-dialog #reset-confirm:not(:disabled){background:var(--danger);color:var(--on-danger)}#reset-status:empty{display:none}

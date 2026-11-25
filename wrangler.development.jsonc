@@ -1,0 +1,26 @@
+{
+  "name": "form-development",
+  "main": "src/development.js",
+  "compatibility_date": "2026-11-24",
+  "rules": [
+    {
+      "type": "Data",
+      "globs": [
+        "**/*.woff2"
+      ],
+      "fallthrough": true
+    },
+    {
+      "type": "Text",
+      "globs": [
+        "**/*.svg",
+        "**/*.css",
+        "**/*.js.txt",
+        "**/*.license.txt"
+      ],
+      "fallthrough": true
+    }
+  ],
+  "workers_dev": false,
+  "preview_urls": false
+}
