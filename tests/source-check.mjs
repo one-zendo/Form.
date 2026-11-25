@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
 const browser=readFileSync(new URL("../src/browser.js.txt",import.meta.url),"utf8");
-const core=Object.fromEntries(["storage","timer","calendar","progress"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
+const core=Object.fromEntries(["storage","timer","calendar","progress","themes"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
 const assembled=[...Object.values(core),browser].join("\n");
 new vm.Script(assembled);
 for(const [name,code] of Object.entries(core)){new vm.Script(code);assert.ok(source.includes('./core/'+name+'.js.txt'));}
@@ -338,3 +338,39 @@ console.log('Sample routine text hidden without removing sample toggle passed');
 
 // Legacy Home must stay deleted; verify actual removal, not CSS hiding.
 for(const id of ['hero-label','hero-title','hero-sub','exercise-preview','home-recent','home-insight','home-history','home-progress','quick','start','routine']){assert.ok(!source.includes('id="'+id+'"'));assert.ok(!browser.includes('$("'+id+'")'))}
+
+const themeManifest=vm.runInNewContext(core.themes+';formThemes');
+assert.equal(themeManifest.length,10);
+assert.equal(new Set(themeManifest.map(t=>t.id)).size,10);
+for(const scheme of ['light','dark'])assert.equal(themeManifest.filter(t=>t.scheme===scheme).length,5);
+const luminance=hex=>{const rgb=hex.slice(1).match(/../g).map(c=>parseInt(c,16)/255).map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4);return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};
+const contrast=(a,b)=>{const l=[luminance(a),luminance(b)].sort((x,y)=>y-x);return (l[0]+.05)/(l[1]+.05)};
+for(const {id,palette:p} of themeManifest){
+  for(const role of ['canvas','paper','elevated','ink','muted','brand','action','onAction','success','warning','danger','completion'])assert.match(p[role],/^#[0-9a-f]{6}$/i);
+  for(const [fg,bg] of [[p.action,p.onAction],[p.ink,p.paper],[p.muted,p.paper],[p.success,p.paper],[p.warning,p.paper],[p.danger,p.paper]])assert.ok(contrast(fg,bg)>=4.5,id+' insufficient contrast '+fg+' / '+bg);
+}
+console.log('Ten theme identities and manifest text/action contrast checks passed');
+
+const monthly=vm.runInNewContext(core.calendar+';monthlyTrainingDays');
+const monthPlan=[{from:'2026-11-02',rest:[2]},{from:'2026-11-16',rest:[4]}];
+const monthRecords=[{finished:new Date('2026-11-04T12:00:00').getTime(),exercises:[{sets:[{done:true}]}]},{finished:new Date('2026-11-26T12:00:00').getTime(),exercises:[{sets:[{done:true}]}]}];
+const monthData=monthly(2026,10,new Date('2026-11-25T18:00:00'),monthRecords,monthPlan);
+assert.equal(monthData.offset,6);assert.equal(monthData.days.length,30);
+assert.equal(monthData.days[3].state,'done');assert.equal(monthData.days[10].state,'rest');assert.equal(monthData.days[17].state,'none');assert.equal(monthData.days[19].state,'rest');assert.equal(monthData.days[24].today,true);assert.equal(monthData.days[25].state,'future');
+assert.equal(monthly(2024,1,new Date('2024-03-01T12:00:00'),[],[]).days.length,29);
+assert.equal(monthly(2026,1,new Date('2026-03-01T12:00:00'),[],[]).days.length,28);
+const liveSample={started:0,exercises:[{name:'Squat',sets:[{done:false}]}]};
+const liveKey=refreshChecks.homeRefreshKey(liveSample,null,1000);liveSample.exercises[0].sets[0].done=true;assert.equal(refreshChecks.sameRefreshKey(liveKey,refreshChecks.homeRefreshKey(liveSample,null,1000)),false);
+console.log('Monthly calendar historical schedules, month boundaries and live Home progress cache passed');
+
+const historyMetrics=vm.runInNewContext(core.progress+';({historyDuration,historyExercisePoints,historyPreviousSets})');
+const historyFixture=(id,finished,weight,reps)=>({id,finished,started:finished-5040000,exercises:[{name:'Bench Press',sets:[{weight,reps,done:true},{weight:999,reps:10,done:false}]}]});
+const chosenHistory=historyFixture('selected',8000000,80,8),earlierHistory=historyFixture('earlier',7000000,70,8),laterHistory=historyFixture('later',9000000,100,5);
+assert.equal(historyMetrics.historyDuration(chosenHistory),'1:24');
+const scopedHistory=historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',[laterHistory,chosenHistory,earlierHistory]);
+assert.equal(scopedHistory.length,2);assert.equal(scopedHistory.at(-1).weight,80);assert.equal(scopedHistory.at(-1).volume,640);assert.ok(Math.abs(scopedHistory.at(-1).estimated-101.33333333333333)<1e-9);
+assert.equal(historyMetrics.historyPreviousSets(chosenHistory,'Bench Press',[laterHistory,earlierHistory]).get(0).weight,70);
+assert.equal(historyMetrics.historyExercisePoints(historyFixture('high-reps',9000000,30,15),'Bench Press',[])[0].estimated,null);
+assert.equal(historyMetrics.historyExercisePoints(historyFixture('single',9000000,100,1),'Bench Press',[])[0].estimated,100);
+assert.equal(historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',Array.from({length:8},(_,i)=>historyFixture('old-'+i,1000000+i*10000,30,5))).length,5);
+console.log('Historical duration, previous sets, scoped chart metrics and estimated 1RM checks passed');
