@@ -26,3 +26,23 @@ for(const raw of ['broken','{}','{"version":2,"data":[]}','{"version":1,"data":[
 assert.equal((browser.match(/function navigate\(p\)/g)||[]).length,1);
 assert.ok(browser.includes('onclick=()=>guardLeave(()=>navigate(p))'));
 console.log('Storage and navigation source regression checks passed');
+
+const journalStart=browser.indexOf('const finishJournalKey=');
+const journalEnd=browser.indexOf('let finishRecoveryBlocked=',journalStart);
+assert.ok(journalStart>=0&&journalEnd>journalStart);
+const recoverFinish=vm.runInNewContext(browser.slice(journalStart,journalEnd)+';finishJournal');
+const entries=[{key:'form-workout-history',previous:'old',next:'new'},{key:'form-routines',previous:'oldr',next:'newr'},{key:'form-active-workout',previous:'active',next:'null'}];
+for(let fail=1;fail<=9;fail++){
+ const m=new Map(entries.map(x=>[x.key,x.previous]));let n=0;
+ const storage={getItem:k=>m.get(k)??null,setItem(k,v){if(++n===fail)throw Error('simulated interruption');m.set(k,v)},removeItem(k){if(++n===fail)throw Error('simulated interruption');m.delete(k)}};
+ try{recoverFinish(storage,entries)}catch{}
+ if(m.has('form-finish-journal'))recoverFinish(storage);
+ for(const x of entries)assert.equal(m.get(x.key),fail===1?x.previous:x.next);
+ assert.equal(m.has('form-finish-journal'),false);
+}
+const conflict=new Map(entries.map(x=>[x.key,x.previous]));conflict.set('form-finish-journal',JSON.stringify(entries));conflict.set(entries[1].key,'conflict');
+const conflictStorage={getItem:k=>conflict.get(k)??null,setItem:(k,v)=>conflict.set(k,v),removeItem:k=>conflict.delete(k)};
+assert.throws(()=>recoverFinish(conflictStorage),/conflict/i);
+assert.equal(conflict.get(entries[0].key),'old');
+assert.equal(conflict.get(entries[1].key),'conflict');
+console.log('Workout finish journal interruption and conflict checks passed');
