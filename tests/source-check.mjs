@@ -11,7 +11,8 @@ assert.ok(source.includes('${browserScript}</script>'));
 new vm.Script(browser);
 const ids=[...source.matchAll(/\bid="([\w-]+)"/g)].map(m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,'Duplicate HTML IDs');
-for(const m of browser.matchAll(/\$\("([\w-]+)"\)/g)) assert.ok(ids.includes(m[1]),'Missing element: '+m[1]);
+const dynamicIds=[...browser.matchAll(/\.id\s*=\s*"([\w-]+)"/g)].map(m=>m[1]);
+for(const m of browser.matchAll(/\$\("([\w-]+)"\)/g)) assert.ok(ids.includes(m[1])||dynamicIds.includes(m[1]),'Missing element: '+m[1]);
 console.log('Browser syntax and static DOM references passed');
 
 const storage=vm.runInNewContext(core.storage+';({validRoutine,decodeRecord,encodeRecord})');
@@ -71,7 +72,7 @@ const globalTokens=new Map([...css.matchAll(/(--[\w-]+):([^;}]+)/g)].map(m=>[m[1
 for(const [key,value] of Object.entries({'radius-card':'20px','radius-dialog':'24px','radius-control':'12px','font-body':'17px','touch-target':'44px','motion-swipe':'260ms','motion-glide':'230ms','motion-drop':'200ms','motion-collapse':'280ms'}))assert.equal(globalTokens.get('--'+key),value);
 assert.ok(!browser.includes(':root{--motion-fast:'),'Motion tokens must live in the global stylesheet');
 assert.ok(!browser.includes('animation:finish-enter'),'Removal dialog must use a defined animation');
-assert.ok(browser.includes('@keyframes form-finish-float-in'));
+assert.ok(css.includes('@keyframes form-finish-float-in'));
 assert.ok(browser.includes('prefers-reduced-motion:reduce){.exercise-remove-confirm[open]{animation:none}'));
 const motionSource=browser.slice(browser.indexOf('const formMotion='),browser.indexOf('function motionAllowed'));
 const motion=vm.runInNewContext(motionSource+';formMotion',{document:{documentElement:{}},getComputedStyle:()=>({getPropertyValue:key=>globalTokens.get(key)||''})});
@@ -239,7 +240,7 @@ console.log('Full swipe removal, undo and input-modality focus checks passed');
 assert.ok(browser.includes('if(!session||exerciseRemovalPending)return;cancelExerciseGesture()'));
 assert.ok(browser.includes('session!==d.sessionSnapshot'));
 assert.ok(browser.includes('sessionBlocked=sessionBlocked||blocked'));
-assert.ok(browser.includes('if(wasSelected){sessionSelection=at;sessionCollapsed=wasCollapsed}'));
+assert.ok(browser.includes('if(wasSelected){sessionSelection=at;sessionCollapsed=wasCollapsed;if(!wasCollapsed)sessionOpenCards.add(at)}'));
 assert.ok(browser.includes('if(removedRest&&!next.restSet&&!next.restExercise&&!next.restUntil&&!next.restTotal)'));
 assert.ok(browser.includes('if(!storeSession(next))input.value=session.exercises[i].sets[j][k]'));
 console.log('Active workout edit, undo, stale gesture and save protection checks passed');
@@ -268,7 +269,7 @@ assert.ok(browser.includes('maxHeight:"calc(100dvh - 24px)",overflowY:"auto"'));
 console.log('Ambiguous rest recovery, delayed cancellation, undo placement and short viewport menu checks passed');
 
 assert.ok(browser.includes('const EXERCISE_HOLD_MS=350;'));
-assert.ok(browser.includes('cancelExerciseGesture();closeExerciseSwipe();if(sessionSelection===i)'));
+assert.ok(browser.includes('cancelExerciseGesture();closeExerciseSwipe();const cards='));
 assert.ok(browser.includes('if(end===index){sessionCollapsed=d.originalCollapsed;renderSession()}'));
 console.log('Exercise tap versus hold and selection cleanup checks passed');
 
@@ -283,14 +284,14 @@ assert.ok(css.includes('.dot.rest{background:var(--system-blue);color:#fff}'));
 assert.ok(css.includes('.streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size);stroke:currentColor'));
 console.log('Compact streak trophy and recovery checkmark styling passed');
 
-assert.ok(browser.includes('dot.append(streakIcon(selected?"check":"dumbbell"))'));
+assert.ok(browser.includes('if(selected)dot.append(streakIcon("check"))'));
 assert.ok(css.includes('.rest-day-option[aria-pressed=true] .dot{background:var(--system-blue);color:#fff}'));
-assert.ok(source.includes('class="rest-total-icon recovery-total-icon"'));
+assert.ok(!source.includes('class="rest-total-icon recovery-total-icon"'));
 console.log('Rest-day picker matches streak styling and recovery summary');
 
 assert.equal((source.match(/from "lucide\/icons\/dumbbell\.svg"/g)||[]).length,1);
 assert.ok(source.includes('id="streak-dumbbell">${icon("dumbbell")}'));
-assert.ok(source.includes('training-total-icon" aria-hidden="true">${icon("dumbbell")}'));
+assert.ok(!source.includes('training-total-icon" aria-hidden="true">${icon("dumbbell")}'));
 assert.ok(source.includes('aria-label="Animate training streak trophy">${icons.trophy}'));
 console.log('Shared Lucide dumbbell and trophy sources passed');
 
@@ -302,7 +303,7 @@ console.log('Single trophy and neutral streak typography passed');
 assert.ok(css.includes('--streak-trophy-size:18px'));
 assert.ok(css.includes('#rest-days-dialog>.row{justify-content:center}'));
 assert.ok(css.includes('#rest-days-dialog .rest-day-totals>div{justify-items:center;text-align:center}'));
-assert.ok(css.includes('#rest-days-dialog>p{font-size:var(--font-footnote);line-height:1.45;text-align:center'));
+assert.ok(css.includes('#rest-days-dialog>p{font-size:var(--font-footnote);line-height:var(--type-body-line);text-align:center'));
 console.log('Smaller trophy and centered rest-day dialog passed');
 
 assert.ok(!source.includes('id="routine-editor"'));
@@ -326,11 +327,14 @@ console.log('Routine scrollport definite height across orientations passed');
 
 assert.ok(!browser.includes('Exercise actions ···'));
 assert.ok(css.includes('#routine-detail #detail-start{height:48px;min-height:48px;border-radius:var(--radius-control)'));
-assert.ok(css.includes('#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:24px repeat(3,minmax(0,1fr)) 44px'));
+assert.ok(css.includes('#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:var(--space-6) repeat(3,minmax(0,1fr)) var(--touch-target)'));
 assert.ok(browser.includes('routine-read-value'));
 console.log('Shared view/edit routine dimensions and simplified exercise card passed');
 
 assert.ok(!browser.includes(' · Sample routine'));
 assert.ok(!source.includes('>Hide Sample Routines</button>'));
-assert.ok(browser.includes('querySelector(".sample-eye-off").hidden=showSamples'));
+assert.ok(browser.includes('setAttribute("aria-checked",String(showSamples))'));
 console.log('Sample routine text hidden without removing sample toggle passed');
+
+// Legacy Home must stay deleted; verify actual removal, not CSS hiding.
+for(const id of ['hero-label','hero-title','hero-sub','exercise-preview','home-recent','home-insight','home-history','home-progress','quick','start','routine']){assert.ok(!source.includes('id="'+id+'"'));assert.ok(!browser.includes('$("'+id+'")'))}
