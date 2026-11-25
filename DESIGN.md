@@ -186,3 +186,5 @@ Training streak replaces Weekly Activity. Counts distinct local training dates w
 Streak card finishing refinement: use a neutral moon icon as the rest-day schedule control (rather than calendar/cog), retaining its Manage Rest Days accessible label and existing modal action. Use bright system orange #FF9500 for the streak title and personal-best value instead of darker orange. Flame and recovery-day semantics remain unchanged.
 
 Home workout card: remove redundant 'Workout in progress' label and green live dot; active orange card and Resume pill already establish state/action. Remove redundant right arrow from both Start and Resume pill. Keep workout name, elapsed minutes, completed/total sets, CTA pill, existing card geometry, color, and active workout behavior. Status is still conveyed by active orange card; no timer/session logic changes.
+
+Streak card final compact layout: remove weekly count and progress bar entirely; rename Longest streak to Personal best. Retain computed current streak title, weekly day markers, recovery Moon control, personal-best calculation and persisted schedule. This removes only redundant display, not weekly goal/streak logic.
