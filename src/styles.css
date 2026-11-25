@@ -289,7 +289,6 @@ body:has(#home-page:not([hidden]))::after{transition:none}
   #home-page .home-workout-cta{padding:var(--space-2)}
   #home-page .streak-heading{gap:var(--space-2)}
   #home-page .streak-heading h3{font-size:var(--font-body)}
-  #home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}
   #home-page .streak-card .days{margin-block:var(--space-1)}
   #home-page .streak-card .dot{width:22px;height:22px}
   #home-page .day{gap:2px;font-size:11px}
