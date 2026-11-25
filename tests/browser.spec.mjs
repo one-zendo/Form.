@@ -36,13 +36,13 @@ test('routine edits, discard and persistence',async({page})=>{
  await page.locator('#show-exercise-picker').click();
  await page.locator('#exercise-search').fill('Squat');
  await page.locator('#exercise-options button').first().click();
- await page.locator('#save-routine').click();
+ await page.locator('#detail-start').click();
  await expect(page.locator('#detail-title')).toHaveText('Regression routine');
  await page.locator('#detail-edit').click();
- await expect(page.locator('#save-routine')).toBeDisabled();
- await expect(page.locator('#routine-exercises details.routine-exercise[open]')).toHaveCount(1);
+ await expect(page.locator('#detail-start')).toBeDisabled();
+ await expect(page.locator('#detail-exercises details.routine-exercise[open]')).toHaveCount(1);
  await page.locator('#routine-name').fill('Unsaved rename');
- await expect(page.locator('#save-routine')).toBeEnabled();
+ await expect(page.locator('#detail-start')).toBeEnabled();
  await page.locator('#nav-home').click();
  await expect(page.locator('#leave-routine')).toBeVisible();
  await page.locator('#leave-cancel').click();
@@ -90,16 +90,16 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   await page.locator('#nav-workouts').click();
   await page.locator('#routine-items .routine-entry').filter({hasText:'Inline test'}).click();
   await page.locator('#detail-edit').click();
-  await expect(page.locator('#routine-exercises details.routine-exercise[open]')).toHaveCount(2);
-  await expect(page.locator('#save-routine')).toBeDisabled();
-  await page.locator('#routine-exercises details.routine-exercise > summary').first().click();
-  await expect(page.locator('#save-routine')).toBeDisabled();
-  await page.locator('#routine-cancel').click();
+  await expect(page.locator('#detail-exercises details.routine-exercise[open]')).toHaveCount(2);
+  await expect(page.locator('#detail-start')).toBeDisabled();
+  await page.locator('#detail-exercises details.routine-exercise > summary').first().click();
+  await expect(page.locator('#detail-start')).toBeDisabled();
+  await page.locator('#detail-edit').click();
   await expect(page.locator('#detail-title')).toHaveText('Inline test');
   await expect(page.locator('#detail-exercises details[open]')).toHaveCount(0);
   await page.locator('#detail-edit').click();
   await page.locator('#routine-name').fill('Updated inline test');
-  await page.locator('#routine-cancel').click();
+  await page.locator('#detail-edit').click();
   await expect(page.locator('#leave-routine')).toBeVisible();
   await page.locator('#leave-apply').click();
   await expect(page.locator('#detail-title')).toHaveText('Updated inline test');
@@ -174,7 +174,7 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
  await page.evaluate(()=>localStorage.setItem('form-routines',JSON.stringify([{id:'validation-test',name:'Validation routine',description:'',exercises:[{name:'Squat',sets:[{weight:20,reps:10,rest:90}]}]}])));
  await page.reload();await page.locator('#nav-workouts').click();await page.locator('#routine-items .routine-entry').filter({hasText:'Validation routine'}).click();await page.locator('#detail-edit').click();
  const reps=page.getByRole('spinbutton',{name:'Squat set 1 reps'});await reps.fill('0');await expect(reps).toHaveAttribute('aria-invalid','true');await reps.fill('2.5');await expect(reps).toHaveAttribute('aria-invalid','true');await reps.blur();await expect(reps).toHaveValue('10');await reps.fill('12');await expect(reps).toHaveAttribute('aria-invalid','false');
- const draft=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-routine-draft')).data);expect(draft.exercises[0].sets[0].reps).toBe(12);await page.locator('#save-routine').click();await expect(page.locator('#detail-title')).toHaveText('Validation routine');
+ const draft=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-routine-draft')).data);expect(draft.exercises[0].sets[0].reps).toBe(12);await page.locator('#detail-start').click();await expect(page.locator('#detail-title')).toHaveText('Validation routine');
  });
 
 test('finish modal safely cancels and discards an empty workout',async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);await page.locator('.session-toolbar .session-finish').click();await expect(page.locator('#finish-confirm')).toBeDisabled();await page.locator('#finish-discard').click();await expect(page.locator('#finish-heading')).toHaveText('Discard workout?');await page.locator('#finish-keep').click();await expect(page.locator('#finish-heading')).toHaveText('Finish workout?');await page.locator('#finish-keep').click();await expect(page.locator('#finish-workout')).toBeHidden();await page.locator('.session-toolbar .session-finish').click();await page.locator('#finish-discard').click();await page.locator('#finish-confirm').click();await expect(page.locator('#home-page')).toBeVisible();await expect(page.locator('#finish-workout')).toBeHidden();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data)).toBeNull();});
@@ -292,7 +292,7 @@ test('fresh launch returns Home without discarding an active session or routine 
  await page.locator('#routine-name').fill('Keep this draft');
  const draft=await page.evaluate(()=>localStorage.getItem('form-routine-draft'));
  await page.reload();await expect(page.locator('#home-page')).toBeVisible();
- await expect(page.locator('#routine-editor')).toBeHidden();await expect(page.locator('dialog[open]')).toHaveCount(0);
+ await expect(page.locator('#routine-detail.is-editing')).toHaveCount(0);await expect(page.locator('dialog[open]')).toHaveCount(0);
  expect(await page.evaluate(()=>localStorage.getItem('form-routine-draft'))).toBe(draft);
  await startFromHome(page);await page.locator('.session-selected .session-check').first().click();
  const session=await page.evaluate(()=>localStorage.getItem('form-active-workout'));
@@ -382,3 +382,5 @@ test('rest-day picker uses matching checks and live totals',async({page})=>{awai
 test('shared dumbbell geometry matches throughout FORM',async({page})=>{await page.goto(url);const geometry=async locator=>locator.evaluate(e=>Array.from(e.querySelectorAll('path,rect,circle,line,polyline,polygon')).map(n=>n.outerHTML));const nav=await geometry(page.locator('#nav-workouts svg'));expect(nav.length).toBeGreaterThan(0);await page.locator('#home-activity').click();const training=await geometry(page.locator('.training-total-icon svg'));const day=await geometry(page.getByRole('button',{name:'Monday rest day'}).locator('svg'));expect(training).toEqual(nav);expect(day).toEqual(nav);});
 
 test('rest day modal has centered title, copy and summary cards',async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await page.locator('#home-activity').click();await expect(page.locator('#rest-days-dialog')).toHaveCSS('text-align','center');await expect(page.locator('#rest-days-dialog > .row')).toHaveCSS('justify-content','center');await expect(page.locator('#rest-days-dialog > p').first()).toHaveCSS('text-align','center');for(const card of await page.locator('#rest-days-dialog .rest-day-totals > div').all()){await expect(card).toHaveCSS('justify-items','center');await expect(card).toHaveCSS('text-align','center');}});
+
+test('routine pencil edits inline without a second page',async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await page.locator('#nav-workouts').click();await page.locator('#new-routine').click();await page.locator('#routine-name').fill('Inline routine');await page.locator('#show-exercise-picker').click();await page.locator('#exercise-search').fill('Bench Press');await page.locator('#exercise-options button').first().click();await page.locator('#detail-start').click();await expect(page.locator('#detail-title')).toHaveText('Inline routine');await page.locator('#routine-detail').evaluate(e=>e.dataset.inlineProbe='same');await page.locator('#detail-edit').click();await expect(page.locator('#routine-detail')).toHaveAttribute('data-inline-probe','same');await expect(page.locator('#routine-editor')).toHaveCount(0);await expect(page.locator('#detail-start')).toHaveText('Save Changes');await expect(page.locator('#detail-exercises input').first()).toBeVisible();await page.locator('#detail-exercises input').first().fill('42');await expect(page.locator('#detail-start')).toBeEnabled();await page.locator('#detail-start').click();await expect(page.locator('#detail-start')).toHaveText('Start Workout');await expect(page.locator('#routine-detail')).not.toHaveClass(/is-editing/);});
