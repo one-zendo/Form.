@@ -212,3 +212,6 @@ Use 16px compact page gutters, 20px wide landscape gutters, 16px top inset (8px 
 
 ### Graphite Lime — restrained accent (approved)
 Graphite surfaces carry the Home workout card in both idle and active states. Use soft white for the title and muted gray for supporting text. Confine lime to the Start capsule and existing brand/selection/action accents; use amber for the Resume capsule to retain the active-session signal. Keep semantic timer, recovery, warning and completion colors independent. Default theme, geometry, responsive behavior and motion remain unchanged.
+
+### Graphite Lime — cross-page accent consistency
+Keep routine, progress, profile and active workout surfaces neutral. Use the shared lime action accent for selected controls, completed set checks and progress segments, and the compact training-streak trophy and completed training-day markers. Use graphite foreground on filled lime. Preserve blue planned recovery and rest timer, green timer completion, amber resume, red destructive actions and purple strength insights. No geometry or motion changes. Default is unchanged.
