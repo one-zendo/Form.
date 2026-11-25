@@ -395,19 +395,19 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #workouts-page #routine-list .routine-search-wrap{height:var(--workout-control-height);min-height:var(--workout-control-height);flex-shrink:0;margin:0 0 var(--space-4);padding:0 var(--space-4);gap:var(--space-2);position:static;box-shadow:none}
 #workouts-page #routine-list .routine-search-wrap .routine-input{height:var(--workout-control-height);padding:0;margin:0}
 #workouts-page #routine-list .routine-title-row{height:var(--workout-section-height);min-height:var(--workout-section-height);flex-shrink:0;margin:0 0 var(--space-3)}
-#workouts-page #routine-list .routine-title-row h3{font-size:var(--type-section);font-weight:var(--type-semibold);margin:0}
+#workouts-page :is(#routine-list .routine-title-row,#routine-detail .detail-heading) h3{font-size:var(--type-section);font-weight:var(--type-semibold);margin:0}
 #workouts-page #routine-items{display:grid;gap:var(--space-3);margin:0 0 var(--space-4)}
 #workouts-page #routine-items .routine-row{min-height:var(--workout-row-height);padding:0 var(--space-4);border-radius:var(--radius-card)}
 #workouts-page #routine-items .routine-row .routine-entry{padding:var(--space-3) 0;gap:var(--space-1)}
 #workouts-page #empty-workout{min-height:var(--workout-control-height);margin:0 0 var(--space-4);border-radius:var(--radius-control);background:var(--paper);flex-shrink:0}
 
 /* Routine detail and list share geometry in both read and edit states. */
-#workouts-page #routine-detail .routine-detail-header-area{padding-bottom:var(--space-4)}
-#workouts-page #routine-detail .routine-detail-header{height:var(--header-height);min-height:var(--header-height);margin:0;flex-shrink:0}
-#workouts-page #routine-detail #detail-meta{height:24px;line-height:24px;margin:var(--space-3) 0}
+#workouts-page #routine-detail .routine-detail-header-area{padding-bottom:calc(var(--space-4) - var(--edge-fade));gap:0}
+#workouts-page #routine-detail .routine-detail-header{height:var(--header-height);min-height:var(--header-height);margin:0;flex-shrink:0;gap:var(--space-1)}
+#workouts-page #routine-detail #detail-meta{display:flex;align-items:center;height:var(--workout-segment-height);min-height:var(--workout-segment-height);line-height:var(--type-body-line);margin:var(--space-3) 0;flex-shrink:0}
 #workouts-page #routine-detail #detail-start{height:var(--workout-control-height);min-height:var(--workout-control-height);margin:0;border-radius:var(--radius-control);flex-shrink:0}
-#workouts-page #routine-detail .routine-detail-scroll{padding-top:0;scroll-padding-top:var(--space-4)}
-#workouts-page #routine-detail .routine-detail-body::before{height:var(--space-3);background:linear-gradient(to bottom,var(--canvas),transparent)}
+#workouts-page #routine-detail .routine-detail-scroll{padding-top:var(--edge-fade);scroll-padding-top:var(--edge-fade)}
+
 #workouts-page #routine-detail .detail-heading{height:var(--workout-section-height);min-height:var(--workout-section-height);margin:0 0 var(--space-3);align-items:center}
 #workouts-page #routine-detail .detail-heading #show-exercise-picker{min-height:var(--workout-section-height);height:var(--workout-section-height);width:auto;padding:0;flex:none}
 #workouts-page #detail-exercises{display:grid;gap:var(--space-3);margin:0 0 var(--space-4)}
@@ -424,10 +424,11 @@ body.mini-visible main:has(#workouts-page:not([hidden])){padding-bottom:calc(var
 #workouts-page #routine-list:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;height:100%;overflow:hidden;padding-bottom:0;isolation:isolate}
 #workouts-page #routine-list>.row:first-child{position:relative;top:auto;z-index:2;flex:0 0 var(--header-height);margin:0;background:var(--canvas)}
 #workouts-page .workout-list-body{position:relative;flex:1 1 0;min-height:0;overflow:hidden;isolation:isolate}
-#workouts-page .workout-list-scroll{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-top:var(--space-3);padding-bottom:var(--space-4);scroll-padding-top:var(--space-4)}
+#workouts-page .workout-list-scroll{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-top:var(--edge-fade);padding-bottom:var(--space-4);scroll-padding-top:var(--edge-fade)}
 #workouts-page .workout-list-scroll::-webkit-scrollbar{display:none}
-#workouts-page .workout-list-body::before{content:"";position:absolute;inset:0 0 auto;height:var(--edge-fade);z-index:3;pointer-events:none;backdrop-filter:blur(var(--edge-blur));-webkit-backdrop-filter:blur(var(--edge-blur));background:var(--canvas);mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%)}
-@media(prefers-reduced-transparency:reduce){#workouts-page .workout-list-body::before{backdrop-filter:none;-webkit-backdrop-filter:none}}
+/* Shared top fade; resting content starts below the fade. */
+#workouts-page :is(.workout-list-body,.routine-detail-body)::before{content:"";position:absolute;inset:0 0 auto;height:var(--edge-fade);z-index:3;pointer-events:none;backdrop-filter:blur(var(--edge-blur));-webkit-backdrop-filter:blur(var(--edge-blur));background:var(--canvas);mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%)}
+@media(prefers-reduced-transparency:reduce){#workouts-page :is(.workout-list-body,.routine-detail-body)::before{backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 /* Match the fixed header's soft edge treatment at the lower scroll boundary.
    The floating navigation retains its existing glass surface and geometry. */
