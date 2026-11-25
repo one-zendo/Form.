@@ -312,3 +312,9 @@ assert.ok(browser.includes('if(routineEditing)commitRoutine()'));
 assert.ok(browser.includes('const root=$("detail-exercises");root.replaceChildren();if(!draft)'));
 assert.ok(css.includes('#routine-detail.is-editing #detail-exercises input{border:1px solid var(--line)'));
 console.log('Unified routine detail and inline edit mode checks passed');
+
+assert.ok(source.includes('class="routine-detail-scroll" id="routine-detail-scroll"'));
+assert.ok(browser.includes('editScroll=$("routine-detail-scroll").scrollTop'));
+assert.ok(css.includes('#routine-detail .routine-detail-body::before{content:"";position:absolute;inset:0 0 auto;height:24px;z-index:2;pointer-events:none;background:linear-gradient'));
+assert.ok(css.includes('#routine-detail:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;overflow:hidden'));
+console.log('Routine pinned header and permanent noninteractive fade checks passed');
