@@ -376,14 +376,25 @@ function reportFoldable(){let posture="Unavailable",segments="Unavailable";try{p
 panel.addEventListener("toggle",reportFoldable);window.addEventListener("resize",reportFoldable);window.addEventListener("pageshow",reportFoldable);document.addEventListener("visibilitychange",reportFoldable);try{navigator.devicePosture?.addEventListener("change",reportFoldable)}catch{}for(const query of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(query).addEventListener("change",reportFoldable);reportFoldable();}
 
 /* Experimental Home-only fold-aware layout; never infer a fold from viewport width alone. */
-function homeFoldGeometry(rects,folded){
+function homeFoldGeometry(rects,folded,viewportWidth=Infinity,viewportHeight=Infinity,hasTimer=false){
   if(!folded||!rects||rects.length!==2)return null;
   const a=Array.from(rects,r=>({x:Number(r.x),y:Number(r.y),w:Number(r.width),h:Number(r.height)}));
-  if(a.some(r=>!Object.values(r).every(Number.isFinite)||r.w<1||r.h<1))return null;
+  if(a.some(r=>!Object.values(r).every(Number.isFinite)||r.w<1||r.h<1||r.x<0||r.y<0||r.x+r.w>viewportWidth+1||r.y+r.h>viewportHeight+1))return null;
   const horizontal=Math.abs(a[0].x-a[1].x)>Math.abs(a[0].y-a[1].y);
   a.sort((l,r)=>horizontal?l.x-r.x:l.y-r.y);
-  if(horizontal?(a[0].w<260||a[1].w<260||Math.min(a[0].h,a[1].h)<300):(a[0].h<200||a[1].h<220||Math.min(a[0].w,a[1].w)<280))return null;
-  return {mode:horizontal?"side":"stack",a:a[0],b:a[1]};
+  const [l,r]=a;
+  const gap=horizontal?r.x-l.x-l.w:r.y-l.y-l.h;
+  const overlap=horizontal?Math.min(l.y+l.h,r.y+r.h)-Math.max(l.y,r.y):Math.min(l.x+l.w,r.x+r.w)-Math.max(l.x,r.x);
+  if(gap< -1||overlap<Math.min(horizontal?l.h:l.w,horizontal?r.h:r.w)*.8)return null;
+  if(horizontal?(l.w<260||r.w<260||l.h<336||r.h<(hasTimer?396:332)):(l.h<(hasTimer?316:252)||r.h<296||Math.min(l.w,r.w)<280))return null;
+  return {mode:horizontal?"side":"stack",a:l,b:r};
+}
+function homeFoldVariables(g,viewportHeight,hasTimer,pad=16,base=12,clearance=64){
+  const {a,b,mode}=g,stack=mode==="stack",nav=stack?b:a,timer=stack?a:b,vars={};
+  for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}
+  vars["a-clearance"]=stack?(hasTimer?clearance:0):clearance;vars["b-clearance"]=stack||hasTimer?clearance:0;vars["b-header"]=stack?0:100;
+  for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,viewportHeight-r.y-r.h+base)}
+  return vars
 }
 {const style=el("style");style.textContent=`
 body[data-home-fold]:not(.training) main:has(#home-page:not([hidden])){max-width:none;width:100%;margin:0;padding:0!important;position:relative;overflow:hidden}
@@ -413,27 +424,27 @@ function animateFoldChange(before){
   if(!motionAllowed()||activePage!=="home"||collapseCleanup)return;
   for(const [node,old] of before){
     const next=node.getBoundingClientRect();if(!next.width||!next.height||!old.width||!old.height)continue;
-    const x=old.left-next.left,y=old.top-next.top,w=old.width/next.width,h=old.height/next.height;
+    const x=old.left-next.left,y=old.top-next.top;
     if(Math.abs(x)+Math.abs(y)+Math.abs(old.width-next.width)+Math.abs(old.height-next.height)<1)continue;
     // Move the actual element; preserve readable content by animating dimensions on cards only.
     const isCard=node.matches(".home-workout-card,.streak-card"),isFloating=node===mini||node.matches(".dock");
     const frames=[{translate:x+"px "+y+"px"},{translate:"0px 0px"}];
     if(isCard||isFloating){frames[0].clipPath="inset(0 "+Math.max(0,next.width-old.width)+"px "+Math.max(0,next.height-old.height)+"px 0 round "+Math.min(28,old.height/2)+"px)";frames[1].clipPath="inset(0 0 0 0 round "+(isFloating?next.height/2:parseFloat(getComputedStyle(node).borderRadius)||20)+"px)";}
-    const animation=formAnimate(node,frames,360,formMotion.ease);if(animation){foldAnimations.set(node,animation);animation.onfinish=()=>{if(foldAnimations.get(node)===animation)foldAnimations.delete(node)}}
+    const animation=formAnimate(node,frames,360,formMotion.ease);if(animation){foldAnimations.set(node,animation);animation.onfinish=animation.oncancel=()=>{if(foldAnimations.get(node)===animation)foldAnimations.delete(node)}}
   }
 }
 function updateHomeFold(){
  foldFrame=0;const body=document.body;let rects,folded=false;try{folded=navigator.devicePosture?.type==="folded"||matchMedia("(device-posture: folded)").matches;rects=window.viewport?.segments}catch{}
- const g=homeFoldGeometry(rects,folded),signature=JSON.stringify([g,!!session,innerWidth,innerHeight]);
+ const g=homeFoldGeometry(rects,folded,innerWidth,innerHeight,!!session),signature=JSON.stringify([g,!!session,innerWidth,innerHeight]);
  if(signature===foldSignature){if(activePage==="home"&&!foldAnimations.size)foldLastGeometry=foldSnapshot();return}
  const before=foldAnimations.size?foldSnapshot():foldLastGeometry||foldSnapshot();for(const animation of foldAnimations.values())animation.cancel();foldAnimations.clear();foldSignature=signature;
- if(!g){delete body.dataset.homeFold}else{
- const {a,b,mode}=g;const pad=16,base=12;const hasTimer=!!session;const stack=mode==="stack";const nav=stack?b:a,timer=stack?a:b;const vars={};for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}vars["a-clearance"]=stack?(hasTimer?64:0):64;vars["b-clearance"]=stack||hasTimer?64:0;vars["b-header"]=stack?0:100;for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,innerHeight-r.y-r.h+base)}for(const [k,v] of Object.entries(vars))body.style.setProperty("--fold-"+k,v+"px");body.dataset.homeFold=mode;
+ if(!g){delete body.dataset.homeFold;for(const key of Array.from(body.style))if(key.startsWith("--fold-"))body.style.removeProperty(key)}else{
+ const vars=homeFoldVariables(g,innerHeight,!!session);for(const [k,v] of Object.entries(vars))body.style.setProperty("--fold-"+k,v+"px");body.dataset.homeFold=g.mode;
  }
  moveNavIndicator();if(activePage==="home"){foldLastGeometry=foldSnapshot();animateFoldChange(before)}else foldLastGeometry=null;
 }
 function queueFold(){if(!foldFrame)foldFrame=requestAnimationFrame(updateHomeFold)}
-window.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);new MutationObserver(queueFold).observe(document.body,{attributes:true,attributeFilter:["class"]});new MutationObserver(()=>{if($("home-page").hidden){for(const a of foldAnimations.values())a.cancel();foldAnimations.clear();foldLastGeometry=null}else{foldLastGeometry=foldSnapshot();queueFold()}}).observe($("home-page"),{attributes:true,attributeFilter:["hidden"]});updateHomeFold();}
+window.addEventListener("resize",queueFold);window.visualViewport?.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);new MutationObserver(queueFold).observe(document.body,{attributes:true,attributeFilter:["class"]});new MutationObserver(()=>{if($("home-page").hidden){for(const a of foldAnimations.values())a.cancel();foldAnimations.clear();foldLastGeometry=null}else{foldLastGeometry=foldSnapshot();queueFold()}}).observe($("home-page"),{attributes:true,attributeFilter:["hidden"]});updateHomeFold();}
 
 {const layerStyle=el("style");layerStyle.textContent=".mini-workout{z-index:1001}.mini-workout[hidden]{display:none}";document.head.append(layerStyle);}
 
@@ -477,3 +488,16 @@ window.addEventListener("resize",queueFold);window.addEventListener("pageshow",q
 .exercise-remove-confirm[open]{display:grid;gap:var(--space-3);animation:form-finish-float-in var(--motion-tab) var(--motion-gesture-ease)}.exercise-remove-confirm::backdrop{background:var(--dialog-scrim);backdrop-filter:blur(var(--dialog-blur));-webkit-backdrop-filter:blur(var(--dialog-blur))}@media(prefers-reduced-motion:reduce){.exercise-remove-confirm[open]{animation:none}}.exercise-remove-confirm h2{font-size:var(--font-dialog-title);line-height:1.25}.exercise-remove-confirm p{font-size:var(--font-footnote)}.exercise-remove-icon{display:grid;place-items:center}.exercise-remove-icon svg{width:24px;height:24px}.exercise-remove-confirm button{font-size:var(--font-control);font-weight:600;border-radius:var(--radius-full);min-height:var(--touch-target)}.exercise-remove-yes{background:var(--system-red);color:white}.exercise-remove-no{background:var(--canvas);color:var(--ink)}
 .exercise-undo{position:fixed;z-index:1200;bottom:calc(env(safe-area-inset-bottom) + 145px);left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);display:flex;align-items:center;gap:var(--space-3);padding:4px 12px 4px 16px;background:var(--ink);color:var(--paper);border-radius:var(--radius-full);font-size:var(--font-footnote);box-shadow:0 8px 24px var(--shadow-float)}.exercise-undo button{color:inherit;font-weight:650}
 `;document.head.append(style)}
+
+{const responsiveStyle=el("style");responsiveStyle.textContent=`
+:root{--floating-safe-left:max(16px,env(safe-area-inset-left));--floating-safe-right:max(16px,env(safe-area-inset-right));--floating-safe-width:calc(100% - var(--floating-safe-left) - var(--floating-safe-right));--floating-safe-center:calc(50% + (var(--floating-safe-left) - var(--floating-safe-right))/2)}
+.dock,.mini-workout{width:min(440px,var(--floating-safe-width));left:var(--floating-safe-center)}
+@media(orientation:landscape) and (min-width:700px){
+body.mini-visible .dock,body.mini-visible .mini-workout{width:min(440px,calc((var(--floating-safe-width) - 12px)/2))}
+body.mini-visible .dock{left:calc(var(--floating-safe-center) - min(225px,calc((var(--floating-safe-width) + 12px)/4)))}
+body.mini-visible .mini-workout{left:calc(var(--floating-safe-center) + min(225px,calc((var(--floating-safe-width) + 12px)/4)))}
+}
+#active-workout .session-exercise-name{min-width:0;overflow-wrap:anywhere}
+#active-workout .exercise-swipe-face{min-width:0}
+.exercise-remove-confirm{max-height:calc(100dvh - max(16px,env(safe-area-inset-top)) - max(16px,env(safe-area-inset-bottom)));overflow:auto}
+`;document.head.append(responsiveStyle)}
