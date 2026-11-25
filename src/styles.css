@@ -641,7 +641,9 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 @media(max-height:620px) and (orientation:portrait){
  body:not(.training):not([data-home-fold]) main:has(#home-page:not([hidden])){overflow-y:auto;overscroll-behavior-y:contain}
  body:not([data-home-fold]) #home-page:not([hidden]){flex:1 0 auto}
- body:not([data-home-fold]) #home-page .dashboard{grid-template-rows:minmax(132px,1fr) minmax(180px,1fr)}
+ body:not([data-home-fold]) #home-page .dashboard{grid-template-rows:minmax(132px,1fr) minmax(180px,1fr);flex:1 0 auto;min-height:calc(132px + 180px + var(--home-card-gap))}
+ body:not(.training):not([data-home-fold]).mini-visible main:has(#home-page:not([hidden])){padding-bottom:0;scroll-padding-bottom:var(--page-clearance)}
+ body:not(.training):not([data-home-fold]).mini-visible #home-page:not([hidden]){padding-bottom:var(--page-clearance)}
 }
 
 /* Finish Workout: shared dialog geometry and semantic action roles. */

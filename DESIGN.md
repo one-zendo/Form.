@@ -272,3 +272,6 @@ Reuse the same mounted search control and its 48px height, 12px radius, 16px hor
 
 ### Regression alignment
 Portrait exercise disclosures are independent; landscape retains single selection. Closing an open card moves selection to the most recently opened remaining card if present. Keep the approved palette, swipe-face padding, compact icon-free Start Workout, accessible sample-routine switch, and short-screen scrolling. Regression checks measure settled geometry, actual card dimensions, current semantic roles and countdown fraction; retain persistence, touch and reduced-motion coverage.
+
+### Compact portrait scroll clearance
+On short portrait viewports without a hinge, keep the dashboard's intrinsic two-row minimum height plus the shared gap. With the persistent timer visible, place the existing page clearance inside the scrolling Home content rather than relying on outer scroll-container padding; scroll padding uses the same token. Preserve the timer and dock dimensions, touch targets and larger layouts. Default completed sets and progress segments use system green (#34C759); Graphite Lime retains lime. Browser tests retain the full streak-card clearance requirement in both themes at 320×480.
