@@ -511,3 +511,35 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #appearance-page .theme-choice{min-width:0}
 #appearance-page .theme-name{text-align:center;white-space:normal}
 @media(min-width:760px) and (orientation:landscape){.global-wide-accent{display:grid;place-items:center}}
+
+/* Partner transition: only named elements participate; global chrome stays live. */
+@supports (view-transition-name: form-partner-title){
+ :root[data-partner-transition]{view-transition-name:none;--partner-transition-duration:var(--motion-standard);--partner-transition-easing:cubic-bezier(.2,.8,.2,1);--partner-travel:28px}
+ :root[data-partner-transition="back"]{--partner-travel:-28px}
+ :root[data-partner-transition] #routine-list>.partner-header h2,:root[data-partner-transition] #routine-detail #detail-title{view-transition-name:form-partner-title}
+ :root[data-partner-transition] :is(#new-routine,#detail-edit){view-transition-name:form-partner-action}
+ :root[data-partner-transition] :is(.workout-segments,#detail-meta){view-transition-name:form-partner-meta}
+ :root[data-partner-transition] :is(.routine-search-wrap,#detail-start){view-transition-name:form-partner-primary}
+ :root[data-partner-transition] :is(.workout-list-body,.routine-detail-body){view-transition-name:form-partner-content}
+ :root[data-partner-transition]::view-transition{pointer-events:none}
+ :root[data-partner-transition]::view-transition-group(*){animation-duration:var(--partner-transition-duration);animation-timing-function:var(--partner-transition-easing)}
+ :root[data-partner-transition]::view-transition-group(form-partner-title),:root[data-partner-transition]::view-transition-group(form-partner-action){animation-name:none}
+ :root[data-partner-transition]::view-transition-old(form-partner-title){animation:form-partner-title-out 280ms ease both}
+ :root[data-partner-transition]::view-transition-new(form-partner-title){animation:form-partner-title-in 280ms ease both}
+ :root[data-partner-transition]::view-transition-old(form-partner-action){animation:form-partner-icon-out 260ms ease both}
+ :root[data-partner-transition]::view-transition-new(form-partner-action){animation:form-partner-icon-in 280ms ease both}
+ :root[data-partner-transition]::view-transition-old(form-partner-content){animation:form-partner-content-out var(--partner-transition-duration) var(--partner-transition-easing) both}
+ :root[data-partner-transition]::view-transition-new(form-partner-content){animation:form-partner-content-in var(--partner-transition-duration) var(--partner-transition-easing) both}
+ :root[data-partner-transition]::view-transition-image-pair(form-partner-content){overflow:hidden;isolation:isolate}
+ :root[data-partner-transition]::view-transition-old(form-partner-meta),:root[data-partner-transition]::view-transition-old(form-partner-primary){animation:form-partner-fade-out var(--partner-transition-duration) ease both}
+ :root[data-partner-transition]::view-transition-new(form-partner-meta),:root[data-partner-transition]::view-transition-new(form-partner-primary){animation:form-partner-fade-in var(--partner-transition-duration) ease both}
+}
+@keyframes form-partner-title-out{to{opacity:0;transform:translateY(-8px)}}
+@keyframes form-partner-title-in{from{opacity:0;transform:translateY(8px)}}
+@keyframes form-partner-icon-out{to{opacity:0;transform:rotate(20deg)}}
+@keyframes form-partner-icon-in{from{opacity:0;transform:rotate(-20deg)}}
+@keyframes form-partner-content-out{to{opacity:0;transform:translateX(calc(-1 * var(--partner-travel)))}}
+@keyframes form-partner-content-in{from{opacity:0;transform:translateX(var(--partner-travel))}}
+@keyframes form-partner-fade-out{to{opacity:0}}
+@keyframes form-partner-fade-in{from{opacity:0}}
+@media(prefers-reduced-motion:reduce){:root[data-partner-transition]::view-transition-group(*),:root[data-partner-transition]::view-transition-old(*),:root[data-partner-transition]::view-transition-new(*){animation-duration:1ms!important}}
