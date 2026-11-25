@@ -632,3 +632,41 @@ for(const theme of ['light','dark'])test('History scoped metrics and shared summ
  await panel.getByRole('button',{name:'Est. 1RM',exact:true}).click();await expect(panel.locator('.history-metric-value strong')).toHaveText('101.33 kg');await panel.locator('.history-chart-inspect').selectOption('Earlier');await expect(panel.locator('.history-chart-output')).toContainText('88.67 kg');
  await page.setViewportSize({width:466,height:678});await card.click();const dialog=page.locator('#workout-summary');await expect(dialog).toBeVisible();await expect(dialog.locator('.history-unified-stats .progress-stat')).toHaveCount(4);await dialog.locator('.history-exercise-card > summary').click();await expect(dialog.locator('.history-set-table')).toContainText('70 × 8');
 });
+
+// Cross-theme runtime audit: actual computed CSS, not manifest-only contrast.
+async function renderedContrast(locator){
+ return locator.evaluate(e=>{
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=1;const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  const rgba=value=>{ctx.clearRect(0,0,1,1);ctx.fillStyle='#000';ctx.fillStyle=value;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data].map(n=>n/255)};
+  const over=(a,b)=>{const alpha=a[3]+b[3]*(1-a[3]);return alpha?[...a.slice(0,3).map((v,i)=>(v*a[3]+b[i]*b[3]*(1-a[3]))/alpha),alpha]:[0,0,0,0]};
+  let background=[1,1,1,1],ancestors=[];for(let n=e;n;n=n.parentElement)ancestors.unshift(n);
+  for(const n of ancestors)background=over(rgba(getComputedStyle(n).backgroundColor),background);
+  const foreground=over(rgba(getComputedStyle(e).color),background);
+  const lum=rgb=>rgb.slice(0,3).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((n,v,i)=>n+v*[.2126,.7152,.0722][i],0);
+  const a=lum(foreground),b=lum(background);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+ });
+}
+for(const theme of ['light','dark','paper-ink','ballet-pink','sage-botanical','peach-pop','charcoal-silver','midnight-violet','sapphire-night','obsidian-red'])for(const [width,height] of [[390,844],[890,626]])test('cross-theme runtime accessibility '+theme+' '+width,async({page})=>{
+ test.setTimeout(90000);const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width,height});await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);await page.goto(url);
+ const touch=async loc=>{await expect(loc).toBeVisible();const b=await loc.boundingBox();expect(b).not.toBeNull();expect(b.width).toBeGreaterThanOrEqual(43.9);expect(b.height).toBeGreaterThanOrEqual(43.9)};
+ const contrast=async(loc,min=4.5)=>{await expect(loc).toBeVisible();expect.soft(await renderedContrast(loc),theme+' '+width+' '+await loc.evaluate(e=>e.id||e.className||e.tagName)).toBeGreaterThanOrEqual(min)};
+ const noOverflow=async loc=>expect(await loc.evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+ const main=page.locator('main');await noOverflow(main);await touch(page.locator('#home-workout-card'));await touch(page.locator('#home-activity'));await contrast(page.locator('#home-greeting'),3);
+ await contrast(page.locator('#home-workout-meta'));await contrast(page.locator('#home-workout-action'));
+ await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
+ const gallery=page.locator('#theme-gallery'),selected=gallery.locator('input:checked');await expect(selected).toHaveCount(1);await expect(selected).toBeVisible();await noOverflow(gallery);
+ await touch(page.locator('[data-theme-category="light"]'));await touch(page.locator('[data-theme-category="dark"]'));
+ await page.keyboard.press('Tab');await selected.focus();await expect(selected).toBeFocused();
+ const focus=await selected.evaluate(e=>{const c=getComputedStyle(e.closest('.theme-choice'));return {style:c.outlineStyle,width:parseFloat(c.outlineWidth),visible:e.matches(':focus-visible')}});
+ expect(focus.visible).toBe(true);expect(focus.style).not.toBe('none');expect(focus.width).toBeGreaterThanOrEqual(2);
+ const last=gallery.locator('.theme-choice:visible').last();await last.scrollIntoViewIfNeeded();await expect(last).toBeInViewport();
+ await page.locator('#nav-workouts').click();await page.locator('.routine-entry').first().click();await expect(page.locator('#routine-detail')).toBeVisible();
+ await touch(page.locator('#detail-edit'));await touch(page.locator('#detail-start'));await contrast(page.locator('#detail-edit'),3);await contrast(page.locator('#detail-start'));
+ await page.locator('#detail-edit').click();await expect(page.locator('#routine-name')).toBeVisible();await expect(page.locator('#detail-start')).toBeDisabled();await contrast(page.locator('#detail-edit'),3);await page.locator('#detail-edit').click();
+ await page.locator('#detail-start').click();await expect(page.locator('#active-workout')).toBeVisible();await touch(page.locator('.session-finish'));await contrast(page.locator('.session-finish'));
+ const check=page.locator('.session-selected .session-check').first();await touch(check);await check.click();await expect(check).toHaveClass(/session-done/);
+ const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();await timer.getByRole('button',{name:'Minimize Active Workout'}).click();await expect(page.locator('.dock')).toBeVisible();
+ await page.locator('#nav-home').click();await expect(page.locator('#home-workout-action')).toHaveText('Resume');await contrast(page.locator('#home-workout-action'));await noOverflow(main);
+ const streak=page.locator('.streak-card');await streak.scrollIntoViewIfNeeded();await main.evaluate(e=>e.scrollTop=e.scrollHeight);await expect.poll(async()=>{const s=await streak.boundingBox(),t=await timer.boundingBox(),d=await page.locator('.dock').boundingBox();return !!s&&!!t&&!!d&&s.y+s.height<=Math.min(t.y,d.y)+2}).toBe(true);
+ expect(errors).toEqual([]);
+});
