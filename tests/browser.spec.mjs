@@ -666,7 +666,7 @@ for(const theme of ['light','dark','paper-ink','ballet-pink','sage-botanical','p
   await expect(page.locator('#home-page .form-headline')).toHaveCSS('color',ink);
   await expect(page.locator('#home-page .global-leading')).toHaveCSS('color',ink);
   await expect(page.locator('#nav-home')).toHaveCSS('color',ink);
-  await expect(page.locator('#home-workout-action')).toHaveCSS('background-color',ink);
+  await expect(page.locator('.home-workout-cta')).toHaveCSS('background-color',ink);
  }
  await contrast(page.locator('#home-workout-meta'));await contrast(page.locator('#home-workout-action'));
  await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
