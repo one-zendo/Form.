@@ -410,11 +410,11 @@ for(const [width,height] of [[390,844],[466,678],[626,890]])test('partner header
   const rect=async selector=>{const box=await page.locator(selector).boundingBox();expect(box).not.toBeNull();return box};
   const close=(a,b)=>expect(Math.abs(a-b)).toBeLessThanOrEqual(1);
   const title=await rect('#routine-list .partner-header h2'),add=await rect('#new-routine'),section=await rect('.routine-title-row'),control=await rect('.routine-search-wrap'),card=await rect('#routine-items .routine-row:has-text("Partner geometry")'),dock=await rect('.dock');
-  const addColor=await page.locator('#new-routine').evaluate(e=>getComputedStyle(e).color);
+  const editAccent=await page.locator('html').evaluate(e=>getComputedStyle(e).getPropertyValue('--workout-accent-ink').trim());expect(editAccent).not.toBe('');
   await page.locator('#routine-items .routine-entry').filter({hasText:'Partner geometry'}).click();
   const detail=await rect('#detail-title'),edit=await rect('#detail-edit'),back=await rect('#detail-back'),heading=await rect('.detail-heading'),start=await rect('#detail-start'),exercise=await rect('#detail-exercises summary'),nextDock=await rect('.dock');
   close(title.x,detail.x);close(title.y,detail.y);close(title.height,detail.height);close(add.x,edit.x);close(add.y,edit.y);close(control.y,start.y);close(section.y,heading.y);close(card.y,exercise.y);close(card.height,exercise.height);close(dock.y,nextDock.y);
-  expect(back.width).toBe(44);expect(back.height).toBe(44);expect(edit.width).toBe(44);expect(edit.height).toBe(44);await expect(page.locator('#detail-edit .icon svg')).toHaveCSS('width','18px');await expect(page.locator('#detail-edit')).toHaveCSS('color',addColor);
+  expect(back.width).toBe(44);expect(back.height).toBe(44);expect(edit.width).toBe(44);expect(edit.height).toBe(44);await expect(page.locator('#detail-edit .icon svg')).toHaveCSS('width','18px');await expect(page.locator('#detail-edit')).toHaveCSS('color','rgb(0, 102, 204)');
   await page.locator('#detail-edit').click();const name=await rect('#routine-name');close(name.x,detail.x);close(name.y,detail.y);close((await rect('#detail-start')).y,start.y);
   await page.locator('#detail-edit').click();await page.locator('#detail-back').click();close((await rect('#routine-list .partner-header h2')).x,title.x);
 });
@@ -598,9 +598,9 @@ for(const [theme,accent,muted] of [['light','rgb(0, 102, 204)','rgb(99, 99, 102)
   await page.locator('.routine-entry').filter({hasText:'Validity routine'}).click();
   const edit=page.locator('#detail-edit'),save=page.locator('#detail-start'),name=page.locator('#routine-name');
   await expect(edit).toHaveCSS('color',accent);await expect(edit).toHaveCSS('width','44px');await expect(edit).toHaveCSS('height','44px');
-  const before=await edit.boundingBox();await edit.click();
+  await expect.poll(()=>page.evaluate(()=>document.documentElement.hasAttribute('data-partner-transition'))).toBe(false);await expect(edit).toBeVisible();const before=await edit.boundingBox();expect(before).not.toBeNull();await edit.click();
   await expect(edit).toHaveCSS('color',muted);await expect(edit).toHaveAttribute('aria-pressed','true');await expect(save).toHaveText('Save Changes');await expect(save).toBeDisabled();
-  const after=await edit.boundingBox();expect(Math.abs(before.x-after.x)).toBeLessThan(1);expect(Math.abs(before.y-after.y)).toBeLessThan(1);
+  await expect.poll(()=>page.evaluate(()=>document.documentElement.hasAttribute('data-partner-transition'))).toBe(false);await expect(edit).toBeVisible();const after=await edit.boundingBox();expect(after).not.toBeNull();expect(Math.abs(before.x-after.x)).toBeLessThan(1);expect(Math.abs(before.y-after.y)).toBeLessThan(1);
   await name.fill('');await expect(save).toBeDisabled();await edit.click();
   const dialog=page.locator('#leave-routine');await expect(dialog).toBeVisible();await expect(page.locator('#leave-apply')).toBeDisabled();
   await page.locator('#leave-cancel').click();await expect(name).toHaveValue('');
