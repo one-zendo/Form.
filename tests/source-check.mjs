@@ -235,3 +235,11 @@ assert.ok(browser.includes('(fullSwipe||!recorded)&&session?.id===id'));
 assert.ok(css.includes('html[data-input-mode="pointer"]'));
 assert.ok(browser.includes('setInteractionMode("keyboard")'));
 console.log('Full swipe removal, undo and input-modality focus checks passed');
+
+assert.ok(browser.includes('if(!session||exerciseRemovalPending)return;cancelExerciseGesture()'));
+assert.ok(browser.includes('session!==d.sessionSnapshot'));
+assert.ok(browser.includes('sessionBlocked=sessionBlocked||blocked'));
+assert.ok(browser.includes('if(wasSelected){sessionSelection=at;sessionCollapsed=wasCollapsed}'));
+assert.ok(browser.includes('if(removedRest&&!next.restSet&&!next.restExercise&&!next.restUntil&&!next.restTotal)'));
+assert.ok(browser.includes('if(!storeSession(next))input.value=session.exercises[i].sets[j][k]'));
+console.log('Active workout edit, undo, stale gesture and save protection checks passed');
