@@ -1,0 +1,31 @@
+/* A user-confirmed local development reset. Recovery contains synthetic data only. */
+const cleanSlateKey="form-clean-slate-journal";
+function buildCleanSlate(now=new Date()){
+ const day=new Date(now);day.setHours(12,0,0,0);if(day.getTime()>=now.getTime())day.setDate(day.getDate()-1);
+ const templates=[
+ ["Push Day",[["Bench Press",50,8,2.5],["Incline Dumbbell Press",20,10,1],["Shoulder Press",25,8,1.25],["Lateral Raise",8,12,.5],["Triceps Pushdown",20,12,1]]],
+ ["Pull Day",[["Lat Pulldown",42.5,10,2.5],["Seated Cable Row",40,10,2.5],["Biceps Curl",12,10,.5],["Deadlift",75,6,2.5]]],
+ ["Leg Day",[["Squat",60,8,2.5],["Leg Press",100,10,5],["Leg Curl",30,12,1.25],["Romanian Deadlift",50,8,2.5]]],
+ ["Upper Body",[["Bench Press",50,8,2.5],["Lat Pulldown",42.5,10,2.5],["Shoulder Press",25,8,1.25],["Seated Cable Row",40,10,2.5]]]];
+ const dates=[];while(dates.length<48){if([1,2,4,6].includes(day.getDay()))dates.push(new Date(day));day.setDate(day.getDate()-1)}dates.reverse();
+ const records=dates.map((date,i)=>{const [name,exercises]=templates[[1,2,4,6].indexOf(date.getDay())],week=Math.floor(i/4),finished=date.getTime(),started=finished-(52+(i*7)%30)*60000;
+ return {id:"clean-slate-"+finished,name,description:"Synthetic development workout",started,finished,exercises:exercises.map(([name,base,reps,step],j)=>({name,sets:Array.from({length:j===0?4:3},(_,k)=>({weight:Math.max(0,base+step*Math.floor((week-(week===5?1:0))/2)-(k===3?step:0)),reps:Math.max(1,reps-(k===3?2:0)),rest:j===0?120:90,done:true}))}))}});
+ const monday=new Date(dates[0]);monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
+ return {records,schedules:[{from:localDay(monday),rest:[2,4,6]}]};
+}
+function validCleanSlate(p){return !!p&&uniqueRecordIds(p.records)&&p.records.length===48&&p.records.every(r=>validRoutine(r)&&r.id==="clean-slate-"+r.finished&&r.description==="Synthetic development workout"&&validDateStamp(r.started)&&validDateStamp(r.finished)&&r.finished>r.started&&r.exercises.length>0&&r.exercises.every(e=>e.sets.length>0&&e.sets.every(s=>s.done===true)))&&validSchedules(p.schedules)&&p.schedules.length===1}
+function completeCleanSlate(storage){
+ const raw=storage.getItem(cleanSlateKey);if(raw===null)return false;
+ const p=JSON.parse(raw);if(!validCleanSlate(p))throw Error("Invalid reset journal");
+ const target={"form-workout-history":encodeRecord(p.records),"form-routines":encodeRecord([]),"form-rest-schedules":encodeRecord(p.schedules)};
+ const keys=Array.from({length:storage.length},(_,i)=>storage.key(i));
+ for(const k of keys)if(k&&k.startsWith("form-")&&k!==cleanSlateKey&&!Object.hasOwn(target,k))storage.removeItem(k);
+ for(const [k,v] of Object.entries(target))storage.setItem(k,v);
+ storage.removeItem(cleanSlateKey);return true
+}
+function resetAndPopulate(storage,confirmed,now=new Date()){
+ if(confirmed!==true)return false;
+ if(storage.getItem(cleanSlateKey)!==null)return completeCleanSlate(storage);
+ const p=buildCleanSlate(now);if(!validCleanSlate(p))throw Error("Invalid generated history");
+ storage.setItem(cleanSlateKey,JSON.stringify(p));return completeCleanSlate(storage)
+}

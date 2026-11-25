@@ -4,7 +4,12 @@ import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
 const browser=readFileSync(new URL("../src/browser.js.txt",import.meta.url),"utf8");
 const core=Object.fromEntries(["storage","timer","calendar","progress","themes"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
-const assembled=[...Object.values(core),browser].join("\n");
+const developmentStorage=readFileSync(new URL('../src/development/reset.js.txt',import.meta.url),'utf8');
+const developmentUI=readFileSync(new URL('../src/development/ui.js.txt',import.meta.url),'utf8');
+const developmentMarkup=readFileSync(new URL('../src/development/dialog.js.txt',import.meta.url),'utf8');
+const developmentEntry=readFileSync(new URL('../src/development.js',import.meta.url),'utf8');
+const assembled=[...Object.values(core),'const storageRecoveryBlocked=false;',browser].join("\n");
+new vm.Script([...Object.values(core),developmentStorage,'const storageRecoveryBlocked=false;',browser,developmentUI].join('\n'));
 new vm.Script(assembled);
 for(const [name,code] of Object.entries(core)){new vm.Script(code);assert.ok(source.includes('./core/'+name+'.js.txt'));}
 assert.ok(source.includes('${browserScript}</script>'));
@@ -213,7 +218,7 @@ assert.equal(checkCurrent({getItem:()=> 'original'},'record',snapshots),'origina
 assert.throws(()=>checkCurrent({getItem:()=> 'changed'},'record',snapshots),/another tab/);
 assert.throws(()=>checkCurrent({getItem:()=> 'created'},'deleted',snapshots),/another tab/);
 assert.equal(checkCurrent({getItem:()=>null},'unknown',snapshots),null);
-const headerStart=source.indexOf('function securityHeaders('),headerEnd=source.indexOf('export default',headerStart);
+const headerStart=source.indexOf('function securityHeaders('),headerEnd=source.indexOf('return {fetch(request)',headerStart);
 const headers=vm.runInNewContext(source.slice(headerStart,headerEnd)+';securityHeaders')('testnonce');
 assert.equal(headers['X-Content-Type-Options'],'nosniff');
 assert.equal(headers['X-Frame-Options'],'DENY');
@@ -333,8 +338,8 @@ console.log('Shared view/edit routine dimensions and simplified exercise card pa
 
 assert.ok(!browser.includes(' · Sample routine'));
 assert.ok(!source.includes('>Hide Sample Routines</button>'));
-assert.ok(browser.includes('setAttribute("aria-checked",String(showSamples))'));
-console.log('Sample routine text hidden without removing sample toggle passed');
+assert.ok(!browser.includes("showSamples"));assert.ok(!source.includes('id="toggle-samples"'));
+console.log('Built-in sample routines removed');
 
 // Legacy Home must stay deleted; verify actual removal, not CSS hiding.
 for(const id of ['hero-label','hero-title','hero-sub','exercise-preview','home-recent','home-insight','home-history','home-progress','quick','start','routine']){assert.ok(!source.includes('id="'+id+'"'));assert.ok(!browser.includes('$("'+id+'")'))}
@@ -374,3 +379,19 @@ assert.equal(historyMetrics.historyExercisePoints(historyFixture('high-reps',900
 assert.equal(historyMetrics.historyExercisePoints(historyFixture('single',9000000,100,1),'Bench Press',[])[0].estimated,100);
 assert.equal(historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',Array.from({length:8},(_,i)=>historyFixture('old-'+i,1000000+i*10000,30,5))).length,5);
 console.log('Historical duration, previous sets, scoped chart metrics and estimated 1RM checks passed');
+
+const resetChecks=vm.runInNewContext(core.storage+'\n'+core.calendar+'\n'+developmentStorage+';({buildCleanSlate,validCleanSlate,resetAndPopulate,completeCleanSlate})');
+const resetDate=new Date(2026,10,25,13);
+const seeded=resetChecks.buildCleanSlate(resetDate);
+assert.equal(seeded.records.length,48);assert.ok(resetChecks.validCleanSlate(seeded));assert.ok(seeded.records.every(r=>r.finished<+resetDate));
+for(let failure=0;failure<12;failure++){
+ const m=new Map([['form-personal-name','old'],['form-routines','old'],['form-workout-history','old'],['form-workout-history-backup','old'],['form-active-workout','old'],['unrelated','keep']]);let n=0,fail=failure;
+ const store={get length(){return m.size},key:i=>[...m.keys()][i]??null,getItem:k=>m.get(k)??null,setItem(k,v){if(++n===fail)throw Error('interruption');m.set(k,v)},removeItem(k){if(++n===fail)throw Error('interruption');m.delete(k)}};
+ assert.equal(resetChecks.resetAndPopulate(store,false,resetDate),false);assert.equal(m.get('form-personal-name'),'old');
+ try{resetChecks.resetAndPopulate(store,true,resetDate)}catch{}
+ fail=0;if(m.has('form-clean-slate-journal'))resetChecks.completeCleanSlate(store);else if(m.has('form-personal-name'))resetChecks.resetAndPopulate(store,true,resetDate);
+ assert.equal(m.get('unrelated'),'keep');assert.equal(m.has('form-personal-name'),false);assert.equal(m.has('form-workout-history-backup'),false);assert.equal(m.has('form-active-workout'),false);assert.equal(m.has('form-clean-slate-journal'),false);assert.equal(JSON.parse(m.get('form-routines')).data.length,0);assert.equal(JSON.parse(m.get('form-workout-history')).data.length,48);
+}
+console.log('Explicit reset, synthetic history and interruption recovery checks passed');
+
+assert.ok(!source.includes('id="clean-slate-dialog"'));assert.ok(!source.includes('src/development'));assert.ok(!source.includes('./development'));assert.ok(!browser.includes('resetAndPopulate'));assert.ok(!core.storage.includes('buildCleanSlate'));assert.ok(!browser.includes('form-preview-page'));assert.ok(!source.includes('id="state"'));assert.ok(!source.includes('FORM. preview'));assert.ok(!css.includes('#toggle-samples'));assert.ok(!css.includes('.sample-switch'));assert.ok(!browser.includes('>Push Day</text>'));assert.ok(!browser.includes('>+12%</text>'));assert.ok(developmentEntry.includes('./development/reset.js.txt'));const devIds=[...developmentMarkup.matchAll(/\bid="([\w-]+)"/g)].map(m=>m[1]);for(const m of developmentUI.matchAll(/\$\("([\w-]+)"\)/g))assert.ok(ids.includes(m[1])||devIds.includes(m[1]));console.log('Clean release source and isolated development entry checks passed');

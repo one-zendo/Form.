@@ -2,10 +2,11 @@
   "name": "form",
   "private": true,
   "scripts": {
-    "build": "node --check src/index.js && npm test",
+    "build": "node --check src/index.js && node --check src/development.js && npm test",
     "deploy": "wrangler deploy",
     "test": "node tests/source-check.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "dev": "wrangler dev --config wrangler.development.jsonc --local"
   },
   "devDependencies": {
     "wrangler": "^4.0.0",
