@@ -440,7 +440,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 @media(prefers-reduced-transparency:reduce){#workouts-page :is(.workout-list-body,.routine-detail-body)::after{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(to top,var(--canvas),transparent);mask-image:none;-webkit-mask-image:none}}
 
 /* Partner headers: fixed grid, optical alignment and semantic icon colors. */
-#workouts-page{--partner-leading:28px;--partner-gap:var(--space-2);--partner-action:var(--touch-target)}
+:root{--partner-leading:28px;--partner-gap:var(--space-2);--partner-action:var(--touch-target)}
 #workouts-page #routine-list>.partner-header,#workouts-page #routine-detail .partner-header{display:grid;grid-template-columns:var(--partner-leading) minmax(0,1fr) var(--partner-action);column-gap:var(--partner-gap);align-items:center;justify-content:initial;height:var(--header-height);min-height:var(--header-height);margin:0}
 #workouts-page .partner-leading{grid-column:1;position:relative;display:grid;place-items:center;width:var(--partner-leading);height:var(--header-height);color:var(--system-blue);flex:none}
 #workouts-page .partner-glyph{display:block;width:24px;height:32px;flex:none;color:var(--system-blue)}
@@ -490,3 +490,24 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 :root:not([data-theme=light]) #rest-days-dialog #rest-days-save{background:var(--palette-dark-brand);color:var(--palette-dark-canvas)}
 :root:not([data-theme=light]) #workouts-page #routine-detail.is-editing #detail-start:disabled{background:var(--palette-dark-elevated);color:var(--muted)}
 }
+
+/* Global headline identity: the same glyph, slot, baseline and theme accent. */
+.global-leading{position:relative;display:grid;place-items:center;flex:0 0 var(--partner-leading);width:var(--partner-leading);height:var(--header-height);color:var(--nav-accent)}
+.global-leading .partner-glyph{display:block;width:24px;height:32px;flex:none;color:var(--nav-accent)}
+.global-page-header{display:grid;grid-template-columns:var(--partner-leading) minmax(0,1fr) auto;column-gap:var(--partner-gap);align-items:center;min-height:var(--header-height);height:var(--header-height)}
+.global-page-header h2,.global-profile-title,.global-brand h1,.global-session-heading h2{font:var(--type-bold) var(--type-page)/var(--header-height) var(--type-family);letter-spacing:var(--type-page-tracking);margin:0;min-width:0}
+.global-page-header h2{grid-column:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#profile-page>.global-profile-title{display:flex;gap:var(--partner-gap);align-items:center;height:var(--header-height)}
+#home-page .global-brand{grid-template-columns:var(--partner-leading) minmax(0,1fr);column-gap:var(--partner-gap);row-gap:var(--space-1);align-items:center}
+#home-page .global-brand>.global-leading{grid-column:1;grid-row:1}
+#home-page .global-brand>h1{grid-column:2;grid-row:1;line-height:var(--header-height)}
+#home-page .global-brand>.home-tagline{grid-column:2;grid-row:2}
+#home-page .home-header time{padding-top:var(--space-2)}
+.global-leading .global-back{position:absolute;inset:0 auto auto calc((var(--partner-leading) - var(--touch-target))/2);display:grid;place-items:center;width:var(--touch-target);min-width:var(--touch-target);height:var(--touch-target);min-height:var(--touch-target);padding:0;margin:0;color:var(--nav-accent);background:transparent}
+.global-wide-accent{display:none}
+.global-session-heading{display:flex;align-items:center;gap:var(--partner-gap);min-height:var(--header-height)}
+#active-workout .global-session-heading h2{line-height:var(--header-height);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#appearance-page .themes{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+#appearance-page .theme-choice{min-width:0}
+#appearance-page .theme-name{text-align:center;white-space:normal}
+@media(min-width:760px) and (orientation:landscape){.global-wide-accent{display:grid;place-items:center}}
