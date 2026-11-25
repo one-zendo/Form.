@@ -248,3 +248,6 @@ Restore the pre-sensor horizontal blue depletion and original shared wave mask, 
 
 ### Final horizontal drainage and ready alert
 Blue represents remaining recovery time and drains from right to left. Preserve the original subtle liquid edge and shared foreground mask. At completion hide the blue layer and transition to semantic green over 450ms; continuously pulse the outer glow every 1.6s while ready, ending when recovery restarts or the workout ends. Reduced Motion skips the transition and pulse. No gyroscope, canvas, or changes to timer geometry or deadline.
+
+### Workouts geometry consolidation
+Workouts Routines/History segmented control uses the shared 44px target plus 4px padding at each vertical edge (52px overall), 12px outer and 8px inner radius. Routine detail metadata uses the same 52px slot for partner transition alignment. Search and Start Empty Workout share 48px height and 12px radius; routine rows share 76px minimum height, 16px horizontal padding, 20px radius and 12px gaps. Centralize list geometry in the stylesheet and remove obsolete runtime quick-start rules; retain text-only routine rows, neutral header action, 18px action icons, 20px search and dock icons and 1.75px shared stroke. Preserve layouts, content and functionality. Browser and hardware validation required.

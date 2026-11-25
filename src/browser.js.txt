@@ -492,19 +492,10 @@ window.addEventListener("resize",queueFold);window.visualViewport?.addEventListe
 `;document.head.append(css)}
 
 {const style=el("style");style.textContent=`
-#workouts-page .workout-segments{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-1);background:color-mix(in srgb,var(--ink) 6%,var(--paper));padding:4px;border-radius:var(--radius-full);margin:0 0 var(--space-3)}
-#workouts-page .workout-segments button{min-height:var(--touch-target);font-size:var(--font-control);color:var(--muted);border-radius:var(--radius-full);font-weight:600}
-#workouts-page .workout-segments button[aria-pressed=true]{background:var(--paper);color:var(--ink);box-shadow:0 1px 4px var(--shadow-soft)}
-#workouts-page .routine-title-row{margin:0 0 var(--space-3)}#workouts-page .routine-title-row h3{font-size:var(--font-dialog-title);margin:0}
-#workouts-page #routine-items .routine-row{display:flex;align-items:center;gap:var(--space-2);background:var(--paper);border-radius:var(--radius-card);padding:0 var(--space-4);min-height:76px}
-#workouts-page #routine-items .routine-entry{flex:1;min-width:0;width:auto;text-align:left;padding:var(--space-3) 0;box-shadow:none;background:transparent;border:0;font-size:var(--type-card)}
-#workouts-page .routine-quick-start{display:grid;place-items:center;flex:0 0 44px;min-width:44px;width:44px;height:44px;position:relative;color:var(--system-blue);isolation:isolate;border-radius:var(--radius-full)}
-#workouts-page .routine-quick-start::before{content:"";position:absolute;inset:4px;background:var(--canvas);border-radius:var(--radius-full);z-index:-1}
-#workouts-page #empty-workout{background:var(--paper);border-radius:var(--radius-full);min-height:48px;margin-top:var(--space-3)}
 #workouts-page .workout-history-card{display:grid;gap:var(--space-2);width:100%;text-align:left;padding:var(--space-4);margin-bottom:var(--space-3)}
 #workouts-page .history-copy{display:grid;gap:var(--space-1);min-width:0}#workouts-page .history-check{color:var(--system-green);display:flex}
 #workouts-page.show-workout-history .workout-layout{display:block}#workouts-page.show-workout-history .workout-layout::before{display:none}#workouts-page.show-workout-history #routine-list{max-width:760px;margin:auto}
-@media(min-width:760px) and (orientation:landscape){#workouts-page .routine-quick-start{display:none}#workouts-page #routine-items .routine-row.selected{background:var(--system-selection)}#workouts-page #routine-list .routine-search-wrap{position:static;box-shadow:none}#workouts-page #routine-list>.row:first-child{position:static}}
+@media(min-width:760px) and (orientation:landscape){#workouts-page #routine-items .routine-row.selected{background:var(--system-selection)}#workouts-page #routine-list .routine-search-wrap{position:static;box-shadow:none}#workouts-page #routine-list>.row:first-child{position:static}}
 `;document.head.append(style)}
 
 {const style=el("style");style.textContent=`
