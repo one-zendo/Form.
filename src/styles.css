@@ -419,9 +419,35 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #workouts-page #sample-history .workout-history-card{display:grid;align-content:center;gap:var(--space-2);width:100%;min-height:var(--workout-row-height);text-align:left;padding:var(--space-4);margin:0;border-radius:var(--radius-card);background:var(--paper);box-sizing:border-box}
 #workouts-page .history-copy{display:grid;gap:var(--space-1);min-width:0;overflow-wrap:anywhere}
 #workouts-page .history-date{font-size:var(--font-caption);font-weight:var(--type-regular);color:var(--muted)}
+@media(max-width:759px),(orientation:portrait){
 #workouts-page.show-workout-history .workout-layout{display:block}
 #workouts-page.show-workout-history .workout-layout::before{display:none}
 #workouts-page.show-workout-history #routine-list{max-width:760px;margin:auto}
+}
+@media(min-width:760px) and (orientation:landscape){
+#workouts-page #sample-history .workout-history-card{position:relative}
+#workouts-page #sample-history .workout-history-card.selected{background:var(--system-selection)}
+#workouts-page #sample-history .workout-history-card.selected::before{content:"";position:absolute;inset-inline-start:5px;top:50%;transform:translateY(-50%);width:3px;height:34px;border-radius:var(--radius-full);background:var(--workout-accent);pointer-events:none}
+#workouts-page .history-detail:not([hidden]){display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden;isolation:isolate}
+#workouts-page .history-detail .routine-detail-header-area{flex:none;position:relative;z-index:2;background:var(--canvas);padding-bottom:calc(var(--space-4) - var(--edge-fade))}
+#workouts-page .history-partner-header{display:grid;grid-template-columns:var(--partner-leading) minmax(0,1fr);gap:var(--partner-gap);align-items:center;height:var(--header-height);margin:0}
+#workouts-page .history-detail-date{display:flex;align-items:center;min-height:var(--workout-segment-height);margin:var(--space-3) 0 0;font-size:var(--type-secondary)}
+#workouts-page .history-detail .routine-detail-body{position:relative;flex:1 1 0;min-height:0;min-width:0;overflow:hidden;isolation:isolate;display:grid;grid-template-rows:minmax(0,1fr)}
+#workouts-page .history-detail .routine-detail-scroll{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;padding-top:var(--edge-fade);padding-bottom:calc(var(--space-4) + var(--edge-fade));scroll-padding:var(--edge-fade) 0}
+#workouts-page .history-detail-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);margin-bottom:var(--space-4)}
+#workouts-page .history-detail-stats .progress-stat{background:var(--paper);border-radius:var(--radius-card);padding:var(--space-4);min-height:var(--workout-row-height);box-sizing:border-box}
+#workouts-page .history-detail-stats strong{font-size:var(--stat-value-size);font-weight:var(--type-semibold);font-variant-numeric:tabular-nums}
+#workouts-page .history-detail .detail-heading{min-height:var(--workout-section-height);margin:0 0 var(--space-3);align-items:center}
+#workouts-page .history-detail-exercises{display:grid;gap:var(--space-3)}
+#workouts-page .history-detail-exercises .detail-exercise{min-height:var(--workout-row-height);margin:0;padding:0 var(--space-4);border-radius:var(--radius-card);box-sizing:border-box}
+#workouts-page .history-detail-exercises .detail-exercise[open]{padding-bottom:var(--space-4)}
+#workouts-page .history-detail-exercises .detail-exercise>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);height:var(--workout-row-height);min-height:var(--workout-row-height);padding:0}
+#workouts-page .history-exercise-copy{display:grid;gap:var(--space-1);min-width:0;overflow-wrap:anywhere}
+#workouts-page .history-exercise-copy strong{font-size:var(--type-card);font-weight:var(--type-semibold)}
+#workouts-page .history-exercise-copy .muted{font-size:var(--type-secondary)}
+#workouts-page .history-set-row{display:grid;grid-template-columns:var(--space-6) repeat(2,minmax(0,1fr));gap:var(--space-2);min-height:var(--touch-target);align-items:center;text-align:center;font-variant-numeric:tabular-nums}
+#workouts-page .history-set-row.caption{min-height:var(--space-6);font-size:var(--font-caption)}
+}
 #workouts-page #empty-workout .icon svg{width:var(--icon-small);height:var(--icon-small);stroke-width:var(--icon-stroke)}
 #workouts-page .routine-search-wrap svg{width:var(--icon-standard);height:var(--icon-standard);stroke-width:var(--icon-stroke)}
 
