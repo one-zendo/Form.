@@ -280,7 +280,7 @@ console.log('Independent timer and navigation heights passed');
 assert.ok(source.includes('class="streak-title-row"'));
 assert.ok(browser.includes('if(done||rest)dot.append(streakIcon("check"))'));
 assert.ok(css.includes('.dot.rest{background:var(--system-blue);color:#fff}'));
-assert.ok(css.includes('.streak-trophy-button svg{width:24px;height:24px;stroke:currentColor'));
+assert.ok(css.includes('.streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size);stroke:currentColor'));
 console.log('Compact streak trophy and recovery checkmark styling passed');
 
 assert.ok(browser.includes('dot.append(streakIcon(selected?"check":"dumbbell"))'));
@@ -298,3 +298,9 @@ assert.ok(source.includes('import trophyIcon from "lucide/icons/trophy.svg"'));
 assert.ok(source.includes('<div class="row streak-footer"><span class="muted">Personal best</span>'));
 assert.ok(css.includes('#streak-title,#streak-best{color:var(--ink)}'));
 console.log('Single trophy and neutral streak typography passed');
+
+assert.ok(css.includes('--streak-trophy-size:18px'));
+assert.ok(css.includes('#rest-days-dialog>.row{justify-content:center}'));
+assert.ok(css.includes('#rest-days-dialog .rest-day-totals>div{justify-items:center;text-align:center}'));
+assert.ok(css.includes('#rest-days-dialog>p{font-size:var(--font-footnote);line-height:1.45;text-align:center'));
+console.log('Smaller trophy and centered rest-day dialog passed');
