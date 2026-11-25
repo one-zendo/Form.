@@ -300,7 +300,7 @@ html,body{touch-action:pan-y pinch-zoom}
 /* Pointer focus remains functional, but decorative rings are reserved for keyboard navigation. */
 html[data-input-mode="pointer"] :is(button,a,summary,[role="button"]):focus{outline:none!important}
 
-#routine-detail.is-editing #detail-edit{background:var(--system-blue);color:#fff}#routine-detail.is-editing #detail-start:disabled{background:var(--line);color:var(--muted);opacity:1}
+#routine-detail.is-editing #detail-edit{background:var(--system-red);color:#fff}#routine-detail.is-editing #detail-start:disabled{background:var(--line);color:var(--muted);opacity:1}
 
 /* Keep the entire routine header stationary; only the exercise body scrolls. */
 /* Give the dedicated exercise scrollport a definite available height in every orientation. */
