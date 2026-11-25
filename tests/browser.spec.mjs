@@ -481,34 +481,7 @@ test('history landscape shares routines workspace and preserves selection',async
 for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history search and independent routine query '+width,async({page})=>{await page.setViewportSize({width,height});await page.addInitScript(()=>{const now=new Date(2026,10,24,12).getTime();const record=(id,name,exercise,finished)=>({id,name,description:'',started:finished-3600000,finished,exercises:[{name:exercise,sets:[{weight:40,reps:10,rest:90,done:true}]}]});localStorage.setItem('form-workout-history',JSON.stringify({version:1,data:[record('new','Push Day','Bench Press',now),record('old','Pull Day','Lat Pulldown',now-86400000)]}));});await page.goto(url);await page.locator('#nav-workouts').click();const search=page.locator('#routine-search');await search.fill('Push');await page.getByRole('button',{name:'History',exact:true}).click();await expect(search).toHaveAttribute('placeholder','Search history');await expect(search).toHaveValue('');await expect(search.locator('..')).toHaveCSS('height','48px');await expect(search.locator('..')).toHaveCSS('border-radius','12px');const cards=page.locator('#sample-history .workout-history-card');await expect(cards).toHaveCount(2);await search.fill('lat pulldown');await expect(cards).toHaveCount(1);await expect(cards.first()).toContainText('Pull Day');if(width===890)await expect(page.locator('#history-detail h2')).toHaveText('Pull Day');await search.fill('2026-11-24');await expect(cards).toHaveCount(1);await expect(cards.first()).toContainText('Push Day');await search.fill('not found');await expect(cards).toHaveCount(0);if(width===890)await expect(page.locator('#history-detail')).toContainText('No matching workouts');await page.getByRole('button',{name:'Routines',exact:true}).click();await expect(search).toHaveValue('Push');await page.getByRole('button',{name:'History',exact:true}).click();await expect(search).toHaveValue('not found');});
 
 
- // Repeated real pointer activation during capsule transitions; retain the original chevron checks.
- for(const theme of ['light','dark'])test('repeated landscape timer capsule transitions '+theme,async({page})=>{
-  await page.setViewportSize({width:890,height:626});
-  await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);
-  await page.goto(url);await startFromHome(page);
-  const workout=page.locator('#active-workout'),copy=page.locator('.mini-workout > .mini-copy');
-  await expect(workout).toBeVisible();
-  await page.locator('.session-selected .session-check').first().click();
-  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
-  const original=await deadline();
-  expect(original).toBeGreaterThan(0);
-  for(let i=0;i<8;i++){
-   await copy.click();
-   await expect(copy,'minimize cycle '+i).toHaveAttribute('aria-expanded','false');
-   await expect(workout).toBeHidden();
-   await copy.click();
-   await expect(copy,'resume cycle '+i).toHaveAttribute('aria-expanded','true');
-   await expect(workout).toBeVisible();
-   expect(await deadline()).toBe(original);
-  }
-  await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
- });
-
-
- // Preserve real pointer activation and the original cross-tab regression assertions.
- for(const theme of ['light','dark'])test('repeated portrait cross-tab capsule '+theme,async({page},testInfo)=>{
-  test.setTimeout(90000);
-  await page.setViewportSize({width:626,height:890});
+ async function installCapsuleTrace(page){
   await page.addInitScript(()=>{
    const events=[];window.__formCapsuleTrace=events;
    const describe=n=>n instanceof Element?{tag:n.tagName,id:n.id,classes:n.getAttribute('class'),button:n.closest('button')?.getAttribute('aria-label')??n.closest('button')?.id??null}:null;
@@ -522,6 +495,45 @@ for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history
     document.addEventListener(type,e=>capture(e,'bubble'));
    }
   });
+ }
+ async function reportCapsuleTrace(page,testInfo){
+   const trace=await page.evaluate(()=>window.__formCapsuleTrace).catch(()=>[]);
+   await testInfo.attach('capsule-pointer-trace',{body:JSON.stringify(trace,null,2),contentType:'application/json'});
+   console.error('Capsule pointer trace (last 20 events): '+JSON.stringify(trace.slice(-20)));
+ }
+
+ // Repeated real pointer activation during capsule transitions; retain the original chevron checks.
+ for(const theme of ['light','dark'])test('repeated landscape timer capsule transitions '+theme,async({page},testInfo)=>{
+  await page.setViewportSize({width:890,height:626});
+  await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);
+  await installCapsuleTrace(page);
+  await page.goto(url);await startFromHome(page);
+  const workout=page.locator('#active-workout'),copy=page.locator('.mini-workout > .mini-copy');
+  await expect(workout).toBeVisible();
+  await page.locator('.session-selected .session-check').first().click();
+  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+  const original=await deadline();
+  expect(original).toBeGreaterThan(0);
+  try{
+  for(let i=0;i<8;i++){
+   await copy.click();
+   await expect(copy,'minimize cycle '+i).toHaveAttribute('aria-expanded','false');
+   await expect(workout).toBeHidden();
+   await copy.click();
+   await expect(copy,'resume cycle '+i).toHaveAttribute('aria-expanded','true');
+   await expect(workout).toBeVisible();
+   expect(await deadline()).toBe(original);
+  }
+  await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
+  }catch(error){await reportCapsuleTrace(page,testInfo);throw error}
+ });
+
+
+ // Preserve real pointer activation and the original cross-tab regression assertions.
+ for(const theme of ['light','dark'])test('repeated portrait cross-tab capsule '+theme,async({page},testInfo)=>{
+  test.setTimeout(90000);
+  await page.setViewportSize({width:626,height:890});
+  await installCapsuleTrace(page);
   await page.goto(url);await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);
   await startFromHome(page);
   const workout=page.locator('#active-workout'),timer=page.locator('.mini-workout'),copy=timer.locator(':scope > .mini-copy');
@@ -546,12 +558,7 @@ for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history
     expect(await deadline()).toBe(original);
    }
    await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
-  }catch(error){
-   const trace=await page.evaluate(()=>window.__formCapsuleTrace).catch(()=>[]);
-   await testInfo.attach('capsule-pointer-trace',{body:JSON.stringify(trace,null,2),contentType:'application/json'});
-   console.error('Capsule pointer trace (last 20 events): '+JSON.stringify(trace.slice(-20)));
-   throw error;
-  }
+  }catch(error){await reportCapsuleTrace(page,testInfo);throw error}
  });
 
 test('appearance gallery browses categories without applying a theme and persists all ten choices',async({page})=>{
