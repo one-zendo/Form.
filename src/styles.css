@@ -164,7 +164,7 @@ body:not(.training) main:has(#home-page:not([hidden])){
   gap:var(--space-3);padding-block:var(--space-2);margin-bottom:calc(var(--space-5) + var(--space-1));flex:none;
 }
 .home-brand{display:grid;grid-template-rows:auto auto;gap:var(--space-1);min-width:0}
-.home-header h1{font-size:22px;line-height:28px;letter-spacing:-.7px}
+
 .home-header time{display:grid;grid-template-rows:auto auto;gap:var(--space-1);text-align:right;font-weight:600;white-space:nowrap}
 #home-weekday{font-size:var(--font-body);line-height:28px}
 .home-tagline,#home-calendar-date{font-size:var(--font-footnote);line-height:18px}
@@ -359,8 +359,7 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 @media(max-height:550px){#home-page .home-workout-copy strong{font-size:var(--font-dialog-title)}}
 
 /* Unified page headlines and inline back navigation. */
-.home-header h1,#routine-list>.row:first-child h2,#progress-page>header h2,#profile-page>h2,.page-detail-header h2,#routine-detail :is(#detail-title,#routine-name),#active-workout .session-identity h2{font-size:var(--type-page);font-weight:var(--type-bold);letter-spacing:var(--type-page-tracking)}
-.home-header h1{line-height:var(--type-heading-line)}
+
 .page-detail-header{min-height:var(--header-height);height:var(--header-height);justify-content:flex-start;gap:var(--space-2)}
 .page-detail-header h2{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .page-back{margin:0;padding:0;flex:0 0 var(--touch-target);width:var(--touch-target);height:var(--touch-target);justify-content:center;align-items:center}
@@ -448,7 +447,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #workouts-page .partner-glyph{display:block;width:24px;height:32px;flex:none;color:var(--system-blue)}
 #workouts-page #detail-back{position:absolute;inset:0 auto auto calc((var(--partner-leading) - var(--touch-target))/2);display:grid;place-items:center;width:var(--touch-target);min-width:var(--touch-target);height:var(--touch-target);min-height:var(--touch-target);margin:0;padding:0;background:transparent;color:var(--system-blue)}
 #workouts-page .partner-wide-accent{display:none}
-#workouts-page #routine-list>.partner-header h2,#workouts-page #routine-detail .partner-header :is(#detail-title,#routine-name){grid-column:2;grid-row:1;min-width:0;width:100%;height:var(--header-height);min-height:var(--header-height);margin:0;padding:0;border:0;box-sizing:border-box;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:var(--type-bold) var(--type-page)/var(--header-height) var(--type-family);letter-spacing:var(--type-page-tracking);color:var(--ink)}
+#workouts-page #routine-list>.partner-header h2,#workouts-page #routine-detail .partner-header :is(#detail-title,#routine-name){grid-column:2;grid-row:1;min-width:0;width:100%;height:var(--header-height);min-height:var(--header-height);margin:0;padding:0;border:0;box-sizing:border-box;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--ink)}
 #workouts-page #routine-detail.is-editing .partner-header #routine-name{box-shadow:inset 0 0 0 1px var(--line);border:0;padding:0}
 #workouts-page .partner-header :is(#new-routine,#detail-edit){grid-column:3;grid-row:1;display:grid;place-items:center;width:var(--partner-action);height:var(--partner-action);min-height:var(--partner-action);min-width:var(--partner-action);padding:0;margin:0;border-radius:var(--radius-full);background:var(--paper);color:var(--ink)}
 #workouts-page .partner-header :is(#new-routine,#detail-edit) .icon svg{width:var(--icon-small);height:var(--icon-small)}
@@ -497,18 +496,18 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 .global-leading{position:relative;display:grid;place-items:center;flex:0 0 var(--partner-leading);width:var(--partner-leading);height:var(--header-height);color:var(--nav-accent)}
 .global-leading .partner-glyph{display:block;width:24px;height:32px;flex:none;color:var(--nav-accent)}
 .global-page-header{display:grid;grid-template-columns:var(--partner-leading) minmax(0,1fr) auto;column-gap:var(--partner-gap);align-items:center;min-height:var(--header-height);height:var(--header-height)}
-.global-page-header h2,.global-profile-title,.global-brand h1,.global-session-heading h2{font:var(--type-bold) var(--type-page)/var(--header-height) var(--type-family);letter-spacing:var(--type-page-tracking);margin:0;min-width:0}
+
 .global-page-header h2{grid-column:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #profile-page>.global-profile-title{display:flex;gap:var(--partner-gap);align-items:center;height:var(--header-height)}
 #home-page .global-brand{grid-template-columns:var(--partner-leading) minmax(0,1fr);column-gap:var(--partner-gap);row-gap:var(--space-1);align-items:center}
 #home-page .global-brand>.global-leading{grid-column:1;grid-row:1}
-#home-page .global-brand>h1{grid-column:2;grid-row:1;line-height:var(--header-height)}
+#home-page .global-brand>h1{grid-column:2;grid-row:1}
 #home-page .global-brand>.home-tagline{grid-column:2;grid-row:2}
 #home-page .home-header time{padding-top:var(--space-2)}
 .global-leading .global-back{position:absolute;inset:0 auto auto calc((var(--partner-leading) - var(--touch-target))/2);display:grid;place-items:center;width:var(--touch-target);min-width:var(--touch-target);height:var(--touch-target);min-height:var(--touch-target);padding:0;margin:0;color:var(--nav-accent);background:transparent}
 .global-wide-accent{display:none}
 .global-session-heading{display:flex;align-items:center;gap:var(--partner-gap);min-height:var(--header-height)}
-#active-workout .global-session-heading h2{line-height:var(--header-height);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 #appearance-page .themes{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 #appearance-page .theme-choice{min-width:0}
 #appearance-page .theme-name{text-align:center;white-space:normal}
@@ -548,9 +547,25 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 /* Approved FORM lockup. Centerline x=12, stroke edge x=13.5.
    A 24px slot leaves 10.5px to the title box; Inter glyph side bearings
    are accounted for by a small optical offset. Touch hit area remains 44px. */
-:root{--brand-title-optical-offset:-2px}
 .partner-glyph{width:var(--brand-glyph-width);height:var(--brand-glyph-height)}
 .partner-glyph path{stroke-width:var(--brand-stroke);stroke-linecap:round;stroke-linejoin:round}
 #workouts-page .partner-glyph,.global-leading .partner-glyph{width:var(--brand-glyph-width);height:var(--brand-glyph-height)}
-#workouts-page #routine-list>.partner-header h2,#workouts-page #routine-detail .partner-header :is(#detail-title,#routine-name),.global-page-header h2,#profile-page>.global-profile-title>span:last-child,#home-page .global-brand>h1,#active-workout .global-session-heading h2{transform:translateX(var(--brand-title-optical-offset))}
-#home-page .global-brand>.home-tagline{transform:translateX(var(--brand-title-optical-offset))}
+
+#home-page .global-brand>.home-tagline{translate:var(--brand-title-optical-offset) 0}
+
+/* One authoritative measurement rule for all primary headlines, including the
+   editable routine title. Individual layouts may position the title, not resize it. */
+:root{--brand-title-optical-offset:calc(var(--brand-optical-gap) - (var(--partner-leading) - var(--brand-glyph-width)/2 - var(--brand-stroke)/2) - 1.5px)}
+.form-headline,
+#workouts-page .partner-header .form-headline,
+#home-page .global-brand .form-headline,
+#progress-page .global-page-header .form-headline,
+#profile-shell .form-headline,
+#active-workout .global-session-heading .form-headline{
+ font:var(--type-bold) var(--type-page)/var(--header-height) var(--type-family);
+ letter-spacing:var(--type-page-tracking);color:var(--ink);
+ height:var(--header-height);min-height:var(--header-height);min-width:0;
+ margin:0;padding:0;box-sizing:border-box;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis;translate:var(--brand-title-optical-offset) 0;
+}
+#active-workout .global-session-heading{min-width:0}
