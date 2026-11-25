@@ -523,7 +523,6 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
  :root[data-partner-transition] :is(.workout-list-body,.routine-detail-body){view-transition-name:form-partner-content}
  :root[data-partner-transition]::view-transition{pointer-events:none}
  :root[data-partner-transition]::view-transition-group(*){animation-duration:var(--partner-transition-duration);animation-timing-function:var(--partner-transition-easing)}
- :root[data-partner-transition]::view-transition-group(form-partner-title),:root[data-partner-transition]::view-transition-group(form-partner-action){animation-name:none}
  :root[data-partner-transition]::view-transition-old(form-partner-title){animation:form-partner-title-out 280ms ease both}
  :root[data-partner-transition]::view-transition-new(form-partner-title){animation:form-partner-title-in 280ms ease both}
  :root[data-partner-transition]::view-transition-old(form-partner-action){animation:form-partner-icon-out 260ms ease both}
