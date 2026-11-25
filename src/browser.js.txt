@@ -260,14 +260,14 @@ body.training #active-workout:not([hidden]){height:100%;min-height:0;display:gri
 .session-drag-float .session-count-complete{color:var(--system-green)}
 .session-drag-float [hidden]{display:none!important}
 /* Feather the scroll boundary progressively; the pinned controls remain crisp. */
-#active-workout .session-pinned::after{content:"";position:absolute;top:100%;left:0;right:0;height:48px;pointer-events:none;opacity:1;background:linear-gradient(to bottom,var(--canvas) 0%,color-mix(in srgb,var(--canvas) 82%,transparent) 18%,color-mix(in srgb,var(--canvas) 42%,transparent) 46%,color-mix(in srgb,var(--canvas) 10%,transparent) 76%,transparent 100%);transition:opacity 120ms ease-out}
+#active-workout .session-pinned::after{content:"";position:absolute;top:100%;left:0;right:0;height:32px;pointer-events:none;opacity:1;background:linear-gradient(to bottom,var(--canvas) 0%,color-mix(in srgb,var(--canvas) 82%,transparent) 18%,color-mix(in srgb,var(--canvas) 42%,transparent) 46%,color-mix(in srgb,var(--canvas) 10%,transparent) 76%,transparent 100%);transition:opacity 120ms ease-out}
 @supports ((-webkit-backdrop-filter:blur(10px)) or (backdrop-filter:blur(10px))){
 #active-workout .session-pinned::after{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.88) 20%,rgba(0,0,0,.48) 48%,rgba(0,0,0,.12) 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.88) 20%,rgba(0,0,0,.48) 48%,rgba(0,0,0,.12) 78%,transparent 100%)}
 }
 @media(prefers-reduced-transparency:reduce){#active-workout .session-pinned::after{background:linear-gradient(to bottom,var(--canvas),transparent);-webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask-image:none;mask-image:none}}
 @media(prefers-reduced-motion:reduce){#active-workout .session-pinned::after{transition:none}}
 
-#active-workout .session-scroll{min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:grid;align-content:start;gap:var(--space-3);isolation:isolate}
+#active-workout .session-scroll{padding-top:var(--space-5);min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:grid;align-content:start;gap:var(--space-3);isolation:isolate}
 #active-workout .session-scroll::-webkit-scrollbar{display:none}
 
 /* Progressive floating-control backdrop: no unmasked blur edge.
