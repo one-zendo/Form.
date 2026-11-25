@@ -227,3 +227,6 @@ Use the shared dialog max width, radius, spacing, action height, day marker size
 
 ### Workouts / routine partner motion
 Keep header title, action, metadata and primary control anchored to shared geometry. Crossfade these parts with one global motion duration and easing; only the scrollable content translates a restrained 16px in the navigation direction. Preserve the live line-to-chevron glyph, dock, timer, and landscape split layout. Avoid overlapping page and partner animations; clean up interrupted transitions and respect reduced motion.
+
+### Home workout picker
+Use the same floating dialog dimensions, typography, motion, spacing and corner radius as Rest Days. Routine rows use elevated field surfaces and shared touch targets; Cancel is a quiet neutral action. Keep title and Cancel fixed while the choices scroll within the available viewport. No changes to workout start or routine creation behavior.

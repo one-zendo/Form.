@@ -126,10 +126,12 @@
 .has-session .home-workout-card{background:var(--home-workout-active)}
 .home-workout-cta{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-full);background:var(--home-workout-capsule);color:var(--home-workout-cta-ink,inherit);font-weight:600;flex:none}
 .has-session .home-workout-cta{background:var(--home-workout-resume-capsule,var(--home-workout-capsule))}
-#home-routine-picker{max-height:80dvh;overflow:auto}
-.home-picker-list{display:grid;gap:var(--space-2);margin:var(--space-4) 0}
-.home-picker-list button{background:var(--canvas);text-align:left;padding:var(--space-3);overflow-wrap:anywhere}
-#home-routine-picker>button{width:100%;color:var(--action);font-weight:600}
+#home-routine-picker{width:min(var(--dialog-max-width),calc(100% - 2 * var(--space-4)));max-height:min(80dvh,calc(100% - 2 * var(--space-4)));border-radius:var(--radius-dialog);padding:var(--space-4);text-align:center;overflow:hidden;box-sizing:border-box}
+#home-routine-picker[open]{grid-template-rows:auto minmax(0,1fr) auto;gap:var(--space-4)}
+#home-picker-heading{font-size:var(--font-dialog-title);font-weight:var(--type-semibold);line-height:var(--type-heading-line);letter-spacing:normal}
+.home-picker-list{display:grid;align-content:start;gap:var(--space-2);margin:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.home-picker-list button{background:var(--field-fill);text-align:left;padding:var(--space-2) var(--space-3);overflow-wrap:anywhere;min-height:var(--touch-target);font-size:var(--font-control);font-weight:var(--type-regular);border-radius:var(--radius-control);color:var(--ink);width:100%}
+#home-routine-picker>button{width:100%;min-height:var(--touch-target);color:var(--muted);font-size:var(--font-control);font-weight:var(--type-semibold);background:transparent}
 
 :root{--streak-fire:#FF9500;--streak-ink:#FF9500;--streak-on-fire:#FFFFFF;--recovery-ink:#0066CC;--recovery-fill:#E8F2FF}
 :root[data-theme=dark]{--streak-ink:#FF9500;--recovery-ink:#80BFFF;--recovery-fill:#20354D}
