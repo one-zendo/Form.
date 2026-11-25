@@ -354,3 +354,12 @@ test('added set inherits the latest edited values without requiring a screen reb
  const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
  expect(state.exercises[0].sets.at(-1)).toMatchObject({weight:37.5,reps:8,done:false});
 });
+
+
+test('exercise menu fits short landscape viewport',async({page})=>{
+ await page.setViewportSize({width:890,height:320});await page.goto(url);await startFromHome(page);
+ await page.locator('.session-selected .session-exercise-options').click();
+ const menu=page.locator('.session-exercise-popover');await expect(menu).toBeVisible();
+ const bounds=await menu.boundingBox();expect(bounds.y).toBeGreaterThanOrEqual(0);expect(bounds.y+bounds.height).toBeLessThanOrEqual(321);
+ await expect(menu.getByRole('button',{name:'Remove Exercise'})).toBeVisible();
+});
