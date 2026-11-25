@@ -318,3 +318,8 @@ assert.ok(browser.includes('editScroll=$("routine-detail-scroll").scrollTop'));
 assert.ok(css.includes('#routine-detail .routine-detail-body::before{content:"";position:absolute;inset:0 0 auto;height:24px;z-index:2;pointer-events:none;background:linear-gradient'));
 assert.ok(css.includes('#routine-detail:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;overflow:hidden'));
 console.log('Routine pinned header and permanent noninteractive fade checks passed');
+
+assert.ok(css.includes('#workouts-page:has(#routine-detail:not([hidden])),#workouts-page:has(#routine-detail:not([hidden])) .workout-layout{height:100%;min-height:0}'));
+assert.ok(css.includes('#workouts-page:has(#routine-detail:not([hidden])) .workout-layout{align-items:stretch;grid-template-rows:minmax(0,1fr)}'));
+assert.ok(css.includes('overflow:hidden;isolation:isolate;display:grid;grid-template-rows:minmax(0,1fr)'));
+console.log('Routine scrollport definite height across orientations passed');
