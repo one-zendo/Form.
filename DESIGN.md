@@ -203,3 +203,6 @@ This section supersedes earlier conflicting wordmark, theme, typography and head
 
 ### Headline consistency enforcement
 All primary page title text and the editable routine title use the shared `.form-headline` component class. Font family, weight, size, line-height, height, tracking and optical offset derive from the same root tokens; no per-page font sizing. The optical offset is calculated from the 10px target, glyph slot and stroke, with a 1.5px nominal glyph-bearing allowance. Verify actual glyph bounds in Inter on device; do not confuse box spacing with visible ink spacing. Primary headlines use a 44px title row; Home may additionally contain tagline and date. No changes to card or section title hierarchy.
+
+### Home headline alignment
+Home uses the same 44px primary title row and accent geometry as other pages. No additional vertical padding above the wordmark. Weekday aligns within the title row, date and tagline share the secondary row (18px line height), and wrapped taglines are allowed. Adaptive folded layouts reserve the actual measured brand height before the greeting and workout card. Preserve safe areas and global headline tokens.
