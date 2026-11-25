@@ -201,7 +201,7 @@ for(const [width,height] of [[466,678],[626,890],[890,626]])test('light adaptive
 
 for(const [width,height] of [[466,678],[626,890],[890,626]])test('Home aligned header and saved greeting '+width,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await page.evaluate(()=>{document.documentElement.dataset.theme="light";localStorage.setItem('form-personal-name','Alex');localStorage.setItem('form-preview-page','home');localStorage.setItem('form-preview-theme','light')});await page.reload();await expect(page.locator('.home-header h1')).toHaveText('FORM');await expect(page.locator('#home-greeting')).toHaveText('Hello, Alex.');await expect(page.locator('#date')).toHaveAttribute('datetime',/^\d{4}-\d{2}-\d{2}$/);await expect(page.locator('.home-tagline')).toHaveText('Train with focus, follow your progress.');await expect(page.locator('#home-greeting')).toBeVisible();await expect(page.locator('#home-workout-card')).toBeVisible();await page.locator('#nav-profile').click();await page.locator('#personal-open').click();await page.locator('#personal-name').fill('');await page.locator('#nav-home').click();await expect(page.locator('#home-greeting')).toHaveText('Hello.');await startFromHome(page);await page.locator('.session-selected .session-check').first().click();const timer=page.locator('.mini-workout');await expect(timer).toHaveCSS('background-color','rgb(229, 229, 234)');await page.evaluate(()=>document.documentElement.dataset.theme='dark');await expect(timer).toHaveCSS('background-color','rgb(36, 36, 46)')});
 
-for(const [width,height] of [[466,678],[626,890],[890,626]])test('weekly streak schedule persists '+width,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await page.locator('#nav-home').click();await page.locator('#home-activity').click();await expect(page.locator('#rest-days-dialog')).toBeVisible();await page.getByRole('button',{name:'Wednesday rest day'}).click();await page.getByRole('button',{name:'Sunday rest day'}).click();await expect(page.locator('#rest-training-total')).toHaveText('5');await page.locator('#rest-days-save').click();await expect(page.locator('#home-week-count')).toHaveCount(0);await page.reload();await expect(page.locator('#home-days .dot.rest')).toHaveCount(2);await page.locator('#home-activity').click();await expect(page.locator('#rest-days-effective')).toHaveText('Changes start next Monday.');await page.getByRole('button',{name:'Friday rest day'}).click();await page.locator('#rest-days-save').click();await expect(page.locator('#home-week-count')).toHaveCount(0);expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('form-rest-schedules')).data.map(x=>x.rest))).toEqual([[2,6],[2,4,6]])});
+for(const [width,height] of [[466,678],[626,890],[890,626]])test('weekly streak schedule persists '+width,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await page.locator('#nav-home').click();await page.locator('#home-activity').click();await expect(page.locator('#rest-days-dialog')).toBeVisible();await page.getByRole('button',{name:'Wednesday rest day'}).click();await page.getByRole('button',{name:'Sunday rest day'}).click();await expect(page.locator('#rest-training-total')).toHaveText('5');await page.locator('#rest-days-save').click();await expect(page.locator('#home-week-count')).toHaveCount(0);await page.reload();await expect(page.locator('#home-days .dot.rest')).toHaveCount(2);await page.locator('#home-activity').click();await expect(page.locator('#rest-days-effective')).toHaveText('Changes apply to this week. Previous weeks are preserved.');await page.getByRole('button',{name:'Friday rest day'}).click();await page.locator('#rest-days-save').click();await expect(page.locator('#home-week-count')).toHaveCount(0);expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('form-rest-schedules')).data.map(x=>x.rest))).toEqual([[2,4,6]])});
 
 test("streak card uses moon rest-day control and bright orange accent",async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await page.evaluate(()=>document.documentElement.dataset.theme="light");const control=page.locator("#home-activity");await expect(control).toBeVisible();await expect(control).toHaveAttribute("aria-label","Manage Rest Days");await expect(control.locator("svg")).toHaveCount(1);await expect(page.locator("#streak-title")).toHaveCSS("color","rgb(255, 149, 0)");await expect(page.locator("#streak-best")).toHaveCSS("color","rgb(255, 149, 0)");await control.click();await expect(page.locator("#rest-days-dialog")).toBeVisible()});
 
@@ -233,3 +233,51 @@ for(const theme of ['light','dark'])for(const [width,height] of [[390,844],[466,
  test('rest color mask follows countdown and is noninteractive',async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);await page.locator('.session-selected .session-check').first().click();const timer=page.locator('.mini-workout'),mask=timer.locator('.mini-color-mask');await expect(mask).toBeVisible();await expect(mask).toHaveAttribute('aria-hidden','true');await expect(mask).toHaveCSS('pointer-events','none');expect(await mask.evaluate(e=>e.inert)).toBe(true);const clip=()=>mask.evaluate(e=>getComputedStyle(e).clipPath);const initial=await clip();expect(initial).not.toBe('none');await expect.poll(clip).not.toBe(initial);await expect(mask.locator('.mini-name')).toHaveText(await timer.locator(':scope > .mini-copy .mini-name').innerText());await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(mask).toBeHidden();await expect(timer).toHaveAttribute('data-ready','true')});
 
 for(const [width,height] of [[466,678],[890,626]])test('active workout reorder preserves logged sets and rest '+width,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await startFromHome(page);await page.locator('.session-selected .session-check').first().click();const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);const before=await saved();expect(before.exercises.length).toBeGreaterThan(1);const headers=page.locator(width>height?'.session-choice[data-exercise-order]':'.session-card-select[data-exercise-order]');await headers.first().focus();await page.keyboard.press('Alt+ArrowDown');const after=await saved();expect(after.exercises[1]).toEqual(before.exercises[0]);expect(after.exercises[0]).toEqual(before.exercises[1]);expect(after.restUntil).toBe(before.restUntil);await expect(page.locator('.session-selected .session-exercise-name')).toHaveText(before.exercises[0].name);await page.reload();expect((await saved()).exercises).toEqual(after.exercises)});
+
+
+test('security policy permits FORM startup and uses a per-response nonce',async({page,request})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const response=await page.goto(url);const headers=response.headers();
+ expect(headers['x-content-type-options']).toBe('nosniff');
+ expect(headers['x-frame-options']).toBe('DENY');
+ const nonce=await page.locator('script[nonce]').evaluate(e=>e.nonce);
+ expect(nonce).toBeTruthy();expect(headers['content-security-policy']).toContain("'nonce-"+nonce+"'");
+ await expect(page.locator('#home-workout-card')).toBeVisible();
+ await startFromHome(page);await expect(page.locator('#active-workout')).toBeVisible();
+ expect(errors).toEqual([]);
+ const next=await request.get(url);expect(next.headers()['content-security-policy']).not.toBe(headers['content-security-policy']);
+ const post=await request.post(url);expect(post.status()).toBe(405);
+});
+
+test('rest deadline survives reload and undo clears the associated timer',async({page})=>{
+ await page.goto(url);await startFromHome(page);
+ const check=page.locator('.session-selected .session-check').first();await check.click();
+ const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
+ const before=await saved();expect(before.restUntil).toBeGreaterThan(Date.now());
+ await page.reload();expect((await saved()).restUntil).toBe(before.restUntil);
+ await expect(page.locator('.mini-workout')).toHaveAttribute('data-resting','true');
+ await page.locator('.session-selected .session-check').first().click();
+ expect((await saved()).restUntil).toBe(0);
+});
+
+test('another tab changing stored training records prevents stale writes',async({page,context})=>{
+ await page.goto(url);await startFromHome(page);
+ const second=await context.newPage();await second.goto(url);
+ await page.locator('.session-selected .session-check').first().click();
+ await expect(second.locator('#dialog')).toBeVisible();
+ await expect(second.locator('#message')).toContainText('another tab');
+ const saved=()=>page.evaluate(()=>localStorage.getItem('form-active-workout'));
+ const before=await saved();await second.locator('#dialog button').click();
+ await second.locator('.session-selected .session-check').first().click();
+ expect(await saved()).toBe(before);await second.close();
+});
+
+test('exercise picker exposes expanded state and viewport allows zoom',async({page})=>{
+ await page.goto(url);await page.locator('#nav-workouts').click();await page.locator('#new-routine').click();
+ const picker=page.locator('#show-exercise-picker');
+ await expect(picker).toHaveAttribute('aria-expanded','false');await picker.click();
+ await expect(picker).toHaveAttribute('aria-expanded','true');
+ await expect(page.locator('#exercise-picker')).toBeVisible();
+ const viewport=await page.locator('meta[name=viewport]').getAttribute('content');
+ expect(viewport).not.toContain('user-scalable=no');expect(viewport).not.toContain('maximum-scale=1');
+});
