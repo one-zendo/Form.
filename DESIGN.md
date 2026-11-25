@@ -275,3 +275,6 @@ Portrait exercise disclosures are independent; landscape retains single selectio
 
 ### Compact portrait scroll clearance
 On short portrait viewports without a hinge, keep the dashboard's intrinsic two-row minimum height plus the shared gap. With the persistent timer visible, place the existing page clearance inside the scrolling Home content rather than relying on outer scroll-container padding; scroll padding uses the same token. Preserve the timer and dock dimensions, touch targets and larger layouts. Default completed sets and progress segments use system green (#34C759); Graphite Lime retains lime. Browser tests retain the full streak-card clearance requirement in both themes at 320×480.
+
+### Architecture refinement — Phase 1
+Remove the permanently hidden legacy Home hero, preview, quick-start controls, recent-workout card and progress-insight card with their obsolete handlers and rendering. Retain the current two-card Home, workout picker, active session, streak and rest-day behavior. Keep shared styling, storage and progress calculations used elsewhere. Compact portrait may scroll, with both idle and active streak-card clearance still checked; larger layouts retain no-scroll checks. This is a cleanup, not a visual redesign.

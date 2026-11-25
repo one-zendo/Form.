@@ -335,3 +335,6 @@ assert.ok(!browser.includes(' · Sample routine'));
 assert.ok(!source.includes('>Hide Sample Routines</button>'));
 assert.ok(browser.includes('setAttribute("aria-checked",String(showSamples))'));
 console.log('Sample routine text hidden without removing sample toggle passed');
+
+// Legacy Home must stay deleted; verify actual removal, not CSS hiding.
+for(const id of ['hero-label','hero-title','hero-sub','exercise-preview','home-recent','home-insight','home-history','home-progress','quick','start','routine']){assert.ok(!source.includes('id="'+id+'"'));assert.ok(!browser.includes('$("'+id+'")'))}
