@@ -251,3 +251,6 @@ Supersedes horizontal liquid depletion. The blue fill is anchored to the capsule
 
 ### Fluid Recovery — replenishment direction
 Supersedes vertical drainage. Water starts at the bottom and fills upward as recovery elapses. The existing remaining-time fraction remains authoritative; only the waterline mapping is inverted, including the flat Reduced Motion fallback and shared foreground mask. At completion the blue layer disappears and the capsule uses its existing full semantic green ready state, zero countdown, Continue Workout label and ready pulse. Reset begins a fresh fill; skip immediately enters ready state. Retain the same gyroscope slosh, sensor lifecycle, timer controls, dimensions and typography.
+
+### Realistic Fluid Recovery slosh
+Supersedes subtle ±16px motion. Screen-relative orientation drives a strong 54px equilibrium tilt with bounded 68px overshoot, underdamped inertia and a secondary spring rebound. The surface uses 48 segments, directional wall rise, small residual ripples and a clipped capsule area correction to preserve the visible fill amount relative to a flat waterline. Near empty/full, taper deformation. Keep the timer deadline, upward fill, green ready state, stationary label/controls, 72px capsule and reduced-motion fallback unchanged. This is a lightweight visual approximation, not a full fluid dynamics simulation.
