@@ -138,7 +138,7 @@ function collapseWorkoutTransition(source,target,reverse,complete,prepare,previo
   const elements=[mini,dock],saved=elements.map(n=>({transition:n.style.transition,translate:n.style.translate,opacity:n.style.opacity,willChange:n.style.willChange,zIndex:n.style.zIndex,animation:n.style.animation,display:n.style.display,visibility:n.style.visibility,pointerEvents:n.style.pointerEvents}));
   elements.forEach(n=>{n.style.transition="none";n.style.willChange="translate,opacity"});
   if(prepare)prepare();
-  mini.style.zIndex="1001";dock.style.zIndex="999";
+  mini.style.zIndex="1002";dock.style.zIndex="1001";
   // Preserve timer animation (including the ready pulse) and live rest state.
   const after={timer:mini.getBoundingClientRect(),dock:dock.getBoundingClientRect()};
   const dockExits=!!before.dock.width&&!after.dock.width;
@@ -160,8 +160,10 @@ function collapseWorkoutTransition(source,target,reverse,complete,prepare,previo
     const tx=after.timer.left+timerX,ty=after.timer.top+timerY;
     const x=source.left+(tx-source.left)*p,y=source.top+(ty-source.top)*p;
     const width=w+(target.width-w)*p,height=h+(target.height-h)*p;
-    const left=(w-width)/2,right=w-width-left,bottom=h-height;
-    const corner=Math.min(target.height/2,width/2,height/2)*(1-Math.pow(1-p,2));
+    // Keep the outgoing workout surface above the moving timer, never in the dock gap.
+    const visibleHeight=Math.min(height,Math.max(0,ty-y));
+    const left=(w-width)/2,right=w-width-left,bottom=h-visibleHeight;
+    const corner=Math.min(target.height/2,width/2,visibleHeight/2)*(1-Math.pow(1-p,2));
     overlay.style.transform="translate3d("+(x-source.left-left)+"px,"+(y-source.top)+"px,0)";
     overlay.style.clipPath="inset(0px "+right+"px "+bottom+"px "+left+"px round "+corner+"px)";
     const blurPhase=Math.max(0,Math.min(1,(p-.10)/.75));
