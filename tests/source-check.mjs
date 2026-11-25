@@ -266,3 +266,8 @@ assert.equal(undoIndex([{name:'A'},{name:'A'}],1,{before:'A'}),1);
 assert.ok(browser.includes('animation.oncancel=()=>{if(completed)return;'));
 assert.ok(browser.includes('maxHeight:"calc(100dvh - 24px)",overflowY:"auto"'));
 console.log('Ambiguous rest recovery, delayed cancellation, undo placement and short viewport menu checks passed');
+
+assert.ok(browser.includes('const EXERCISE_HOLD_MS=350;'));
+assert.ok(browser.includes('cancelExerciseGesture();closeExerciseSwipe();if(sessionSelection===i)'));
+assert.ok(browser.includes('if(end===index){sessionCollapsed=d.originalCollapsed;renderSession()}'));
+console.log('Exercise tap versus hold and selection cleanup checks passed');
