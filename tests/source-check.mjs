@@ -250,3 +250,10 @@ assert.ok(browser.includes('for(const [header,value] of d.headers)'));
 assert.ok(browser.includes('session.exercises[index]===menuExercise&&anchor.isConnected'));
 assert.ok(browser.includes('if(restCard)restCard.hidden=!left'));
 console.log('Active workout live set defaults, gesture cleanup and stale menu checks passed');
+
+const restOwner=vm.runInNewContext(core.timer+';normalizeRestOwner');
+const ownerState={exercises:[{name:'Squat',sets:[{done:true},{done:false}]}],restExercise:'Squat',restUntil:10000,restTotal:9000};
+assert.equal(restOwner(ownerState).restSet.set,0);
+ownerState.restSet={exercise:0,set:1};restOwner(ownerState);assert.equal(ownerState.restUntil,0);assert.equal(ownerState.exercises[0].sets[0].done,true);
+assert.ok(browser.includes('dropCancel?.()'));assert.ok(browser.includes('normalizeRestOwner(recoverRecord(sessionKey'));
+console.log('Rest ownership recovery and interrupted drop cleanup checks passed');
