@@ -66,3 +66,16 @@ for(const width of [100,240,320,700]){
 }
 for(const [dx,dy,open,expected] of [[2,1,false,'pending'],[-30,3,false,'swipe'],[-3,30,false,'scroll'],[30,3,false,'scroll'],[30,3,true,'swipe'],[-10,10,false,'scroll']])assert.equal(gesture.exerciseGestureDirection(dx,dy,open),expected);
 console.log('Exercise swipe geometry and direction regression checks passed');
+
+const css=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8');
+const globalTokens=new Map([...css.matchAll(/(--[\w-]+):([^;}]+)/g)].map(m=>[m[1],m[2]]));
+for(const [key,value] of Object.entries({'radius-card':'20px','radius-dialog':'24px','radius-control':'12px','font-body':'17px','touch-target':'44px','motion-swipe':'260ms','motion-glide':'230ms','motion-drop':'200ms','motion-collapse':'280ms'}))assert.equal(globalTokens.get('--'+key),value);
+assert.ok(!browser.includes(':root{--motion-fast:'),'Motion tokens must live in the global stylesheet');
+assert.ok(!browser.includes('animation:finish-enter'),'Removal dialog must use a defined animation');
+assert.ok(browser.includes('@keyframes form-finish-float-in'));
+assert.ok(browser.includes('prefers-reduced-motion:reduce){.exercise-remove-confirm[open]{animation:none}'));
+const motionSource=browser.slice(0,browser.indexOf('function motionAllowed'));
+const motion=vm.runInNewContext(motionSource+';formMotion',{document:{documentElement:{}},getComputedStyle:()=>({getPropertyValue:key=>globalTokens.get(key)||''})});
+for(const key of ['fast','tab','back','edit','standard','sheet','collapse','settle','celebrate','swipe','glide','drop'])assert.ok(Number.isFinite(motion[key])&&motion[key]>0,'Invalid motion token '+key);
+for(const key of ['ease','spring','gesture-ease','system-ease'])assert.ok(motion[key].startsWith('cubic-bezier('));
+console.log('Global design token and motion regression checks passed');
