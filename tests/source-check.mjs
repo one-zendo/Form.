@@ -287,3 +287,9 @@ assert.ok(browser.includes('dot.append(streakIcon(selected?"check":"dumbbell"))'
 assert.ok(css.includes('.rest-day-option[aria-pressed=true] .dot{background:var(--system-blue);color:#fff}'));
 assert.ok(source.includes('class="rest-total-icon recovery-total-icon"'));
 console.log('Rest-day picker matches streak styling and recovery summary');
+
+assert.equal((source.match(/from "lucide\/icons\/dumbbell\.svg"/g)||[]).length,1);
+assert.ok(source.includes('id="streak-dumbbell">${icon("dumbbell")}'));
+assert.ok(source.includes('training-total-icon" aria-hidden="true">${icon("dumbbell")}'));
+assert.ok(source.includes('aria-label="Animate training streak flame">${icons.flame}'));
+console.log('Shared Lucide dumbbell and flame sources passed');
