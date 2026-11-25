@@ -13,9 +13,9 @@ Use `npm run test:design` for navigation, global headline geometry and theme gal
 
 These are selections of the existing Playwright suite, not replacement tests. `npm run test:browser` still runs the entire suite. For a focused theme edit, run the themes selection before release. Use Actions → FORM iteration checks → Run workflow to select a lane/area after this workflow reaches the default branch.
 
-**FORM checks / verify** remains the release gate: full build (including source/unit tests), Cloudflare production dry run, WebKit setup, full browser suite, failure artifacts. It runs for all pull requests (including iteration branches), merge queue checks, manual dispatch and pushes to every branch except the two iteration prefixes. Main pushes always receive the full check. No production files, product code, test definitions or production deployment configuration are changed by this workflow optimization.
+**FORM checks / verify** remains the release gate. CSS-only diffs use the existing targeted design suite; all other changes, manual dispatches and merge queue checks use the full browser suite. Both lanes retain the build, source tests and Cloudflare dry run.
 
-For rapid iteration, keep work on the iteration branch until ready for review; opening a pull request triggers the full release gate, and additional PR updates trigger it again. Do not merge until the gate succeeds for the current PR revision.
+For rapid iteration, keep work on the iteration branch until ready for review; opening a pull request triggers the appropriate release lane, and additional PR updates trigger it again. Do not merge until the gate succeeds for the current PR revision.
 
 ## Interactive preview
 
@@ -29,6 +29,6 @@ No preview job publishes the release Worker or alters the production Worker conf
 
 ## Required GitHub administration (owner action)
 
-A workflow does not itself enforce branch protection. In Settings → Branches (or Rules → Rulesets), protect `main`: require a pull request, require the existing full `verify` status check from FORM checks (select the exact check shown by GitHub), require an up-to-date branch, prohibit force pushes and deletion, and disallow bypass where supported. Do not require the lightweight iteration job as a substitute. Verify that an unsuccessful or missing full check blocks merging, including for administrators. Confirm the production hosting integration deploys only from main after that gate; do not change production hosting automatically.
+A workflow does not itself enforce branch protection. In Settings → Branches (or Rules → Rulesets), protect `main`: require a pull request, require the existing `verify` status check from FORM checks (select the exact check shown by GitHub), require an up-to-date branch, prohibit force pushes and deletion, and disallow bypass where supported. Do not require the lightweight iteration job as a substitute. Verify that an unsuccessful or missing release check blocks merging, including for administrators. Confirm the production hosting integration deploys only from main after that gate; do not change production hosting automatically.
 
 The connected GitHub integration cannot administer branch protection. Until the owner enables the rule, this gate is a documented process and an automatic PR check, not a server-enforced merge restriction. Do not merge unvalidated work. The dedicated hosted preview also remains unavailable until its separate account and credentials are configured.
