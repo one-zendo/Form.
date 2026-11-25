@@ -269,3 +269,6 @@ Use the same 40:60 two-column grid, 32px workspace gap and divider as Routines a
 
 ### Shared Routines and History search
 Reuse the same mounted search control and its 48px height, 12px radius, 16px horizontal padding, 8px icon gap and 20px/1.75px search icon across both sections and all viewport sizes. Change only the placeholder and accessible label; maintain separate in-memory queries for each section. History filters actual records by workout name, exercise name and localized/ISO recorded dates, case-insensitively, matching all whitespace-separated terms. Keep newest-first order, select the first filtered result when necessary, and clear stale detail content when there are no matches. Preserve existing compact summary and unfolded landscape read-only split view. No data mutation.
+
+### Regression alignment
+Portrait exercise disclosures are independent; landscape retains single selection. Closing an open card moves selection to the most recently opened remaining card if present. Keep the approved palette, swipe-face padding, compact icon-free Start Workout, accessible sample-routine switch, and short-screen scrolling. Regression checks measure settled geometry, actual card dimensions, current semantic roles and countdown fraction; retain persistence, touch and reduced-motion coverage.
