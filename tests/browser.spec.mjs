@@ -68,6 +68,7 @@ for(const mode of ['legacy','backup','invalid']){
    if(mode==='backup')localStorage.setItem('form-routines-backup',JSON.stringify({version:1,data:[routine]}));
   },{mode,routine:storedRoutine});
   await page.reload();
+  await page.locator('#nav-workouts').click();
   if(mode==='invalid'){
    await page.locator('#new-routine').click();
    await expect(page.locator('#routine-status')).toContainText('not being saved');
@@ -146,7 +147,7 @@ for(const [width,height] of [[466,678],[626,890],[890,626]]){
   await page.locator('.session-toolbar .session-finish').click();await expect(page.locator('#finish-workout')).toBeVisible();await page.locator('#finish-confirm').click();
   await expect(page.locator('#workout-summary')).toBeVisible();await expect(page.locator('#summary-stats')).toContainText('Completed sets');await page.locator('#summary-done').click();
   await page.locator('#nav-progress').click();await expect(page.locator('#progress-history button')).toHaveCount(1);await page.locator('#progress-history button').first().click();await expect(page.locator('#workout-summary')).toBeVisible();await page.locator('#summary-done').click();
-  await page.reload();await expect(page.locator('#progress-page')).toBeVisible();await expect(page.locator('#progress-history button')).toHaveCount(1);
+  await page.reload();await expect(page.locator('#home-page')).toBeVisible();await page.locator('#nav-progress').click();await expect(page.locator('#progress-history button')).toHaveCount(1);
  });
 }
 
@@ -256,13 +257,15 @@ test('rest deadline survives reload and undo clears the associated timer',async(
  const before=await saved();expect(before.restUntil).toBeGreaterThan(Date.now());
  await page.reload();expect((await saved()).restUntil).toBe(before.restUntil);
  await expect(page.locator('.mini-workout')).toHaveAttribute('data-resting','true');
+ await expect(page.locator('#home-page')).toBeVisible();
+ await page.getByRole('button',{name:'Resume Active Workout'}).click();
  await page.locator('.session-selected .session-check').first().click();
  expect((await saved()).restUntil).toBe(0);
 });
 
 test('another tab changing stored training records prevents stale writes',async({page,context})=>{
  await page.goto(url);await startFromHome(page);
- const second=await context.newPage();await second.goto(url);
+ const second=await context.newPage();await second.goto(url);await second.getByRole('button',{name:'Resume Active Workout'}).click();
  await page.locator('.session-selected .session-check').first().click();
  await expect(second.locator('#dialog')).toBeVisible();
  await expect(second.locator('#message')).toContainText('another tab');
@@ -280,4 +283,22 @@ test('exercise picker exposes expanded state and viewport allows zoom',async({pa
  await expect(page.locator('#exercise-picker')).toBeVisible();
  const viewport=await page.locator('meta[name=viewport]').getAttribute('content');
  expect(viewport).not.toContain('user-scalable=no');expect(viewport).not.toContain('maximum-scale=1');
+});
+
+
+test('fresh launch returns Home without discarding an active session or routine draft',async({page})=>{
+ await page.goto(url);
+ await page.locator('#nav-workouts').click();await page.locator('#new-routine').click();
+ await page.locator('#routine-name').fill('Keep this draft');
+ const draft=await page.evaluate(()=>localStorage.getItem('form-routine-draft'));
+ await page.reload();await expect(page.locator('#home-page')).toBeVisible();
+ await expect(page.locator('#routine-editor')).toBeHidden();await expect(page.locator('dialog[open]')).toHaveCount(0);
+ expect(await page.evaluate(()=>localStorage.getItem('form-routine-draft'))).toBe(draft);
+ await startFromHome(page);await page.locator('.session-selected .session-check').first().click();
+ const session=await page.evaluate(()=>localStorage.getItem('form-active-workout'));
+ await page.reload();await expect(page.locator('#home-page')).toBeVisible();await expect(page.locator('#active-workout')).toBeHidden();
+ await expect(page.locator('.mini-workout')).toBeVisible();await expect(page.locator('#home-workout-action')).toHaveText('Resume');
+ expect(await page.evaluate(()=>localStorage.getItem('form-active-workout'))).toBe(session);
+ expect(await page.evaluate(()=>localStorage.getItem('form-routine-draft'))).toBe(draft);
+ await page.getByRole('button',{name:'Resume Active Workout'}).click();await expect(page.locator('#active-workout')).toBeVisible();
 });
