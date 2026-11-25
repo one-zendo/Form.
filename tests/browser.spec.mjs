@@ -710,3 +710,14 @@ test('release preserves existing records, profile and theme across a fresh launc
  await page.locator('#nav-workouts').click();await expect(page.locator('.routine-entry')).toHaveCount(1);await page.getByRole('button',{name:'History',exact:true}).click();await expect(page.locator('.workout-history-card')).toHaveCount(1);
  expect(await page.evaluate(keys=>Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),Object.keys(saved))).toEqual(saved);
 });
+
+for(const origin of ['http://127.0.0.1:8787','http://127.0.0.1:8788'])test('Graphite Lime Home Screen icon is correctly served '+origin,async({page,request})=>{
+ await page.goto(origin);
+ await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href','/apple-touch-icon.png?v=2');
+ await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('sizes','180x180');
+ await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href','/apple-touch-icon.png?v=2');
+ const response=await request.get(origin+'/apple-touch-icon.png?v=2');expect(response.status()).toBe(200);expect(response.headers()['content-type']).toBe('image/png');
+ const bytes=await response.body();expect(bytes.subarray(0,8).toString('hex')).toBe('89504e470d0a1a0a');expect(bytes.readUInt32BE(16)).toBe(180);expect(bytes.readUInt32BE(20)).toBe(180);
+ const {createHash}=await import('node:crypto');expect(createHash('sha256').update(bytes).digest('hex')).toBe('30624e78000e184ca5e038b9acae434f50d238253d6e0f5d51781630211b0e79');
+ const head=await request.head(origin+'/apple-touch-icon.png?v=2');expect(head.status()).toBe(200);expect(head.headers()['content-type']).toBe('image/png');expect((await head.body()).length).toBe(0);
+});
