@@ -230,3 +230,6 @@ Keep header title, action, metadata and primary control anchored to shared geome
 
 ### Home workout picker
 Use the same floating dialog dimensions, typography, motion, spacing and corner radius as Rest Days. Routine rows use elevated field surfaces and shared touch targets; Cancel is a quiet neutral action. Keep title and Cancel fixed while the choices scroll within the available viewport. No changes to workout start or routine creation behavior.
+
+### Selection dialog final hierarchy
+Home workout selection uses elevated routine rows (44px minimum touch target, 8px gaps, 12px horizontal padding, shared control radius). Separate the scrollable routines from centered, transparent secondary actions with a single semantic divider and 16px major spacing. Start Empty Workout and Create Routine use the theme action ink; Cancel uses muted ink. Secondary actions retain 44px minimum targets with zero extra row gap. No decorative icons or new color overrides. Hide the divider when there are no routine choices.
