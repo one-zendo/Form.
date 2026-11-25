@@ -412,8 +412,8 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 
 #workouts-page #routine-detail .detail-heading{height:var(--workout-section-height);min-height:var(--workout-section-height);margin:0 0 var(--space-3);align-items:center}
 #workouts-page #routine-detail .detail-heading #show-exercise-picker{min-height:var(--workout-section-height);height:var(--workout-section-height);width:auto;padding:0;flex:none}
-#workouts-page #detail-exercises{display:grid;gap:var(--space-3);margin:0 0 var(--space-4)}
-#workouts-page #detail-exercises .detail-exercise{display:block;margin:0;padding:0 var(--space-4);border-radius:var(--radius-card)}
+#workouts-page #detail-exercises{display:flex;flex-direction:column;align-items:stretch;gap:var(--space-3);margin:0 0 var(--space-4);min-width:0}
+#workouts-page #detail-exercises .detail-exercise{display:block;flex:0 0 auto;min-width:0;min-height:var(--workout-row-height);margin:0;padding:0 var(--space-4);border-radius:var(--radius-card);box-sizing:border-box}
 #workouts-page #detail-exercises .detail-exercise[open]{padding-bottom:var(--space-4)}
 #workouts-page #detail-exercises .detail-exercise>summary{height:var(--workout-row-height);min-height:var(--workout-row-height);padding:0}
 #workouts-page #routine-detail #detail-exercises .routine-set-row:not(.caption){height:var(--workout-set-row-height);min-height:var(--workout-set-row-height)}
@@ -590,7 +590,8 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 #profile-shell:not(.detail-open){max-width:none;width:100%}
 #progress-page,#progress-page .progress-layout{min-width:0;width:100%}
 #profile-page,#personal-page,#appearance-page{padding-bottom:var(--space-2)}
-#workouts-page .workout-list-scroll,#workouts-page #routine-detail .routine-detail-scroll{padding-bottom:var(--space-2)}
+#workouts-page .workout-list-scroll{padding-bottom:var(--space-2)}
+#workouts-page #routine-detail .routine-detail-scroll{padding-bottom:calc(var(--space-4) + var(--edge-fade));scroll-padding-bottom:calc(var(--space-4) + var(--edge-fade));min-width:0}
 /* If content cannot fit vertically, prefer scrolling to clipping or reducing
    headline / interactive control sizes. Keep true hinge layout independent. */
 @media(max-height:620px) and (orientation:portrait){
