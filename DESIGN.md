@@ -3,10 +3,10 @@
 Train with focus, follow your progress
 
 ## Visual identity
-- Apple Health-inspired, minimalist, native-feeling interface; spacious layouts, clear hierarchy, system typography, subtle separators and rounded controls.
+- Apple Health-inspired, minimalist, native-feeling interface; spacious layouts, clear hierarchy, Inter typography, subtle separators and rounded controls.
 - Use Lucide icons, restrained semantic colors, translucent surfaces and subtle shadows.
 - Light palette: canvas #F2F2F7, paper #FFFFFF, ink #111114, muted #636366, action #006DD6, brand #0088FF, success #34C759, insight #9339C7, danger #FF383C, warning #FF8D28.
-- Graphite-lime dark palette: canvas #17171F, paper #24242E, ink #FFFFFF, muted #92929C, accent #B0FF00, insight #B69CFF, danger #FF354D, warning #E9B75B.
+- Graphite Lime palette: canvas #141414, paper #222222, elevated #2E2E2E, ink #F5F5F5, muted #A3A3A3, accent #B0FF00, danger #FF6961, timer #0088FF, success #30D158, warning #FFB340.
 
 ## Interaction
 - Smooth restrained spring-like motion for inline editing, expansion and exercise swaps; preserve scroll position and avoid unnecessary modals.
@@ -31,7 +31,7 @@ Train with focus, follow your progress
 The preceding design principles remain authoritative.
 
 ### Typography
-Native system typography (San Francisco on Apple platforms). Proposed baseline sizes/weights: wordmark 34/750, large title 34/700, page title 28/700, section heading 22/650, headline 17/600, body 17/400, supporting 15/400, caption 12/400. Scale with accessibility preferences; use tabular numerals for timers, weights and repetitions.
+Inter is the approved cross-platform typeface. Baseline sizes/weights: wordmark 28/700, large title 34/700, page title 28/700, section heading 22/650, headline 17/600, body 17/400, supporting 15/400, caption 12/400. Scale with accessibility preferences; use tabular numerals for timers, weights and repetitions.
 
 ### Icon sizing
 Official Lucide only. Default 24px/2 stroke; small 16–20px, prominent 28–32px, standalone 48–64px. Preserve rounded caps and joins and existing optical stroke policy. Accessible labels and minimum 44-point touch targets. ChatGPT specimens are illustrative, not authoritative icon assets.
@@ -58,7 +58,7 @@ Design, wireframe, prototype and test distinct compact/folded, unfolded portrait
 Maintain one shared application core, workout data model, business logic, reusable components and design tokens across folded/compact, unfolded portrait and unfolded landscape. Every applicable feature, design update, interaction improvement and bug fix must propagate across all three configurations. Layout-specific composition and sizing may differ to suit available space; avoid duplicated implementations and divergent functionality. Review and test all three configurations for every applicable change before marking it complete, including state continuity during folding and rotation. Document any necessary layout-specific exception explicitly.
 
 ## Wordmark refinement
-The displayed brand wordmark is exactly **FORM.** (uppercase with a terminal period). Apply consistently across all screens, themes and adaptive layouts. The tagline remains unchanged.
+The displayed brand wordmark is exactly **FORM** (uppercase, without a terminal period). Apply consistently across all screens, themes and adaptive layouts. The tagline remains unchanged.
 
 ## Profile icon refinement
 Use standalone monochrome official Lucide icons in Profile settings rows, without colored background tiles. Follow theme-aware neutral foreground colors; reserve accent colors for meaningful selection and status. Apply across all Duo configurations.
@@ -188,3 +188,15 @@ Streak card finishing refinement: use a neutral moon icon as the rest-day schedu
 Home workout card: remove redundant 'Workout in progress' label and green live dot; active orange card and Resume pill already establish state/action. Remove redundant right arrow from both Start and Resume pill. Keep workout name, elapsed minutes, completed/total sets, CTA pill, existing card geometry, color, and active workout behavior. Status is still conveyed by active orange card; no timer/session logic changes.
 
 Streak card final compact layout: remove weekly count and progress bar entirely; rename Longest streak to Personal best. Retain computed current streak title, weekly day markers, recovery Moon control, personal-best calculation and persisted schedule. This removes only redundant display, not weekly goal/streak logic.
+
+## Approved brand lockup and global headline system — 2026-11-24
+This section supersedes earlier conflicting wordmark, theme, typography and headline specifications in this document.
+
+- Wordmark: uppercase FORM, no period; Inter Bold 700, 28px base size, tracking -0.7px.
+- Signature accent: 3px stroke, 24px centerline length, rounded caps and joins, visually centered in a 44px header. Same stroke for logo, main-page headlines and back chevrons. The 24×32 SVG uses line path M12 4 L12 16 L12 28 and back path M16 7 L7 16 L16 25.
+- Optical spacing target: 10px from visible stroke edge to visible first-letter ink, not merely CSS gap. The implementation uses a 24px slot, zero grid gap and shared -2px title optical offset; inspect real Inter glyph bounds on device and refine globally if necessary. Maintain a 44px invisible back hit area independently.
+- Theme options: Default (blue #0088FF) and Graphite Lime (lime #B0FF00), using identical geometry and component hierarchy. Neutral surfaces and semantic danger, timer, success and warning colors preserve their respective roles.
+- Typography: Inter throughout the web app, weights 400/600/700 for body, controls/card titles and headlines. Self-host pinned Fontsource Inter variable font, OFL 1.1; retain full copyright/license notice at /licenses/inter.txt and with native distribution. Use system fallback only when font unavailable or missing a glyph. Preserve accessibility and tabular numerals.
+- Brand scaling: enlarge the complete lockup proportionally for external assets; do not keep literal 3px at arbitrary scales. Do not add gradients, shadows, decorative outlines, or arbitrary variations. The current app icon is a legacy asset until a separately approved vector icon is generated.
+- Home tagline: Train with focus, follow your progress. Align with wordmark text. Use the signature accent on all primary page titles; detail pages morph to back chevron; landscape split panes keep the line.
+- Partner motion: 320ms content transition, 280ms glyph morph, 28px travel, stationary chrome, reversible swipe feedback, no overshoot; reduced-motion fallback. Verify on actual devices in both themes before declaring visual acceptance.
