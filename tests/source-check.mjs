@@ -350,3 +350,15 @@ for(const {id,palette:p} of themeManifest){
   for(const [fg,bg] of [[p.action,p.onAction],[p.ink,p.paper],[p.muted,p.paper],[p.success,p.paper],[p.warning,p.paper],[p.danger,p.paper]])assert.ok(contrast(fg,bg)>=4.5,id+' insufficient contrast '+fg+' / '+bg);
 }
 console.log('Ten theme identities and manifest text/action contrast checks passed');
+
+const monthly=vm.runInNewContext(core.calendar+';monthlyTrainingDays');
+const monthPlan=[{from:'2026-11-02',rest:[2]},{from:'2026-11-16',rest:[4]}];
+const monthRecords=[{finished:new Date('2026-11-04T12:00:00').getTime(),exercises:[{sets:[{done:true}]}]},{finished:new Date('2026-11-26T12:00:00').getTime(),exercises:[{sets:[{done:true}]}]}];
+const monthData=monthly(2026,10,new Date('2026-11-25T18:00:00'),monthRecords,monthPlan);
+assert.equal(monthData.offset,6);assert.equal(monthData.days.length,30);
+assert.equal(monthData.days[3].state,'done');assert.equal(monthData.days[10].state,'rest');assert.equal(monthData.days[17].state,'none');assert.equal(monthData.days[19].state,'rest');assert.equal(monthData.days[24].today,true);assert.equal(monthData.days[25].state,'future');
+assert.equal(monthly(2024,1,new Date('2024-03-01T12:00:00'),[],[]).days.length,29);
+assert.equal(monthly(2026,1,new Date('2026-03-01T12:00:00'),[],[]).days.length,28);
+const liveSample={started:0,exercises:[{name:'Squat',sets:[{done:false}]}]};
+const liveKey=refreshChecks.homeRefreshKey(liveSample,null,1000);liveSample.exercises[0].sets[0].done=true;assert.equal(refreshChecks.sameRefreshKey(liveKey,refreshChecks.homeRefreshKey(liveSample,null,1000)),false);
+console.log('Monthly calendar historical schedules, month boundaries and live Home progress cache passed');
