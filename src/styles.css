@@ -207,3 +207,15 @@ body.mini-visible #home-page .streak-card .dot{width:28px;height:28px}
 @media(prefers-contrast:more){#active-workout,.mini-workout{--system-blue:#1E6EF4;--system-green:#008932}}
 @media(prefers-contrast:more) and (prefers-color-scheme:dark){:root:not([data-theme=light]) :is(#active-workout,.mini-workout){--system-blue:#5CB8FF;--system-green:#4AD968}}
 @media(prefers-contrast:more){:root[data-theme=dark] :is(#active-workout,.mini-workout){--system-blue:#5CB8FF;--system-green:#4AD968}:root[data-theme=light] :is(#active-workout,.mini-workout){--system-blue:#1E6EF4;--system-green:#008932}}
+
+/* Completed set: one semantic success surface, no nested input boxes. */
+#active-workout .set-line:not(.caption){border-radius:var(--radius-small);transition:background-color 180ms ease,color 180ms ease}
+#active-workout .set-line.logged-set{background:color-mix(in srgb,var(--system-green) 8%,transparent)}
+#active-workout .set-line.logged-set input{background:transparent;color:var(--ink)}
+#active-workout .set-line.logged-set>span:first-child{color:var(--ink)}
+#active-workout .set-line:not(.logged-set):not(.caption) input:not(:focus),#active-workout .set-line:not(.logged-set):not(.caption)>span:first-child{color:var(--muted)}
+#active-workout .set-line input:focus{color:var(--ink);outline:2px solid var(--system-blue);outline-offset:-2px}
+#active-workout .session-check.session-done .session-check-glyph{background:var(--system-green);border-color:var(--system-green);color:#fff}
+#active-workout .session-segment.filled{background:var(--system-green)}
+#active-workout .session-segment.partial{background:color-mix(in srgb,var(--system-green) 45%,var(--line))}
+@media(prefers-reduced-motion:reduce){#active-workout .set-line:not(.caption){transition:none}}
