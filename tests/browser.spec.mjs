@@ -11,7 +11,7 @@ for(const [name,width,height] of [['folded',466,678],['portrait',626,890],['land
   await page.locator('#nav-profile').click();
   await page.locator('#appearance-open').click();
   await expect(page.locator('#appearance-page')).toBeVisible();
-  await page.locator('input[name="theme"][value="dark"]').check();
+  await page.locator('[data-theme-category="dark"]').click();await page.locator('input[name="theme"][value="dark"]').check();
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
   await page.locator('#nav-workouts').click();
   await expect(page.locator('#routine-list')).toBeVisible();
@@ -474,7 +474,7 @@ test('finish dialog uses shared geometry and graphite accent',async({page})=>{aw
 
 test('graphite continue workout uses lime ready palette',async({page})=>{await page.setViewportSize({width:466,height:678});await page.addInitScript(()=>localStorage.setItem('form-preview-theme','dark'));await page.goto(url);await startFromHome(page);await page.locator('.session-selected .session-check').first().click();const timer=page.locator('.mini-workout');await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(timer).toHaveAttribute('data-ready','true');await expect(timer).toHaveCSS('background-color','rgb(176, 255, 0)');await expect(timer).toHaveCSS('color','rgb(23, 23, 31)');await expect.poll(()=>timer.evaluate(e=>getComputedStyle(e).animationIterationCount.includes('infinite'))).toBe(true);});
 
-for(const theme of ['light','dark'])test('discard dialog respects theme and compact geometry '+theme,async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();await page.locator('input[name="theme"][value="'+theme+'"]').check();await page.locator('#nav-home').click();await startFromHome(page);await page.locator('.session-toolbar .session-finish').click();const dialog=page.locator('#finish-workout');await dialog.locator('#finish-discard').click();await expect(dialog).toHaveClass(/discard-mode/);await expect(dialog.locator('#finish-copy')).toHaveText('This workout will not be saved. This action cannot be undone.');await expect(dialog.locator('#finish-confirm')).toHaveCSS('background-color',theme==='dark'?'rgb(255, 105, 97)':'rgb(213, 16, 40)');await expect(dialog.locator('#finish-confirm')).toHaveCSS('color',theme==='dark'?'rgb(23, 23, 31)':'rgb(255, 255, 255)');await expect(dialog.locator('#finish-keep')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');await expect(dialog.locator('#finish-keep')).toHaveCSS('margin-top','-8px');await dialog.locator('#finish-keep').click();await expect(dialog).not.toHaveClass(/discard-mode/);await expect(dialog.locator('#finish-heading')).toHaveText('Finish workout?');});
+for(const theme of ['light','dark'])test('discard dialog respects theme and compact geometry '+theme,async({page})=>{await page.setViewportSize({width:466,height:678});await page.goto(url);await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();await page.locator('[data-theme-category="'+theme+'"]').click();await page.locator('input[name="theme"][value="'+theme+'"]').check();await page.locator('#nav-home').click();await startFromHome(page);await page.locator('.session-toolbar .session-finish').click();const dialog=page.locator('#finish-workout');await dialog.locator('#finish-discard').click();await expect(dialog).toHaveClass(/discard-mode/);await expect(dialog.locator('#finish-copy')).toHaveText('This workout will not be saved. This action cannot be undone.');await expect(dialog.locator('#finish-confirm')).toHaveCSS('background-color',theme==='dark'?'rgb(255, 105, 97)':'rgb(213, 16, 40)');await expect(dialog.locator('#finish-confirm')).toHaveCSS('color',theme==='dark'?'rgb(23, 23, 31)':'rgb(255, 255, 255)');await expect(dialog.locator('#finish-keep')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');await expect(dialog.locator('#finish-keep')).toHaveCSS('margin-top','-8px');await dialog.locator('#finish-keep').click();await expect(dialog).not.toHaveClass(/discard-mode/);await expect(dialog.locator('#finish-heading')).toHaveText('Finish workout?');});
 
 test('history landscape shares routines workspace and preserves selection',async({page})=>{await page.setViewportSize({width:890,height:626});await page.addInitScript(()=>{const now=Date.now();const record=(id,name,finished)=>({id,name,description:'',started:finished-3600000,finished,exercises:[{name:'Bench Press',sets:[{weight:40,reps:10,rest:90,done:true}]}]});localStorage.setItem('form-workout-history',JSON.stringify({version:1,data:[record('new','Push Day',now),record('old','Pull Day',now-86400000)]}));});await page.goto(url);await page.locator('#nav-workouts').click();await page.getByRole('button',{name:'History',exact:true}).click();const panel=page.locator('#history-detail'),cards=page.locator('#sample-history .workout-history-card');await expect(panel).toBeVisible();await expect(cards).toHaveCount(2);await expect(panel.locator('h2')).toHaveText('Push Day');await expect(panel.locator('details[open]')).toHaveCount(0);await cards.last().click();await expect(panel.locator('h2')).toHaveText('Pull Day');await expect(cards.last()).toHaveAttribute('aria-current','true');await expect(page.locator('#workout-summary')).toBeHidden();await panel.locator('summary').first().click();await expect(panel.locator('details[open]')).toHaveCount(1);await page.setViewportSize({width:626,height:890});await expect(panel).toBeHidden();await cards.last().click();await expect(page.locator('#workout-summary')).toBeVisible();await page.locator('#summary-close').click();await page.setViewportSize({width:890,height:626});await expect(panel).toBeVisible();await expect(panel.locator('h2')).toHaveText('Pull Day');await page.getByRole('button',{name:'Routines',exact:true}).click();await expect(panel).toBeHidden();await expect(page.locator('#routine-detail')).toBeVisible();});
 
@@ -553,3 +553,40 @@ for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history
    throw error;
   }
  });
+
+test('appearance gallery browses categories without applying a theme and persists all ten choices',async({page})=>{
+  test.setTimeout(90000);
+  await page.setViewportSize({width:466,height:678});
+  await page.goto(url);
+  await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
+  const root=page.locator('html'),gallery=page.locator('#theme-gallery');
+  const choices=[['light','studio-blue','light','rgb(242, 242, 247)'],['paper-ink','paper-ink','light','rgb(240, 238, 232)'],['ballet-pink','ballet-pink','light','rgb(255, 240, 245)'],['sage-botanical','sage-botanical','light','rgb(240, 245, 236)'],['peach-pop','peach-pop','light','rgb(255, 244, 235)'],['dark','graphite-lime','dark','rgb(23, 23, 31)'],['charcoal-silver','charcoal-silver','dark','rgb(20, 20, 20)'],['midnight-violet','midnight-violet','dark','rgb(24, 21, 34)'],['sapphire-night','sapphire-night','dark','rgb(16, 21, 34)'],['obsidian-red','obsidian-red','dark','rgb(18, 18, 18)']];
+  await expect(gallery.locator('.theme-choice')).toHaveCount(10);
+  for(const [value,id,scheme,canvas] of choices){
+    const before=await root.getAttribute('data-theme-id');
+    await page.locator('[data-theme-category="'+scheme+'"]').click();
+    await expect(root).toHaveAttribute('data-theme-id',before);
+    await expect(gallery.locator('.theme-choice:visible')).toHaveCount(5);
+    await gallery.locator('input[value="'+value+'"]').check();
+    await expect(root).toHaveAttribute('data-theme-id',id);
+    await expect(root).toHaveAttribute('data-theme',scheme);
+    await expect(page.locator('body')).toHaveCSS('background-color',canvas);
+    expect(await page.evaluate(()=>localStorage.getItem('form-preview-theme'))).toBe(value);
+  }
+  await page.reload();await expect(root).toHaveAttribute('data-theme-id','obsidian-red');
+  await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
+  await expect(page.locator('[data-theme-category="dark"]')).toHaveAttribute('aria-pressed','true');
+  await page.setViewportSize({width:890,height:626});
+  await expect(gallery.locator('.theme-choice:visible')).toHaveCount(5);
+  expect(await gallery.evaluate(e=>e.scrollWidth<=e.clientWidth+1)).toBe(true);
+  await page.locator('[data-theme-category="light"]').click();await gallery.locator('input[value="light"]').check();
+  await expect(root).toHaveAttribute('data-theme-id','studio-blue');
+  await expect(page.locator('body')).toHaveCSS('background-color','rgb(242, 242, 247)');
+  expect(await root.evaluate(e=>e.style.getPropertyValue('--theme-action'))).toBe('');
+});
+test('appearance legacy and canonical preference migration',async({page})=>{
+  for(const [stored,id,scheme] of [['light','studio-blue','light'],['dark','graphite-lime','dark'],['studio-blue','studio-blue','light'],['graphite-lime','graphite-lime','dark'],['system','graphite-lime','dark'],['unknown','studio-blue','light']]){
+    await page.goto(url);await page.evaluate(v=>localStorage.setItem('form-preview-theme',v),stored);await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-theme-id',id);await expect(page.locator('html')).toHaveAttribute('data-theme',scheme);
+  }
+});
