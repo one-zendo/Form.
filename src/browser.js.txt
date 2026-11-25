@@ -407,7 +407,7 @@ body[data-home-fold] #home-page .home-workout-card{flex-direction:column;justify
 body[data-home-fold] #home-page .home-workout-copy{flex:none}
 body[data-home-fold] #home-page .streak-card .dot{width:clamp(20px,calc((var(--fold-b-width) - 72px)/7),28px);height:clamp(20px,calc((var(--fold-b-width) - 72px)/7),28px)}
 body[data-home-fold] #home-page .streak-card .days{margin-block:var(--space-2)}
-body[data-home-fold] #home-page .streak-trophy-button svg{width:24px;height:24px}
+body[data-home-fold] #home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}
 body[data-home-fold] #home-page .streak-heading h3{font-size:var(--font-body)}
 body[data-home-fold]:not(.training):has(#home-page:not([hidden])) .dock{left:var(--fold-nav-center)!important;width:min(440px,var(--fold-nav-width))!important;bottom:var(--fold-nav-bottom)!important;transition:none}
 body[data-home-fold]:not(.training):has(#home-page:not([hidden])) .mini-workout{left:var(--fold-timer-center)!important;width:min(440px,var(--fold-timer-width))!important;bottom:var(--fold-timer-bottom)!important;transition:none}
