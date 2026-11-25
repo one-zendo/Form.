@@ -194,7 +194,19 @@ test('routine cards select details without redundant quick start controls',async
 
 test('active workout semantic set styling across themes and layouts',async({page})=>{test.setTimeout(90000);for(const [width,height] of [[466,678],[626,890],[890,626]]){await page.setViewportSize({width,height});await page.goto(url);await page.evaluate(()=>localStorage.clear());await page.reload();await startFromHome(page);const rows=page.locator('.session-selected .set-line').filter({has:page.locator('input')});const row=rows.first(),unfinished=rows.nth(1);await row.locator('.session-check').click();for(const theme of ['dark','light']){await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);await expect(row.locator('input').first()).toHaveCSS('color',theme==='dark'?'rgb(245, 245, 245)':'rgb(0, 0, 0)');await expect(unfinished.locator('input').first()).toHaveCSS('color',theme==='dark'?'rgb(163, 163, 163)':'rgb(99, 99, 102)');await expect(row.locator('input').first()).toHaveCSS('height','44px');await expect(row.locator('.session-check')).toHaveCSS('width','44px');await expect(row.locator('.session-check-glyph')).toHaveCSS('width','32px');await expect(row.locator('.session-check-glyph')).toHaveCSS('border-radius','999px');await expect(row.locator('.session-check-glyph')).toHaveCSS('background-color',theme==='dark'?'rgb(176, 255, 0)':'rgb(52, 199, 89)');await expect(unfinished.locator('.session-check-glyph svg')).toHaveCSS('visibility','hidden');await expect(page.locator('.session-selected .session-count')).toHaveText('1/3');await expect(page.locator('.session-complete-mark')).toHaveCount(0);await expect(page.locator('.session-choice .session-count').first()).toHaveText('1/3');}}});
 
-for(const [width,height] of [[466,678],[626,890],[890,626]])for(const theme of ['light','dark'])test('persistent workout capsule '+width+' '+theme,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);await startFromHome(page);const timer=page.locator('.mini-workout');await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(await page.locator('.session-identity h2').innerText());await expect(timer.locator(':scope > .mini-copy .caption')).toHaveText('Workout in progress');await expect(timer.locator(':scope > .mini-chevron')).toHaveCount(0);const name=await page.locator('.session-selected .session-exercise-name').innerText();await page.locator('.session-selected .session-check').first().click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);const before=await deadline();await page.locator('.mini-workout > .mini-copy').click();for(const tab of ['workouts','progress','profile','home']){await page.locator('#nav-'+tab).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);expect(await deadline()).toBe(before)}await timer.locator(':scope > .mini-copy').click();await expect(page.locator('#active-workout')).toBeVisible();await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText('Continue Workout');await expect(timer.locator(':scope > .mini-copy .mini-clock')).toHaveText('00:00');await timer.getByRole('button',{name:'Reset Rest'}).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);});
+for(const [width,height] of [[466,678],[626,890],[890,626]])for(const theme of ['light','dark'])test('persistent workout capsule '+width+' '+theme,async({page},testInfo)=>{await page.addInitScript(()=>{
+   const events=[];window.__formCapsuleTrace=events;
+   const describe=n=>n instanceof Element?{tag:n.tagName,id:n.id,classes:n.getAttribute('class'),button:n.closest('button')?.getAttribute('aria-label')??n.closest('button')?.id??null}:null;
+   const capture=(e,phase)=>{
+    const copy=document.querySelector('.mini-workout > .mini-copy'),workout=document.querySelector('#active-workout');
+    events.push({type:e.type,phase,time:performance.now(),target:describe(e.target),hit:describe(document.elementFromPoint(e.clientX,e.clientY)),x:e.clientX,y:e.clientY,pointerId:e.pointerId??null,detail:e.detail??null,prevented:e.defaultPrevented,expanded:copy?.getAttribute('aria-expanded'),workoutHidden:workout?.hidden,training:document.body?.classList.contains('training'),nav:document.querySelector('.dock [aria-current="page"]')?.id??null,overlay:!!document.querySelector('.workout-collapse-surface')});
+    if(events.length>500)events.shift();
+   };
+   for(const type of ['pointerdown','pointerup','pointercancel','gotpointercapture','lostpointercapture','click']){
+    document.addEventListener(type,e=>capture(e,'capture'),true);
+    document.addEventListener(type,e=>capture(e,'bubble'));
+   }
+  });;try{await page.setViewportSize({width,height});await page.goto(url);await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);await startFromHome(page);const timer=page.locator('.mini-workout');await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(await page.locator('.session-identity h2').innerText());await expect(timer.locator(':scope > .mini-copy .caption')).toHaveText('Workout in progress');await expect(timer.locator(':scope > .mini-chevron')).toHaveCount(0);const name=await page.locator('.session-selected .session-exercise-name').innerText();await page.locator('.session-selected .session-check').first().click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);const before=await deadline();await page.locator('.mini-workout > .mini-copy').click();for(const tab of ['workouts','progress','profile','home']){await page.locator('#nav-'+tab).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);expect(await deadline()).toBe(before)}await timer.locator(':scope > .mini-copy').click();await expect(page.locator('#active-workout')).toBeVisible();await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText('Continue Workout');await expect(timer.locator(':scope > .mini-copy .mini-clock')).toHaveText('00:00');await timer.getByRole('button',{name:'Reset Rest'}).click();await expect(timer.locator(':scope > .mini-copy .mini-name')).toHaveText(name);}catch(error){const trace=await page.evaluate(()=>window.__formCapsuleTrace).catch(()=>[]);await testInfo.attach('capsule-pointer-trace',{body:JSON.stringify(trace,null,2),contentType:'application/json'});console.error('Capsule pointer trace (last 20 events): '+JSON.stringify(trace.slice(-20)));throw error;}});
 
 for(const [width,height] of [[466,678],[626,890],[890,626]])test('balanced workout table and retained focus '+width,async({page})=>{await page.setViewportSize({width,height});await page.goto(url);await startFromHome(page);const card=page.locator('.session-selected');await expect(card.locator('.exercise-swipe-face')).toHaveCSS('padding-left','16px');await expect(card.locator('.exercise-swipe-face')).toHaveCSS('padding-right','16px');const rows=card.locator('.set-line').filter({has:page.locator('input')});await expect(rows.first()).toHaveCSS('column-gap','8px');const widths=await rows.first().locator('input').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().width));expect(Math.abs(widths[0]-widths[1])).toBeLessThan(1);const name=await card.locator('.session-exercise-name').innerText();const count=await rows.count();for(let i=0;i<count;i++)await rows.nth(i).locator('.session-check').click();await expect(card.locator('.session-exercise-name')).toHaveText(name);await expect(card.locator('.session-check[aria-pressed=true]')).toHaveCount(count);for(const theme of ['dark','light']){await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);await expect(page.locator('.session-segment.filled').first()).toHaveCSS('background-color',theme==='dark'?'rgb(176, 255, 0)':'rgb(52, 199, 89)')}await card.locator('.session-add').click();await expect(rows).toHaveCount(count+1);});
 
@@ -467,3 +479,77 @@ for(const theme of ['light','dark'])test('discard dialog respects theme and comp
 test('history landscape shares routines workspace and preserves selection',async({page})=>{await page.setViewportSize({width:890,height:626});await page.addInitScript(()=>{const now=Date.now();const record=(id,name,finished)=>({id,name,description:'',started:finished-3600000,finished,exercises:[{name:'Bench Press',sets:[{weight:40,reps:10,rest:90,done:true}]}]});localStorage.setItem('form-workout-history',JSON.stringify({version:1,data:[record('new','Push Day',now),record('old','Pull Day',now-86400000)]}));});await page.goto(url);await page.locator('#nav-workouts').click();await page.getByRole('button',{name:'History',exact:true}).click();const panel=page.locator('#history-detail'),cards=page.locator('#sample-history .workout-history-card');await expect(panel).toBeVisible();await expect(cards).toHaveCount(2);await expect(panel.locator('h2')).toHaveText('Push Day');await expect(panel.locator('details[open]')).toHaveCount(0);await cards.last().click();await expect(panel.locator('h2')).toHaveText('Pull Day');await expect(cards.last()).toHaveAttribute('aria-current','true');await expect(page.locator('#workout-summary')).toBeHidden();await panel.locator('summary').first().click();await expect(panel.locator('details[open]')).toHaveCount(1);await page.setViewportSize({width:626,height:890});await expect(panel).toBeHidden();await cards.last().click();await expect(page.locator('#workout-summary')).toBeVisible();await page.locator('#summary-close').click();await page.setViewportSize({width:890,height:626});await expect(panel).toBeVisible();await expect(panel.locator('h2')).toHaveText('Pull Day');await page.getByRole('button',{name:'Routines',exact:true}).click();await expect(panel).toBeHidden();await expect(page.locator('#routine-detail')).toBeVisible();});
 
 for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history search and independent routine query '+width,async({page})=>{await page.setViewportSize({width,height});await page.addInitScript(()=>{const now=new Date(2026,10,24,12).getTime();const record=(id,name,exercise,finished)=>({id,name,description:'',started:finished-3600000,finished,exercises:[{name:exercise,sets:[{weight:40,reps:10,rest:90,done:true}]}]});localStorage.setItem('form-workout-history',JSON.stringify({version:1,data:[record('new','Push Day','Bench Press',now),record('old','Pull Day','Lat Pulldown',now-86400000)]}));});await page.goto(url);await page.locator('#nav-workouts').click();const search=page.locator('#routine-search');await search.fill('Push');await page.getByRole('button',{name:'History',exact:true}).click();await expect(search).toHaveAttribute('placeholder','Search history');await expect(search).toHaveValue('');await expect(search.locator('..')).toHaveCSS('height','48px');await expect(search.locator('..')).toHaveCSS('border-radius','12px');const cards=page.locator('#sample-history .workout-history-card');await expect(cards).toHaveCount(2);await search.fill('lat pulldown');await expect(cards).toHaveCount(1);await expect(cards.first()).toContainText('Pull Day');if(width===890)await expect(page.locator('#history-detail h2')).toHaveText('Pull Day');await search.fill('2026-11-24');await expect(cards).toHaveCount(1);await expect(cards.first()).toContainText('Push Day');await search.fill('not found');await expect(cards).toHaveCount(0);if(width===890)await expect(page.locator('#history-detail')).toContainText('No matching workouts');await page.getByRole('button',{name:'Routines',exact:true}).click();await expect(search).toHaveValue('Push');await page.getByRole('button',{name:'History',exact:true}).click();await expect(search).toHaveValue('not found');});
+
+
+ // Repeated real pointer activation during capsule transitions; retain the original chevron checks.
+ for(const theme of ['light','dark'])test('repeated landscape timer capsule transitions '+theme,async({page})=>{
+  await page.setViewportSize({width:890,height:626});
+  await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);
+  await page.goto(url);await startFromHome(page);
+  const workout=page.locator('#active-workout'),copy=page.locator('.mini-workout > .mini-copy');
+  await expect(workout).toBeVisible();
+  await page.locator('.session-selected .session-check').first().click();
+  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+  const original=await deadline();
+  expect(original).toBeGreaterThan(0);
+  for(let i=0;i<8;i++){
+   await copy.click();
+   await expect(copy,'minimize cycle '+i).toHaveAttribute('aria-expanded','false');
+   await expect(workout).toBeHidden();
+   await copy.click();
+   await expect(copy,'resume cycle '+i).toHaveAttribute('aria-expanded','true');
+   await expect(workout).toBeVisible();
+   expect(await deadline()).toBe(original);
+  }
+  await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
+ });
+
+
+ // Preserve real pointer activation and the original cross-tab regression assertions.
+ for(const theme of ['light','dark'])test('repeated portrait cross-tab capsule '+theme,async({page},testInfo)=>{
+  test.setTimeout(90000);
+  await page.setViewportSize({width:626,height:890});
+  await page.addInitScript(()=>{
+   const events=[];window.__formCapsuleTrace=events;
+   const describe=n=>n instanceof Element?{tag:n.tagName,id:n.id,classes:n.getAttribute('class'),button:n.closest('button')?.getAttribute('aria-label')??n.closest('button')?.id??null}:null;
+   const capture=(e,phase)=>{
+    const copy=document.querySelector('.mini-workout > .mini-copy'),workout=document.querySelector('#active-workout');
+    events.push({type:e.type,phase,time:performance.now(),target:describe(e.target),hit:describe(document.elementFromPoint(e.clientX,e.clientY)),x:e.clientX,y:e.clientY,pointerId:e.pointerId??null,detail:e.detail??null,prevented:e.defaultPrevented,expanded:copy?.getAttribute('aria-expanded'),workoutHidden:workout?.hidden,training:document.body?.classList.contains('training'),nav:document.querySelector('.dock [aria-current="page"]')?.id??null,overlay:!!document.querySelector('.workout-collapse-surface')});
+    if(events.length>500)events.shift();
+   };
+   for(const type of ['pointerdown','pointerup','pointercancel','gotpointercapture','lostpointercapture','click']){
+    document.addEventListener(type,e=>capture(e,'capture'),true);
+    document.addEventListener(type,e=>capture(e,'bubble'));
+   }
+  });
+  await page.goto(url);await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);
+  await startFromHome(page);
+  const workout=page.locator('#active-workout'),timer=page.locator('.mini-workout'),copy=timer.locator(':scope > .mini-copy');
+  await expect(workout).toBeVisible();
+  const name=await page.locator('.session-selected .session-exercise-name').innerText();
+  await page.locator('.session-selected .session-check').first().click();
+  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+  const original=await deadline();expect(original).toBeGreaterThan(0);
+  try{
+   for(let i=0;i<6;i++){
+    await copy.click();
+    await expect(copy,'minimize cycle '+i).toHaveAttribute('aria-expanded','false');
+    await expect(workout).toBeHidden();
+    for(const tab of ['workouts','progress','profile','home']){
+     await page.locator('#nav-'+tab).click();
+     await expect(copy.locator('.mini-name')).toHaveText(name);
+     expect(await deadline()).toBe(original);
+    }
+    await copy.click();
+    await expect(workout,'resume cycle '+i).toBeVisible();
+    await expect(copy).toHaveAttribute('aria-expanded','true');
+    expect(await deadline()).toBe(original);
+   }
+   await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
+  }catch(error){
+   const trace=await page.evaluate(()=>window.__formCapsuleTrace).catch(()=>[]);
+   await testInfo.attach('capsule-pointer-trace',{body:JSON.stringify(trace,null,2),contentType:'application/json'});
+   console.error('Capsule pointer trace (last 20 events): '+JSON.stringify(trace.slice(-20)));
+   throw error;
+  }
+ });
