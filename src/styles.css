@@ -114,7 +114,7 @@
 :root{--danger:#D51028;--on-danger:#fff}:root[data-theme=dark]{--danger:#FF453A}@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--danger:#FF453A}}:is(#finish-workout,.floating-dialog){position:fixed;inset:0;margin:auto;width:min(360px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;text-align:center;padding:24px;border-radius:var(--radius-card);background:var(--paper)}:is(#finish-workout,.floating-dialog)[open]{display:grid;gap:var(--space-3);animation:finish-enter 220ms cubic-bezier(.2,.8,.2,1)}:is(#finish-workout,.floating-dialog)::backdrop{background:transparent;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}#finish-workout h2{font-size:24px}#finish-workout p{margin:0 0 var(--space-3)}#finish-workout button{width:100%;min-height:52px;font-weight:600}#finish-keep{background:color-mix(in srgb,var(--ink) 8%,var(--paper))}#finish-discard{color:var(--danger)}#finish-workout .finish-danger{background:var(--danger);color:var(--on-danger)}#finish-confirm:disabled{opacity:.45;cursor:default}#finish-discard[hidden]{display:none}@keyframes finish-enter{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}@media(prefers-reduced-motion:reduce){:is(#finish-workout,.floating-dialog)[open]{animation:none}}
 
 /* Home workout: one semantic button in every appearance. */
-.home-workout-card{display:flex;min-height:var(--home-workout-min);width:100%;border-radius:var(--radius-card);padding:var(--home-card-padding);background:var(--home-workout-idle);color:var(--home-workout-ink);text-align:left;align-items:center;justify-content:space-between;gap:var(--space-3);transition:min-height 260ms ease,padding 260ms ease,background 260ms ease,transform 320ms cubic-bezier(.2,.8,.2,1.25)}
+.home-workout-card{display:flex;min-height:var(--home-workout-min);width:100%;border-radius:var(--radius-card);padding:var(--home-card-padding);background:var(--home-workout-idle);color:var(--home-workout-ink);text-align:left;align-items:center;justify-content:space-between;gap:var(--space-3);transition:background 260ms ease,transform 320ms cubic-bezier(.2,.8,.2,1.25)}
 .home-workout-card:active{transform:scale(.97);transition-duration:100ms}
 .home-workout-copy{display:grid;gap:var(--space-1);min-width:0;flex:1}
 .home-workout-copy strong{font-size:24px;line-height:1.2;letter-spacing:-.5px;overflow-wrap:anywhere}
@@ -136,7 +136,7 @@ body:not(.training) main:has(#home-page:not([hidden])){
   --home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height,56px) + var(--space-5));
   display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;
   padding-bottom:var(--home-clearance);touch-action:pan-y pinch-zoom;
-  transition:padding-bottom 260ms cubic-bezier(.2,.8,.2,1);
+  transition:none;
 }
 #home-page:not([hidden]){
   --home-workout-min:136px;
@@ -169,9 +169,9 @@ body:not(.training) main:has(#home-page:not([hidden])){
 #home-page .streak-card{
   display:flex;flex-direction:column;justify-content:space-between;
   min-height:var(--home-streak-min);padding:var(--home-card-padding);
-  transition:min-height 260ms ease,padding 260ms ease;
+  transition:none;
 }
-#home-page .streak-card .days{margin-block:var(--home-card-gap);transition:margin 260ms ease}
+#home-page .streak-card .days{margin-block:var(--home-card-gap)}
 body.mini-visible:not(.training) main:has(#home-page:not([hidden])){
   --home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + 2 * var(--floating-height,56px) + var(--floating-gap,10px) + var(--space-5));
 }
@@ -219,3 +219,7 @@ body.mini-visible #home-page .streak-card .dot{width:28px;height:28px}
 #active-workout .session-segment.filled{background:var(--system-green)}
 #active-workout .session-segment.partial{background:color-mix(in srgb,var(--system-green) 45%,var(--line))}
 @media(prefers-reduced-motion:reduce){#active-workout .set-line:not(.caption){transition:none}}
+
+/* Home enters at its final geometry; never animate page-dependent layout. */
+body:not(.training) main:has(#home-page:not([hidden])){transition:none}
+body:has(#home-page:not([hidden]))::after{transition:none}
