@@ -794,3 +794,7 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 @media(prefers-reduced-motion:reduce){#workouts-page #routine-items .routine-row,#workouts-page #workout-history-list .workout-history-card{transition:none}}
 
 
+
+/* Paper Ink: distinguish states without hue or geometry changes. */
+:root[data-theme-id=paper-ink] :is(.dot.rest,.home-month-day.rest){background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+:root[data-theme-id=paper-ink] #workouts-page #routine-detail.is-editing #detail-exercises input[aria-invalid=true]{border-style:dashed;box-shadow:inset 0 0 0 1px var(--ink)}

@@ -736,3 +736,31 @@ for(const origin of ['http://127.0.0.1:8787','http://127.0.0.1:8788'])test('Grap
  const {createHash}=await import('node:crypto');expect(createHash('sha256').update(bytes).digest('hex')).toBe('30624e78000e184ca5e038b9acae434f50d238253d6e0f5d51781630211b0e79');
  const head=await request.head(origin+'/apple-touch-icon.png?v=2');expect(head.status()).toBe(200);expect(head.headers()['content-type']).toBe('image/png');expect((await head.body()).length).toBe(0);
 });
+
+
+test('Paper Ink monochrome distinguishes completion, recovery and destructive actions without hue',async({page})=>{
+ await page.setViewportSize({width:466,height:678});
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.addInitScript(()=>localStorage.setItem('form-preview-theme','paper-ink'));
+ await gotoWithRoutines(page);
+ const ink='rgb(28, 28, 28)',white='rgb(255, 255, 255)',track='rgb(234, 232, 227)';
+ const root=page.locator('html');
+ const colors=await root.evaluate(e=>{const s=getComputedStyle(e);return ['--action','--brand','--success','--warning','--danger','--theme-completion','--theme-recovery','--insight','--system-green','--system-red'].map(k=>[k,s.getPropertyValue(k).trim()]).filter(([k,v])=>v)});
+ expect(colors.length).toBeGreaterThanOrEqual(8);
+ for(const [key,value] of colors)expect(value.toUpperCase(),key).toBe('#1C1C1C');
+ await page.locator('#home-activity').click();
+ const day=page.getByRole('button',{name:'Wednesday rest day'});await day.click();
+ await expect(day.locator('.dot')).toHaveCSS('background-color',ink);
+ await page.locator('#rest-days-save').click();
+ const rest=page.locator('#home-days .dot.rest');
+ await expect(rest).toHaveCount(1);await expect(rest).toHaveCSS('background-color',white);await expect(rest).toHaveCSS('color',ink);await expect(rest).toHaveCSS('box-shadow',/inset/);
+ await startFromHome(page);
+ const check=page.locator('.session-selected .session-check').first();
+ await check.click();await expect(check).toHaveAttribute('aria-pressed','true');
+ await expect(check.locator('.session-check-glyph')).toHaveCSS('background-color',ink);
+ const timer=page.locator('.mini-workout');await expect(timer).toHaveAttribute('data-resting','true');await expect(timer).toHaveCSS('background-color',track);
+ await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(timer).toHaveAttribute('data-ready','true');await expect(timer).toHaveCSS('background-color',ink);
+ await page.locator('.session-toolbar .session-finish').click();
+ const dialog=page.locator('#finish-workout');await expect(dialog).toBeVisible();await expect(dialog.locator('#finish-discard')).toHaveCSS('color',ink);
+ await dialog.locator('#finish-discard').click();await expect(dialog.locator('#finish-confirm')).toHaveText('Discard Workout');await expect(dialog.locator('#finish-confirm')).toHaveCSS('background-color',ink);
+});

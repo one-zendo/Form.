@@ -34,12 +34,13 @@ const formThemes=Object.freeze([
       "brand": "#1C1C1C",
       "action": "#1C1C1C",
       "onAction": "#FFFFFF",
-      "success": "#45634D",
-      "warning": "#806033",
-      "danger": "#A43D3D",
-      "completion": "#45634D",
+      "success": "#1C1C1C",
+      "warning": "#1C1C1C",
+      "danger": "#1C1C1C",
+      "completion": "#1C1C1C",
       "recovery": "#1C1C1C",
-      "streakAccent": "#1C1C1C"
+      "streakAccent": "#1C1C1C",
+      "restTrack": "#EAE8E3"
     }
   },
   {

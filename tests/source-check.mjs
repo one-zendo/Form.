@@ -355,7 +355,10 @@ for(const {id,palette:p} of themeManifest){
   for(const [fg,bg] of [[p.action,p.onAction],[p.ink,p.paper],[p.muted,p.paper],[p.success,p.paper],[p.warning,p.paper],[p.danger,p.paper]])assert.ok(contrast(fg,bg)>=4.5,id+' insufficient contrast '+fg+' / '+bg);
 }
 const paperInk=themeManifest.find(t=>t.id==='paper-ink').palette;
-for(const role of ['brand','action','recovery','streakAccent'])assert.equal(paperInk[role],paperInk.ink);
+for(const role of ['brand','action','recovery','streakAccent','success','warning','danger','completion'])assert.equal(paperInk[role],paperInk.ink);
+assert.equal(paperInk.restTrack,paperInk.elevated);
+assert.ok(browser.includes('vars["--theme-rest-track"]=p.restTrack'));
+assert.ok(css.includes(':root[data-theme-id=paper-ink] :is(.dot.rest,.home-month-day.rest)'));
 for(const bg of [paperInk.canvas,paperInk.paper,paperInk.elevated])assert.ok(contrast(paperInk.muted,bg)>=4.5);
 assert.ok(contrast(paperInk.recovery,paperInk.onAction)>=4.5);
 assert.ok(contrast(paperInk.completion,paperInk.onAction)>=4.5);
