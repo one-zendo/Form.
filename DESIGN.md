@@ -257,3 +257,6 @@ History cards contain the recorded date, workout name and duration/completed-set
 
 ### Finish Workout dialog consistency
 Retain the confirmation icon as a theme-accent action indicator (lime in Graphite Lime, blue in Default), not as a saved-success indicator. Discard confirmation icon and destructive actions retain red. Save Workout uses the shared theme primary action fill and foreground; keep training is neutral. Use 360px shared dialog maximum width, 24px radius, 16px padding and gap, 18px/600 title, 24px icon with 1.75px stroke, 48px primary action and minimum 44px secondary actions, shared neutral border and 12px backdrop blur. Consolidate finish styles in the main stylesheet; preserve conditional messages, routine update control, safe save and discard flow, focus and reduced-motion behavior. Green remains reserved for recovery and actual success.
+
+### Continue Workout accent
+In Graphite Lime the ready timer uses the shared lime action fill (#B0FF00) and graphite foreground (#17171F), including the continuous pulse and final color transition. Default retains its existing recovery-ready colors. Blue drainage, timing, geometry and reduced-motion behavior remain unchanged. High-contrast text uses the same graphite foreground on lime.

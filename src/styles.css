@@ -220,6 +220,8 @@ body.mini-visible #home-page .streak-card .dot{width:var(--day-marker-compact);h
 
 /* Apple system green for the completed-rest pill, independent of other success surfaces. */
 .mini-workout[data-ready=true]{--success-fill:var(--timer-complete-fill);--on-success:var(--timer-complete-ink)}
+:root[data-theme=dark] .mini-workout[data-ready=true]{--success-fill:var(--palette-dark-brand);--on-success:var(--palette-dark-canvas)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .mini-workout[data-ready=true]{--success-fill:var(--palette-dark-brand);--on-success:var(--palette-dark-canvas)}}
 @media(prefers-contrast:more){.mini-workout[data-ready=true]{--success-fill:#008932;--on-success:#fff}}
 
 /* Active workout uses Apple's appearance-aware semantic colors. */
