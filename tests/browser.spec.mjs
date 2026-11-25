@@ -738,7 +738,7 @@ for(const origin of ['http://127.0.0.1:8787','http://127.0.0.1:8788'])test('Grap
 });
 
 
-test('Paper Ink monochrome distinguishes completion, recovery and destructive actions without hue',async({page})=>{
+test('navigation and appearance: Paper Ink monochrome distinguishes completion, recovery and destructive actions without hue',async({page})=>{
  await page.setViewportSize({width:466,height:678});
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.addInitScript(()=>localStorage.setItem('form-preview-theme','paper-ink'));
@@ -748,6 +748,7 @@ test('Paper Ink monochrome distinguishes completion, recovery and destructive ac
  const colors=await root.evaluate(e=>{const s=getComputedStyle(e);return ['--action','--brand','--success','--warning','--danger','--theme-completion','--theme-recovery','--insight','--system-green','--system-red'].map(k=>[k,s.getPropertyValue(k).trim()]).filter(([k,v])=>v)});
  expect(colors.length).toBeGreaterThanOrEqual(8);
  for(const [key,value] of colors)expect(value.toUpperCase(),key).toBe('#1C1C1C');
+ await expect(page.locator('.streak-trophy-button svg')).toHaveCSS('stroke',ink);
  await page.locator('#home-activity').click();
  const day=page.getByRole('button',{name:'Wednesday rest day'});await day.click();
  await expect(day.locator('.dot')).toHaveCSS('background-color',ink);
@@ -759,7 +760,13 @@ test('Paper Ink monochrome distinguishes completion, recovery and destructive ac
  await check.click();await expect(check).toHaveAttribute('aria-pressed','true');
  await expect(check.locator('.session-check-glyph')).toHaveCSS('background-color',ink);
  const timer=page.locator('.mini-workout');await expect(timer).toHaveAttribute('data-resting','true');await expect(timer).toHaveCSS('background-color',track);
+ const fill=await timer.evaluate(e=>getComputedStyle(e,'::before').backgroundColor);expect(fill).toBe(ink);
+ await expect(timer.locator('.mini-color-mask .mini-clock')).toHaveCSS('color',white);
+ await page.emulateMedia({reducedMotion:'no-preference'});
  await timer.getByRole('button',{name:'Skip Rest'}).click();await expect(timer).toHaveAttribute('data-ready','true');await expect(timer).toHaveCSS('background-color',ink);
+ await expect(timer).toHaveCSS('animation-name',/form-ready-pulse/);
+ await expect(timer).toHaveCSS('color',white);
+ await page.emulateMedia({reducedMotion:'reduce'});await expect(timer).toHaveCSS('animation-name','none');
  await page.locator('.session-toolbar .session-finish').click();
  const dialog=page.locator('#finish-workout');await expect(dialog).toBeVisible();await expect(dialog.locator('#finish-discard')).toHaveCSS('color',ink);
  await dialog.locator('#finish-discard').click();await expect(dialog.locator('#finish-confirm')).toHaveText('Discard Workout');await expect(dialog.locator('#finish-confirm')).toHaveCSS('background-color',ink);
