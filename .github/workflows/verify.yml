@@ -1,7 +1,11 @@
 name: FORM checks
 on:
   push:
+    branches-ignore:
+      - 'design/**'
+      - 'engineering/**'
   pull_request:
+  merge_group:
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run build
       - run: npx wrangler deploy --dry-run --outdir dist
