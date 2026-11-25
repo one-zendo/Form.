@@ -443,9 +443,8 @@ function updateHomeFold(){
 function queueFold(){if(!foldFrame)foldFrame=requestAnimationFrame(updateHomeFold)}
 window.addEventListener("resize",queueFold);window.visualViewport?.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);let lastFoldSession=!!session;new MutationObserver(()=>{if(lastFoldSession!==!!session){lastFoldSession=!!session;queueFold()}}).observe(document.body,{attributes:true,attributeFilter:["class"]});new MutationObserver(()=>{if($("home-page").hidden){for(const a of foldAnimations.values())a.cancel();foldAnimations.clear();foldLastGeometry=null}else{foldLastGeometry=foldSnapshot();queueFold()}}).observe($("home-page"),{attributes:true,attributeFilter:["hidden"]});updateHomeFold();}
 
-{const layerStyle=el("style");layerStyle.textContent=".mini-workout{z-index:1001}.mini-workout[hidden]{display:none}";document.head.append(layerStyle);}
+{const style=el("style");style.textContent=`.mini-workout{z-index:1001}.mini-workout[hidden]{display:none}
 
-{const css=el("style");css.textContent=`
 #active-workout .routine-exercise{touch-action:pan-y;-webkit-touch-callout:none}#active-workout .routine-exercise :is(input,textarea){-webkit-touch-callout:default;user-select:text;-webkit-user-select:text}#active-workout .session-exercise-header{display:flex;align-items:center;gap:var(--space-2);min-width:0}
 #active-workout .session-exercise-header .session-card-select{flex:1;min-width:0;width:auto}
 #active-workout .session-exercise-options{touch-action:pan-y;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;width:var(--touch-target);height:var(--touch-target);min-width:var(--touch-target);display:grid;place-items:center;color:var(--muted);background:transparent;padding:0;border-radius:var(--radius-full)}
@@ -458,13 +457,11 @@ window.addEventListener("resize",queueFold);window.visualViewport?.addEventListe
 .session-exercise-sheet .session-exercise-destructive{width:100%;min-height:56px;display:flex;align-items:center;gap:var(--space-3);text-align:left;padding:var(--space-4);color:var(--system-red);background:transparent}
 @media(prefers-reduced-motion:reduce){.session-exercise-sheet[open]{animation:none}}
 @media(prefers-reduced-transparency:reduce){.session-exercise-sheet::backdrop{background:#0006;backdrop-filter:none;-webkit-backdrop-filter:none}}
-`;document.head.append(css)}
 
-{const style=el("style");style.textContent=`
+
 @media(min-width:760px) and (orientation:landscape){#workouts-page #routine-items .routine-row.selected{background:var(--system-selection)}#workouts-page #routine-list .routine-search-wrap{position:static;box-shadow:none}#workouts-page #routine-list>.row:first-child{position:static}}
-`;document.head.append(style)}
 
-{const style=el("style");style.textContent=`
+
 #active-workout .card.exercise-swipe-card{position:relative;overflow:hidden;background:transparent;padding:0;box-shadow:none;isolation:isolate}
 #active-workout .exercise-swipe-face{position:relative;z-index:1;background:var(--paper);border-radius:var(--radius-card);padding:var(--space-4);display:grid;gap:var(--space-2);min-width:0;will-change:transform}
 #active-workout .exercise-swipe-delete{position:absolute;right:7px;top:50%;translate:0 -50%;height:48px;min-width:48px;width:48px;border-radius:var(--radius-full);background:var(--system-red);color:var(--on-danger);display:grid;place-items:center;padding:0}
@@ -472,9 +469,8 @@ window.addEventListener("resize",queueFold);window.visualViewport?.addEventListe
 .exercise-remove-confirm{position:fixed;inset:0;margin:auto;width:min(280px,calc(100% - 32px));border:0;border-radius:var(--radius-dialog);background:var(--paper);color:var(--ink);padding:var(--space-5);text-align:center}
 .exercise-remove-confirm[open]{display:grid;gap:var(--space-3);animation:form-finish-float-in var(--motion-tab) var(--motion-gesture-ease)}.exercise-remove-confirm::backdrop{background:var(--dialog-scrim);backdrop-filter:blur(var(--dialog-blur));-webkit-backdrop-filter:blur(var(--dialog-blur))}@media(prefers-reduced-motion:reduce){.exercise-remove-confirm[open]{animation:none}}.exercise-remove-confirm h2{font-size:var(--font-dialog-title);line-height:1.25}.exercise-remove-confirm p{font-size:var(--font-footnote)}.exercise-remove-icon{display:grid;place-items:center}.exercise-remove-icon svg{width:24px;height:24px}.exercise-remove-confirm button{font-size:var(--font-control);font-weight:600;border-radius:var(--radius-full);min-height:var(--touch-target)}.exercise-remove-yes{background:var(--system-red);color:var(--on-danger)}.exercise-remove-no{background:var(--canvas);color:var(--ink)}
 .exercise-undo{position:fixed;z-index:1200;bottom:calc(env(safe-area-inset-bottom) + 145px);left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);display:flex;align-items:center;gap:var(--space-3);padding:4px 12px 4px 16px;background:var(--ink);color:var(--paper);border-radius:var(--radius-full);font-size:var(--font-footnote);box-shadow:0 8px 24px var(--shadow-float)}.exercise-undo button{color:inherit;font-weight:650}
-`;document.head.append(style)}
 
-{const responsiveStyle=el("style");responsiveStyle.textContent=`
+
 :root{--floating-safe-left:max(16px,env(safe-area-inset-left));--floating-safe-right:max(16px,env(safe-area-inset-right));--floating-safe-width:calc(100% - var(--floating-safe-left) - var(--floating-safe-right));--floating-safe-center:calc(50% + (var(--floating-safe-left) - var(--floating-safe-right))/2)}
 .dock,.mini-workout{width:min(440px,var(--floating-safe-width));left:var(--floating-safe-center)}
 @media(orientation:landscape) and (min-width:700px){
@@ -485,7 +481,7 @@ body.mini-visible .mini-workout{left:calc(var(--floating-safe-center) + min(225p
 #active-workout .session-exercise-name{min-width:0;overflow-wrap:anywhere}
 #active-workout .exercise-swipe-face{min-width:0}
 .exercise-remove-confirm{max-height:calc(100dvh - max(16px,env(safe-area-inset-top)) - max(16px,env(safe-area-inset-bottom)));overflow:auto}
-`;document.head.append(responsiveStyle)}
+`;document.head.append(style)}
 
 
 /* Shared full-surface back gesture. Existing navigation handlers own data safety. */
