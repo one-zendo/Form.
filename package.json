@@ -13,6 +13,6 @@
   },
   "type": "module",
   "dependencies": {
-    "lucide": "npm:lucide-static@1.79.0"
+    "lucide": "npm:lucide-static@0.456.0"
   }
 }
