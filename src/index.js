@@ -1,7 +1,13 @@
 import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2";
 import interLatinExt from "@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2";
 import interLicense from "./inter.license.txt";
-import styles from "./styles.css";
+import tokens from "./styles/tokens.css";
+import foundations from "./styles.css";
+import workoutStyles from "./styles/workout.css";
+import floatingStyles from "./styles/floating.css";
+import navigationStyles from "./styles/navigation.css";
+import adaptiveStyles from "./styles/adaptive.css";
+const styles = [tokens, foundations, workoutStyles, floatingStyles, navigationStyles, adaptiveStyles].join("\n");
 import browser from "./browser.js.txt";
 import storageSource from "./core/storage.js.txt";
 import timerSource from "./core/timer.js.txt";
