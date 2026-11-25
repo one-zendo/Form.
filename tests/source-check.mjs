@@ -243,3 +243,10 @@ assert.ok(browser.includes('if(wasSelected){sessionSelection=at;sessionCollapsed
 assert.ok(browser.includes('if(removedRest&&!next.restSet&&!next.restExercise&&!next.restUntil&&!next.restTotal)'));
 assert.ok(browser.includes('if(!storeSession(next))input.value=session.exercises[i].sets[j][k]'));
 console.log('Active workout edit, undo, stale gesture and save protection checks passed');
+
+assert.ok(browser.includes('sets.push({...sets.at(-1)'));
+assert.ok(browser.includes('drag.headers.push([header,header.getAttribute("aria-expanded")])'));
+assert.ok(browser.includes('for(const [header,value] of d.headers)'));
+assert.ok(browser.includes('session.exercises[index]===menuExercise&&anchor.isConnected'));
+assert.ok(browser.includes('if(restCard)restCard.hidden=!left'));
+console.log('Active workout live set defaults, gesture cleanup and stale menu checks passed');
