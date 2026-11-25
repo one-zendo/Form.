@@ -302,3 +302,25 @@ test('fresh launch returns Home without discarding an active session or routine 
  expect(await page.evaluate(()=>localStorage.getItem('form-routine-draft'))).toBe(draft);
  await page.getByRole('button',{name:'Resume Active Workout'}).click();await expect(page.locator('#active-workout')).toBeVisible();
 });
+
+
+test('full swipe removes logged exercise without dialog and restores its sets on Undo',async({page})=>{
+ await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);
+ await page.locator('.session-selected .session-check').first().click();
+ const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
+ const before=await saved();const card=page.locator('#active-workout .exercise-swipe-card').first();
+ await card.evaluate(e=>{e._exerciseSwipe.begin();e._exerciseSwipe.move(-e.clientWidth);e._exerciseSwipe.end()});
+ await expect(page.locator('.exercise-remove-confirm')).toHaveCount(0);
+ await expect(page.locator('.exercise-undo')).toBeVisible();
+ expect((await saved()).exercises.length).toBe(before.exercises.length-1);
+ await page.locator('.exercise-undo').getByRole('button',{name:'Undo'}).click();
+ expect((await saved()).exercises).toEqual(before.exercises);
+});
+
+test('pointer focus does not display keyboard focus rings',async({page})=>{
+ await page.goto(url);await page.locator('#home-activity').click();
+ await expect(page.locator('html')).toHaveAttribute('data-input-mode','pointer');
+ await expect(page.locator('#rest-days-save')).toBeVisible();
+ expect(await page.locator('#rest-days-save').evaluate(e=>{e.focus();return getComputedStyle(e).outlineStyle})).toBe('none');
+ await page.keyboard.press('Tab');await expect(page.locator('html')).toHaveAttribute('data-input-mode','keyboard');
+});
