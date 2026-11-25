@@ -242,3 +242,6 @@ Replace the decorative grabber with a 12px chevron beside the existing timer lab
 
 ### Fluid Recovery — device-responsive timer
 Use device orientation only while visible recovery is running, with bounded ±16px tilt, damped spring settling, screen orientation compensation, stale-sample decay, and the original wave fallback. Request orientation permission from the first set-completion gesture (or timer tap during recovery if not yet requested); never block logging or recovery if denied. No sensor data is persisted or transmitted. Reduced motion and backgrounding disable sensor sampling. The shared fill polygon still drives both the blue surface and foreground mask; actual countdown remains timestamp-based. Capsule geometry and controls are unchanged.
+
+### Active Workout card interaction architecture
+Exercise selection updates mounted set-body visibility and accessibility attributes directly rather than rebuilding the workout page. Native header clicks toggle the selected card; swipe and hold handling belongs to the card surface, with independent menu and input controls. No synthetic touch clicks. Preserve single expanded card, landscape selection, keyboard reorder and session persistence.
