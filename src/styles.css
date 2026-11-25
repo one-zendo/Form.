@@ -236,3 +236,15 @@ body:has(#home-page:not([hidden]))::after{transition:none}
 #workouts-page :is(.detail-chevron,.routine-grip,.exercise-menu>summary){color:var(--muted)}
 #leave-routine #leave-discard{color:var(--system-red)}
 #nav-workouts[aria-current=page]{background:color-mix(in srgb,var(--system-blue) 12%,transparent);color:var(--system-blue-ink)}
+
+/* Routine detail: common card geometry for view and edit actions. */
+#workouts-page{--routine-card-height:76px}
+#detail-edit .icon svg{width:18px;height:18px}
+#routine-detail #detail-start,#routine-editor #save-routine{height:var(--routine-card-height);min-height:var(--routine-card-height);border-radius:var(--radius-card);width:100%}
+#routine-detail .detail-exercise>summary,#routine-editor .routine-exercise>summary{min-height:var(--routine-card-height)}
+#routine-detail .detail-set-grid{gap:var(--space-2);padding-top:var(--space-3);margin-top:0;align-items:center}
+#routine-detail .detail-set-grid>span{min-width:0;min-height:32px;display:grid;place-items:center;background:transparent}
+#routine-detail .detail-set-grid>span:nth-child(-n+4){min-height:20px;color:var(--muted);font-size:12px}
+#routine-detail .detail-set-grid>span:nth-child(4n+1){color:var(--muted)}
+#routine-detail .detail-set-grid>span:nth-child(n+5):not(:nth-child(4n+1)){font-weight:500;color:var(--ink)}
+#routine-editor .set-line input{background:var(--canvas)}
