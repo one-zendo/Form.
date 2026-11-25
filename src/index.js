@@ -47,6 +47,17 @@ body.mini-visible #home-page{--home-card-size:clamp(136px,19dvh,184px);--home-ca
 body:not(.training) main:has(#home-page:not([hidden])){overflow-y:auto;touch-action:pan-y pinch-zoom;overscroll-behavior-y:contain}
 @media(orientation:landscape) and (min-width:700px){#home-page .dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}#home-page .primary,#home-page .support,#home-page .pair{align-content:stretch}}
 @media(prefers-reduced-motion:reduce){#home-page :is(.home-workout-card,.streak-card,.days){transition:none}}
+/* Home fits the available viewport by default; overflow remains accessible. */
+body:not(.training) main:has(#home-page:not([hidden])){display:flex;flex-direction:column}
+#home-page:not([hidden]){flex:1 0 auto;display:flex;flex-direction:column;min-height:0}
+#home-page .home-header{flex:none}
+#home-page .dashboard{flex:1 0 auto;grid-template-rows:repeat(2,minmax(min-content,1fr));max-height:480px}
+#home-page .primary,#home-page .support,#home-page .pair{grid-template-rows:minmax(min-content,1fr);align-content:stretch}
+#home-page .home-workout-card,#home-page .streak-card{height:100%}
+body.mini-visible #home-page .dashboard{max-height:380px}
+@media(orientation:landscape) and (min-width:700px){#home-page .dashboard{grid-template-rows:minmax(min-content,1fr);max-height:280px}body.mini-visible #home-page .dashboard{max-height:240px}}
+@media(max-height:650px){#home-page{--home-card-size:136px;--home-card-padding:var(--space-4);--home-card-gap:var(--space-3)}body.mini-visible #home-page{--home-card-size:120px;--home-card-padding:var(--space-3)}}
+
  
 </style></head><body><main>
 <div id="home-page"><header class="home-header"><div class="home-brand"><h1>FORM</h1><p class="muted tag home-tagline">Train with focus, follow your progress.</p></div><time id="date"><span id="home-weekday"></span><span id="home-calendar-date"></span></time></header><h2 id="home-greeting" hidden>Hello.</h2>
