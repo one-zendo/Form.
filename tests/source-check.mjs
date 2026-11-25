@@ -46,3 +46,23 @@ assert.throws(()=>recoverFinish(conflictStorage),/conflict/i);
 assert.equal(conflict.get(entries[0].key),'old');
 assert.equal(conflict.get(entries[1].key),'conflict');
 console.log('Workout finish journal interruption and conflict checks passed');
+
+const gestureStart=browser.indexOf('function exerciseSwipeGeometry(');
+const gestureEnd=browser.indexOf('function cancelExerciseGesture(',gestureStart);
+assert.ok(gestureStart>=0&&gestureEnd>gestureStart);
+const gesture=vm.runInNewContext(browser.slice(gestureStart,gestureEnd)+';({exerciseSwipeGeometry,exerciseGestureDirection})');
+for(const width of [100,240,320,700]){
+ let last=48;
+ for(let d=0;d<=width;d++){
+  const g=gesture.exerciseSwipeGeometry(width,d);
+  assert.ok(g.actionWidth>=last&&g.actionWidth-last<=1,'Swipe action width must expand continuously');
+  assert.ok(g.opacity>=0&&g.opacity<=1);
+  last=g.actionWidth;
+ }
+ assert.equal(gesture.exerciseSwipeGeometry(width,width).armed,true);
+ assert.equal(gesture.exerciseSwipeGeometry(width,0).armed,false);
+ assert.equal(gesture.exerciseSwipeGeometry(width,width+100).distance,width);
+ assert.equal(gesture.exerciseSwipeGeometry(width,-100).distance,0);
+}
+for(const [dx,dy,open,expected] of [[2,1,false,'pending'],[-30,3,false,'swipe'],[-3,30,false,'scroll'],[30,3,false,'scroll'],[30,3,true,'swipe'],[-10,10,false,'scroll']])assert.equal(gesture.exerciseGestureDirection(dx,dy,open),expected);
+console.log('Exercise swipe geometry and direction regression checks passed');
