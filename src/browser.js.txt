@@ -323,6 +323,31 @@ body[data-home-fold]:not(.training):has(#home-page:not([hidden])) .dock{left:var
 body[data-home-fold]:not(.training):has(#home-page:not([hidden])) .mini-workout{left:var(--fold-timer-center)!important;width:min(440px,var(--fold-timer-width))!important;bottom:var(--fold-timer-bottom)!important;transition:none}
 body[data-home-fold]:not(.training):has(#home-page:not([hidden]))::after{display:none}
 `;document.head.append(style);
-let foldFrame=0;function updateHomeFold(){foldFrame=0;const body=document.body;let rects,folded=false;try{folded=navigator.devicePosture?.type==="folded"||matchMedia("(device-posture: folded)").matches;rects=window.viewport?.segments}catch{}const g=homeFoldGeometry(rects,folded);if(!g){delete body.dataset.homeFold;moveNavIndicator();return}const {a,b,mode}=g;const pad=16,base=12;const hasTimer=!!session;const stack=mode==="stack";const nav=stack?b:a,timer=stack?a:b;const vars={};for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}vars["a-clearance"]=stack?(hasTimer?64:0):64;vars["b-clearance"]=stack||hasTimer?64:0;vars["b-header"]=stack?0:100;for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,innerHeight-r.y-r.h+base)}for(const [k,v] of Object.entries(vars))body.style.setProperty("--fold-"+k,v+"px");body.dataset.homeFold=mode;moveNavIndicator()}
+let foldFrame=0,foldAnimations=new Map(),foldLastGeometry=null,foldSignature="";
+function foldNodes(){return [$("home-page").querySelector(".home-brand"),$("date"),$("home-greeting"),$("home-workout-card"),$("home-page").querySelector(".streak-card"),document.querySelector(".dock"),mini].filter(n=>n&&!n.hidden&&n.getBoundingClientRect().width>0)}
+function foldSnapshot(){return new Map(foldNodes().map(n=>[n,n.getBoundingClientRect()]))}
+function animateFoldChange(before){
+  if(!motionAllowed()||activePage!=="home"||collapseCleanup)return;
+  for(const [node,old] of before){
+    const next=node.getBoundingClientRect();if(!next.width||!next.height||!old.width||!old.height)continue;
+    const x=old.left-next.left,y=old.top-next.top,w=old.width/next.width,h=old.height/next.height;
+    if(Math.abs(x)+Math.abs(y)+Math.abs(old.width-next.width)+Math.abs(old.height-next.height)<1)continue;
+    // Move the actual element; preserve readable content by animating dimensions on cards only.
+    const isCard=node.matches(".home-workout-card,.streak-card"),isFloating=node===mini||node.matches(".dock");
+    const frames=[{translate:x+"px "+y+"px"},{translate:"0px 0px"}];
+    if(isCard||isFloating){frames[0].clipPath="inset(0 "+Math.max(0,next.width-old.width)+"px "+Math.max(0,next.height-old.height)+"px 0 round "+Math.min(28,old.height/2)+"px)";frames[1].clipPath="inset(0 0 0 0 round "+(isFloating?next.height/2:parseFloat(getComputedStyle(node).borderRadius)||20)+"px)";}
+    const animation=formAnimate(node,frames,360,formMotion.ease);if(animation){foldAnimations.set(node,animation);animation.onfinish=()=>{if(foldAnimations.get(node)===animation)foldAnimations.delete(node)}}
+  }
+}
+function updateHomeFold(){
+ foldFrame=0;const body=document.body;let rects,folded=false;try{folded=navigator.devicePosture?.type==="folded"||matchMedia("(device-posture: folded)").matches;rects=window.viewport?.segments}catch{}
+ const g=homeFoldGeometry(rects,folded),signature=JSON.stringify([g,!!session,innerWidth,innerHeight]);
+ if(signature===foldSignature){if(activePage==="home"&&!foldAnimations.size)foldLastGeometry=foldSnapshot();return}
+ const before=foldAnimations.size?foldSnapshot():foldLastGeometry||foldSnapshot();for(const animation of foldAnimations.values())animation.cancel();foldAnimations.clear();foldSignature=signature;
+ if(!g){delete body.dataset.homeFold}else{
+ const {a,b,mode}=g;const pad=16,base=12;const hasTimer=!!session;const stack=mode==="stack";const nav=stack?b:a,timer=stack?a:b;const vars={};for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}vars["a-clearance"]=stack?(hasTimer?64:0):64;vars["b-clearance"]=stack||hasTimer?64:0;vars["b-header"]=stack?0:100;for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,innerHeight-r.y-r.h+base)}for(const [k,v] of Object.entries(vars))body.style.setProperty("--fold-"+k,v+"px");body.dataset.homeFold=mode;
+ }
+ moveNavIndicator();if(activePage==="home"){foldLastGeometry=foldSnapshot();animateFoldChange(before)}else foldLastGeometry=null;
+}
 function queueFold(){if(!foldFrame)foldFrame=requestAnimationFrame(updateHomeFold)}
-window.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);new MutationObserver(queueFold).observe(document.body,{attributes:true,attributeFilter:["class"]});updateHomeFold();}
+window.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);new MutationObserver(queueFold).observe(document.body,{attributes:true,attributeFilter:["class"]});new MutationObserver(()=>{if($("home-page").hidden){for(const a of foldAnimations.values())a.cancel();foldAnimations.clear();foldLastGeometry=null}else{foldLastGeometry=foldSnapshot();queueFold()}}).observe($("home-page"),{attributes:true,attributeFilter:["hidden"]});updateHomeFold();}
