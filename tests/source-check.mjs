@@ -257,3 +257,12 @@ assert.equal(restOwner(ownerState).restSet.set,0);
 ownerState.restSet={exercise:0,set:1};restOwner(ownerState);assert.equal(ownerState.restUntil,0);assert.equal(ownerState.exercises[0].sets[0].done,true);
 assert.ok(browser.includes('dropCancel?.()'));assert.ok(browser.includes('normalizeRestOwner(recoverRecord(sessionKey'));
 console.log('Rest ownership recovery and interrupted drop cleanup checks passed');
+
+const ambiguous={exercises:[{name:'Squat',sets:[{done:true},{done:true}]}],restExercise:'Squat',restUntil:10000,restTotal:9000};restOwner(ambiguous);assert.equal(ambiguous.restUntil,0);assert.equal(ambiguous.exercises[0].sets.filter(x=>x.done).length,2);
+const undoIndex=vm.runInNewContext(browser.slice(browser.indexOf('function undoNeighborKeys('),browser.indexOf('function showExerciseUndo('))+';undoInsertionIndex');
+assert.equal(undoIndex([{name:'C'},{name:'A'},{name:'D'}],1,{before:'A',after:'C'}),2);
+assert.equal(undoIndex([{name:'A'},{name:'D'},{name:'C'}],1,{before:'A',after:'C'}),2);
+assert.equal(undoIndex([{name:'A'},{name:'A'}],1,{before:'A'}),1);
+assert.ok(browser.includes('animation.oncancel=()=>{if(completed)return;'));
+assert.ok(browser.includes('maxHeight:"calc(100dvh - 24px)",overflowY:"auto"'));
+console.log('Ambiguous rest recovery, delayed cancellation, undo placement and short viewport menu checks passed');
