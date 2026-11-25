@@ -4,11 +4,19 @@
   "compatibility_date": "2026-11-24",
   "rules": [
     {
+      "type": "Data",
+      "globs": [
+        "**/*.woff2"
+      ],
+      "fallthrough": true
+    },
+    {
       "type": "Text",
       "globs": [
         "**/*.svg",
         "**/*.css",
-        "**/*.js.txt"
+        "**/*.js.txt",
+        "**/*.license.txt"
       ],
       "fallthrough": true
     }
