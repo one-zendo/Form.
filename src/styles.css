@@ -186,17 +186,17 @@ body:not(.training) main:has(#home-page:not([hidden])){
 }
 #home-page .streak-card .days{margin-block:var(--home-card-gap)}
 body.mini-visible:not(.training) main:has(#home-page:not([hidden])){
-  --home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + 2 * var(--floating-height,56px) + var(--floating-gap,10px) + var(--space-5));
+  --home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height,56px) + var(--timer-height,72px) + var(--floating-gap,10px) + var(--space-5));
 }
 body.mini-visible #home-page:not([hidden]){
   --home-card-padding:var(--space-4);--home-card-gap:var(--space-3);
 }
 body:not(.training):has(#home-page:not([hidden]))::after{height:var(--home-blur-height,calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height,56px) + var(--space-2)))}
-body.mini-visible:not(.training):has(#home-page:not([hidden]))::after{--home-blur-height:calc(max(12px,env(safe-area-inset-bottom)) + 2 * var(--floating-height,56px) + var(--floating-gap,10px) + var(--space-2))}
+body.mini-visible:not(.training):has(#home-page:not([hidden]))::after{--home-blur-height:calc(max(12px,env(safe-area-inset-bottom)) + var(--timer-height,72px) + var(--timer-height,72px) + var(--floating-gap,10px) + var(--space-2))}
 @media(orientation:landscape) and (min-width:700px){
   #home-page .dashboard{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr)}
-  body.mini-visible:not(.training) main:has(#home-page:not([hidden])){--home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height,56px) + var(--space-5))}
-  body.mini-visible:not(.training):has(#home-page:not([hidden]))::after{--home-blur-height:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height,56px) + var(--space-2))}
+  body.mini-visible:not(.training) main:has(#home-page:not([hidden])){--home-clearance:calc(max(12px,env(safe-area-inset-bottom)) + var(--timer-height,72px) + var(--space-5))}
+  body.mini-visible:not(.training):has(#home-page:not([hidden]))::after{--home-blur-height:calc(max(12px,env(safe-area-inset-bottom)) + var(--timer-height,72px) + var(--space-2))}
 }
 @media(max-height:650px){
   #home-page:not([hidden]){--home-card-padding:var(--space-4);--home-card-gap:var(--space-3)}
