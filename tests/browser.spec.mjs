@@ -491,3 +491,53 @@ for(const [width,height] of [[466,678],[626,890],[890,626]])test('shared history
   }
   await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
  });
+
+
+ // Preserve real pointer activation and the original cross-tab regression assertions.
+ for(const theme of ['light','dark'])test('repeated portrait cross-tab capsule '+theme,async({page},testInfo)=>{
+  test.setTimeout(90000);
+  await page.setViewportSize({width:626,height:890});
+  await page.addInitScript(()=>{
+   const events=[];window.__formCapsuleTrace=events;
+   const describe=n=>n instanceof Element?{tag:n.tagName,id:n.id,classes:n.getAttribute('class'),button:n.closest('button')?.getAttribute('aria-label')??n.closest('button')?.id??null}:null;
+   const capture=(e,phase)=>{
+    const copy=document.querySelector('.mini-workout > .mini-copy'),workout=document.querySelector('#active-workout');
+    events.push({type:e.type,phase,time:performance.now(),target:describe(e.target),hit:describe(document.elementFromPoint(e.clientX,e.clientY)),x:e.clientX,y:e.clientY,pointerId:e.pointerId??null,detail:e.detail??null,prevented:e.defaultPrevented,expanded:copy?.getAttribute('aria-expanded'),workoutHidden:workout?.hidden,training:document.body?.classList.contains('training'),nav:document.querySelector('.dock [aria-current="page"]')?.id??null,overlay:!!document.querySelector('.workout-collapse-surface')});
+    if(events.length>500)events.shift();
+   };
+   for(const type of ['pointerdown','pointerup','pointercancel','gotpointercapture','lostpointercapture','click']){
+    document.addEventListener(type,e=>capture(e,'capture'),true);
+    document.addEventListener(type,e=>capture(e,'bubble'));
+   }
+  });
+  await page.goto(url);await page.evaluate(v=>document.documentElement.dataset.theme=v,theme);
+  await startFromHome(page);
+  const workout=page.locator('#active-workout'),timer=page.locator('.mini-workout'),copy=timer.locator(':scope > .mini-copy');
+  await expect(workout).toBeVisible();
+  const name=await page.locator('.session-selected .session-exercise-name').innerText();
+  await page.locator('.session-selected .session-check').first().click();
+  const deadline=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data.restUntil);
+  const original=await deadline();expect(original).toBeGreaterThan(0);
+  try{
+   for(let i=0;i<6;i++){
+    await copy.click();
+    await expect(copy,'minimize cycle '+i).toHaveAttribute('aria-expanded','false');
+    await expect(workout).toBeHidden();
+    for(const tab of ['workouts','progress','profile','home']){
+     await page.locator('#nav-'+tab).click();
+     await expect(copy.locator('.mini-name')).toHaveText(name);
+     expect(await deadline()).toBe(original);
+    }
+    await copy.click();
+    await expect(workout,'resume cycle '+i).toBeVisible();
+    await expect(copy).toHaveAttribute('aria-expanded','true');
+    expect(await deadline()).toBe(original);
+   }
+   await expect(page.locator('.workout-collapse-surface')).toHaveCount(0);
+  }catch(error){
+   const trace=await page.evaluate(()=>window.__formCapsuleTrace).catch(()=>[]);
+   await testInfo.attach('capsule-pointer-trace',{body:JSON.stringify(trace,null,2),contentType:'application/json'});
+   console.error('Capsule pointer trace (last 20 events): '+JSON.stringify(trace.slice(-20)));
+   throw error;
+  }
+ });
