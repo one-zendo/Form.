@@ -1,0 +1,45 @@
+function resolveFormTheme(value,systemDark=false){
+  if(value==="system")value=systemDark?"dark":"light";
+  return formThemes.find(t=>t.id===value||(t.legacy&&t.legacy===value))||formThemes[0];
+}
+let activeFormTheme=formThemes[0],themeBrowse="light",themeProperties=[];
+function themeThumbnail(t){
+  const p=t.palette, nav=["M3 7 8 3l5 4v6H9V9H7v4H3Z","M2 6v4m2-6v8m8-8v8m2-6v4M4 8h8","M3 12V8m5 4V4m5 8V6","M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 14v-1c0-4 12-4 12 0v1"];
+  return '<svg class="theme-preview" viewBox="0 0 180 120" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" rx="9" fill="'+p.canvas+'"/><rect x="10" y="11" width="3" height="14" rx="1.5" fill="'+p.brand+'"/><text x="18" y="23" font-size="13" font-weight="750" fill="'+p.ink+'">FORM</text><rect x="10" y="34" width="100" height="52" rx="9" fill="'+p.paper+'"/><rect x="116" y="34" width="54" height="52" rx="9" fill="'+p.paper+'"/><text x="17" y="48" font-size="9" font-weight="650" fill="'+p.ink+'">Your workout</text><text x="17" y="59" font-size="7" fill="'+p.muted+'">Ready to train</text><rect x="17" y="65" width="86" height="15" rx="7.5" fill="'+p.action+'"/><text x="60" y="75" text-anchor="middle" font-size="7" font-weight="600" fill="'+p.onAction+'">Start Workout</text><text x="123" y="48" font-size="7" fill="'+p.muted+'">Progress</text><text x="123" y="63" font-size="12" font-weight="700" fill="'+p.ink+'">—</text>'+[p.success,p.warning,p.danger].map((c,i)=>'<circle cx="'+(127+i*12)+'" cy="75" r="3" fill="'+c+'"/>').join("")+'<rect x="34" y="94" width="112" height="19" rx="9.5" fill="'+p.paper+'"/>'+nav.map((d,i)=>'<g transform="translate('+(42+i*27)+' 97) scale(.85)"><path d="'+d+'" fill="none" stroke="'+(i===0?p.action:p.muted)+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>').join("")+'</svg>';
+}
+function browseThemes(scheme){
+  themeBrowse=scheme==="dark"?"dark":"light";
+  document.querySelectorAll("[data-theme-category]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.themeCategory===themeBrowse)));
+  document.querySelectorAll(".theme-choice").forEach(c=>c.hidden=c.dataset.scheme!==themeBrowse);
+}
+function renderThemeGallery(){
+  const gallery=$("theme-gallery");
+  for(const t of formThemes){
+    const label=el("label","","theme-choice");label.dataset.scheme=t.scheme;
+    const radio=el("input");radio.type="radio";radio.name="theme";radio.value=t.legacy||t.id;radio.setAttribute("aria-label",t.name);
+    const preview=el("span","","theme-thumbnail");preview.innerHTML=themeThumbnail(t);
+    const name=el("span","","theme-name");name.append(el("span",t.name));
+    const check=el("span","","theme-check");check.setAttribute("aria-hidden","true");check.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>';name.append(check);
+    label.append(preview,name,radio);gallery.append(label);radio.onchange=()=>{if(radio.checked)applyTheme(radio.value)};
+  }
+  document.querySelectorAll("[data-theme-category]").forEach(b=>b.onclick=()=>browseThemes(b.dataset.themeCategory));
+}
+function applyTheme(value){
+  const selectedTheme=resolveFormTheme(value,matchMedia("(prefers-color-scheme: dark)").matches);
+  const root=document.documentElement;
+  for(const k of themeProperties)root.style.removeProperty(k);
+  themeProperties=[];
+  root.dataset.themeId=selectedTheme.id;root.dataset.theme=selectedTheme.scheme;
+  root.toggleAttribute("data-theme-custom",!selectedTheme.legacy);
+  if(!selectedTheme.legacy){
+    const p=selectedTheme.palette,dark=selectedTheme.scheme==="dark",prefix="--palette-"+selectedTheme.scheme+"-";
+    const roles={canvas:p.canvas,paper:p.paper,elevated:p.elevated,ink:p.ink,muted:p.muted,brand:p.brand,action:p.action,danger:p.danger,warning:p.warning,"switch-off":p.elevated,insight:p.action,line:dark?"#ffffff18":"#00000012"};
+    const vars=Object.fromEntries(Object.entries(roles).map(([k,v])=>[prefix+k,v]));
+    Object.assign(vars,{"--palette-light-success-ink":p.success,"--palette-light-system-red":p.danger,"--palette-dark-success":p.success,"--palette-timer-complete":p.completion,"--palette-light-contrast-green":p.success,"--palette-dark-contrast-green":p.success,"--palette-light-dock":"color-mix(in srgb,"+p.paper+" 87.45%,transparent)","--theme-action":p.action,"--theme-action-ink":p.onAction,"--theme-completion":p.completion,"--theme-completion-ink":dark?p.canvas:"#FFFFFF","--theme-danger":p.danger,"--theme-danger-ink":dark?p.canvas:"#FFFFFF","--theme-success":p.success,"--theme-warning":p.warning,"--theme-recovery":"#0066CC","--theme-recovery-ink":"#FFFFFF"});
+    for(const [k,v] of Object.entries(vars)){root.style.setProperty(k,v);themeProperties.push(k)}
+  }
+  activeFormTheme=selectedTheme;
+  save("form-preview-theme",selectedTheme.legacy||selectedTheme.id);
+  $("current-theme").textContent=selectedTheme.name;
+  document.querySelectorAll('input[name="theme"]').forEach(r=>r.checked=r.value===(selectedTheme.legacy||selectedTheme.id));
+}

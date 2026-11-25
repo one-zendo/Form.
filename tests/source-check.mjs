@@ -2,8 +2,8 @@ import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
-const browser=readFileSync(new URL("../src/browser.js.txt",import.meta.url),"utf8");
-const core=Object.fromEntries(["storage","timer","calendar","progress","themes"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
+const browser=["ui/motion","ui/appearance","ui/history","browser"].map(name=>readFileSync(new URL("../src/"+name+".js.txt",import.meta.url),"utf8")).join("\n");
+const core=Object.fromEntries(["storage","timer","calendar","progress","themes","fold"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
 const developmentStorage=readFileSync(new URL('../src/development/reset.js.txt',import.meta.url),'utf8');
 const developmentUI=readFileSync(new URL('../src/development/ui.js.txt',import.meta.url),'utf8');
 const developmentMarkup=readFileSync(new URL('../src/development/dialog.js.txt',import.meta.url),'utf8');
@@ -85,10 +85,7 @@ for(const key of ['fast','tab','back','edit','standard','sheet','collapse','sett
 for(const key of ['ease','spring','gesture-ease','system-ease'])assert.ok(motion[key].startsWith('cubic-bezier('));
 console.log('Global design token and motion regression checks passed');
 
-const foldStart=browser.indexOf('function homeFoldGeometry(');
-const foldEnd=browser.indexOf('\n{\nlet foldFrame=',foldStart);
-assert.ok(foldStart>=0&&foldEnd>foldStart);
-const fold=vm.runInNewContext(browser.slice(foldStart,foldEnd)+';({homeFoldGeometry,homeFoldVariables})');
+const fold=vm.runInNewContext(core.fold+';({homeFoldGeometry,homeFoldVariables})');
 const side=[{x:0,y:0,width:400,height:800},{x:420,y:0,width:400,height:800}];
 const stack=[{x:0,y:0,width:400,height:400},{x:0,y:420,width:400,height:400}];
 for(const [rects,w,h,mode] of [[side,820,800,'side'],[stack,400,820,'stack']]){

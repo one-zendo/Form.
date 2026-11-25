@@ -1,0 +1,20 @@
+function homeFoldGeometry(rects,folded,viewportWidth=Infinity,viewportHeight=Infinity,hasTimer=false){
+  if(!folded||!rects||rects.length!==2)return null;
+  const a=Array.from(rects,r=>({x:Number(r.x),y:Number(r.y),w:Number(r.width),h:Number(r.height)}));
+  if(a.some(r=>!Object.values(r).every(Number.isFinite)||r.w<1||r.h<1||r.x<0||r.y<0||r.x+r.w>viewportWidth+1||r.y+r.h>viewportHeight+1))return null;
+  const horizontal=Math.abs(a[0].x-a[1].x)>Math.abs(a[0].y-a[1].y);
+  a.sort((l,r)=>horizontal?l.x-r.x:l.y-r.y);
+  const [l,r]=a;
+  const gap=horizontal?r.x-l.x-l.w:r.y-l.y-l.h;
+  const overlap=horizontal?Math.min(l.y+l.h,r.y+r.h)-Math.max(l.y,r.y):Math.min(l.x+l.w,r.x+r.w)-Math.max(l.x,r.x);
+  if(gap< -1||overlap<Math.min(horizontal?l.h:l.w,horizontal?r.h:r.w)*.8)return null;
+  if(horizontal?(l.w<260||r.w<260||l.h<336||r.h<(hasTimer?412:332)):(l.h<(hasTimer?332:252)||r.h<296||Math.min(l.w,r.w)<280))return null;
+  return {mode:horizontal?"side":"stack",a:l,b:r};
+}
+function homeFoldVariables(g,viewportHeight,hasTimer,pad=16,base=12,clearance=64){
+  const {a,b,mode}=g,stack=mode==="stack",nav=stack?b:a,timer=stack?a:b,vars={};
+  for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}
+  vars["a-clearance"]=stack?(hasTimer?clearance+16:0):clearance;vars["b-clearance"]=stack?clearance:hasTimer?clearance+16:0;vars["b-header"]=stack?0:100;
+  for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,viewportHeight-r.y-r.h+base)}
+  return vars
+}
