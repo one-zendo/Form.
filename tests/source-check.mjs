@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
 const browser=readFileSync(new URL("../src/browser.js.txt",import.meta.url),"utf8");
-const core=Object.fromEntries(["storage","timer","calendar","progress"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
+const core=Object.fromEntries(["storage","timer","calendar","progress","themes"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
 const assembled=[...Object.values(core),browser].join("\n");
 new vm.Script(assembled);
 for(const [name,code] of Object.entries(core)){new vm.Script(code);assert.ok(source.includes('./core/'+name+'.js.txt'));}
@@ -338,3 +338,15 @@ console.log('Sample routine text hidden without removing sample toggle passed');
 
 // Legacy Home must stay deleted; verify actual removal, not CSS hiding.
 for(const id of ['hero-label','hero-title','hero-sub','exercise-preview','home-recent','home-insight','home-history','home-progress','quick','start','routine']){assert.ok(!source.includes('id="'+id+'"'));assert.ok(!browser.includes('$("'+id+'")'))}
+
+const themeManifest=vm.runInNewContext(core.themes+';formThemes');
+assert.equal(themeManifest.length,10);
+assert.equal(new Set(themeManifest.map(t=>t.id)).size,10);
+for(const scheme of ['light','dark'])assert.equal(themeManifest.filter(t=>t.scheme===scheme).length,5);
+const luminance=hex=>{const rgb=hex.slice(1).match(/../g).map(c=>parseInt(c,16)/255).map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4);return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};
+const contrast=(a,b)=>{const l=[luminance(a),luminance(b)].sort((x,y)=>y-x);return (l[0]+.05)/(l[1]+.05)};
+for(const {id,palette:p} of themeManifest){
+  for(const role of ['canvas','paper','elevated','ink','muted','brand','action','onAction','success','warning','danger','completion'])assert.match(p[role],/^#[0-9a-f]{6}$/i);
+  for(const [fg,bg] of [[p.action,p.onAction],[p.ink,p.paper],[p.muted,p.paper],[p.success,p.paper],[p.warning,p.paper],[p.danger,p.paper]])assert.ok(contrast(fg,bg)>=4.5,id+' insufficient contrast '+fg+' / '+bg);
+}
+console.log('Ten theme identities and manifest text/action contrast checks passed');
