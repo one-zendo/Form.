@@ -1,0 +1,74 @@
+name: FORM iteration checks
+on:
+  push:
+    branches:
+      - 'design/**'
+      - 'engineering/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Check category
+        type: choice
+        options:
+          - design
+          - engineering
+        default: design
+      area:
+        description: Engineering area (ignored in design mode)
+        type: choice
+        options:
+          - smoke
+          - workouts
+          - timers
+          - storage
+          - themes
+          - progress
+        default: smoke
+permissions:
+  contents: read
+concurrency:
+  group: form-iteration-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+jobs:
+  iteration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: npx playwright install --with-deps webkit
+      - name: Run selected browser checks
+        env:
+          MODE: ${{ inputs.mode }}
+          AREA: ${{ inputs.area }}
+          REF_NAME: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+            case "$REF_NAME" in
+              design/*) MODE=design ;;
+              engineering/*) MODE=engineering ;;
+              *) echo "Unexpected iteration branch"; exit 1 ;;
+            esac
+            AREA=smoke
+          fi
+          case "$MODE:$AREA" in
+            design:*) npm run test:design ;;
+            engineering:smoke) npm run test:engineering ;;
+            engineering:workouts|engineering:timers|engineering:storage|engineering:themes|engineering:progress)
+              npm run "test:engineering:$AREA" ;;
+            *) echo "Unknown check selection"; exit 1 ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: iteration-browser-test-results
+          path: test-results/
+          if-no-files-found: ignore
