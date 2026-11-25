@@ -40,11 +40,11 @@ miniCopy.addEventListener("pointerup",e=>{const start=miniSwipe;miniSwipe=null;i
 miniCopy.addEventListener("pointercancel",()=>{miniSwipe=null;miniSwipeHandled=false});miniCopy.addEventListener("lostpointercapture",()=>{miniSwipe=null});
 miniCopy.addEventListener("click",e=>{if(miniSwipeHandled&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();miniSwipeHandled=false}},true);
 const miniStyle=el("style");miniStyle.textContent=`
-:root{--floating-height:56px;--floating-gap:10px;}
+:root{--floating-height:56px;--timer-height:72px;--floating-gap:10px;}
 .dock,.mini-workout{height:var(--floating-height);border-radius:var(--radius-full);bottom:max(12px,env(safe-area-inset-bottom));width:min(440px,calc(100% - 32px));background:var(--dock);border:1px solid var(--line);box-shadow:0 8px 32px var(--shadow-float);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
 .dock{padding:5px;transition:left var(--motion-swipe) var(--motion-gesture-ease),width var(--motion-swipe) var(--motion-gesture-ease)}
 .dock button{min-height:var(--touch-target);height:44px;gap:1px;font-size:10px;min-width:0}
-.mini-workout{position:absolute;z-index:3;bottom:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height) + var(--floating-gap));left:50%;transform:translateX(-50%);display:grid;grid-template-columns:88px minmax(0,1fr) 88px;align-items:center;padding:0 6px;overflow:hidden;isolation:isolate;animation:mini-enter 220ms ease-out;color:var(--ink)}
+.mini-workout{height:var(--timer-height);position:absolute;z-index:3;bottom:calc(max(12px,env(safe-area-inset-bottom)) + var(--floating-height) + var(--floating-gap));left:50%;transform:translateX(-50%);display:grid;grid-template-columns:88px minmax(0,1fr) 88px;align-items:center;padding:0 6px;overflow:hidden;isolation:isolate;animation:mini-enter 220ms ease-out;color:var(--ink)}
 .mini-workout::before{content:"";position:absolute;inset:0 auto 0 0;width:100%;transform-origin:left center;clip-path:var(--rest-boundary,inset(0 calc((1 - var(--rest-fraction,0))*100%) 0 0));background:var(--rest-fill);z-index:-1;pointer-events:none}
 .mini-workout[data-resting=true]{color:var(--rest-track-ink);background:var(--rest-track);border-color:transparent}
 .mini-copy{grid-column:2;grid-row:1;display:grid;align-content:center;justify-items:center;text-align:center;min-width:0;min-height:var(--touch-target);padding:0;gap:0;color:inherit;line-height:1.12}/* Keep the grabber mounted in both states so it can animate in either direction. */
@@ -55,7 +55,7 @@ body:not(.training) .mini-workout .mini-copy::before{transform:translate(-50%,0)
 .mini-workout[data-ready=true] .mini-copy::before,.mini-color-mask .mini-copy::before{background:var(--rest-ink)}
 body:not(.training) .mini-workout[data-ready=true] .mini-copy::before,body:not(.training) .mini-color-mask .mini-copy::before{opacity:.55}
 @media(prefers-reduced-motion:reduce){.mini-workout .mini-copy,.mini-workout .mini-copy::before{transition:none}}
-.mini-copy strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}.mini-copy .caption{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:var(--space-1)}.mini-copy .caption::before{content:"";width:6px;height:6px;flex:none;border-radius:var(--radius-full);background:var(--success);animation:form-mini-live-breathe 2.4s ease-in-out infinite}@keyframes form-mini-live-breathe{0%,100%{opacity:1;box-shadow:0 0 0 0 transparent}50%{opacity:.45;box-shadow:0 0 0 4px color-mix(in srgb,var(--success) 12%,transparent)}}@media(prefers-reduced-motion:reduce){.mini-copy .caption::before{animation:none!important}}.mini-workout:is([data-resting=true],[data-ready=true]) .mini-copy .caption{display:none}.mini-workout:is([data-resting=true],[data-ready=true]) .mini-name{font-size:11px;font-weight:500}.mini-workout[data-ready=true] .mini-name{font-weight:600}.mini-copy .mini-clock{font-size:24px;font-weight:650;color:inherit;line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini-copy strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}.mini-copy .caption{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:var(--space-1)}.mini-copy .caption::before{content:"";width:6px;height:6px;flex:none;border-radius:var(--radius-full);background:var(--success);animation:form-mini-live-breathe 2.4s ease-in-out infinite}@keyframes form-mini-live-breathe{0%,100%{opacity:1;box-shadow:0 0 0 0 transparent}50%{opacity:.45;box-shadow:0 0 0 4px color-mix(in srgb,var(--success) 12%,transparent)}}@media(prefers-reduced-motion:reduce){.mini-copy .caption::before{animation:none!important}}.mini-workout:is([data-resting=true],[data-ready=true]) .mini-copy .caption{display:none}.mini-workout:is([data-resting=true],[data-ready=true]) .mini-name{font-size:12px;font-weight:500}.mini-workout[data-ready=true] .mini-name{font-weight:600}.mini-copy .mini-clock{font-size:30px;font-weight:650;color:inherit;line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap}
 .mini-workout:is([data-resting=true],[data-ready=true]) .mini-copy{text-shadow:none}.mini-minus{grid-column:1;grid-row:1;justify-self:start}.mini-right{grid-column:3;grid-row:1;display:flex;align-items:center;justify-content:end}
 .mini-workout:not([data-resting=true]):not([data-ready=true]) .mini-minus,.mini-workout:not([data-resting=true]):not([data-ready=true]) .mini-right,.mini-workout:not([data-resting=true]):not([data-ready=true]) .mini-clock{display:none}
 .mini-workout:not([data-resting=true]):not([data-ready=true]) .mini-copy{grid-column:1/-1;padding-inline:44px}
@@ -73,26 +73,26 @@ body:not(.training) .mini-workout[data-ready=true] .mini-copy::before,body:not(.
 @media(prefers-reduced-motion:reduce){.mini-workout[data-ready=true]{animation:none}}
 .mini-workout progress{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);pointer-events:none}
 body.mini-visible main{padding-bottom:calc(144px + env(safe-area-inset-bottom))}
-@media (orientation:portrait), (max-width:699px){body.training.mini-visible .mini-workout{bottom:max(12px,env(safe-area-inset-bottom))}body.training.mini-visible main{padding-bottom:calc(86px + env(safe-area-inset-bottom))}}
+@media (orientation:portrait), (max-width:699px){body.training.mini-visible .mini-workout{bottom:max(12px,env(safe-area-inset-bottom))}body.training.mini-visible main{padding-bottom:calc(var(--timer-height) + 30px + env(safe-area-inset-bottom))}}
 body.training #session-rest-card{display:none!important}
 @keyframes mini-enter{from{opacity:0}to{opacity:1}}
-@media (orientation:landscape) and (min-width:700px){body.training .dock{display:grid}body.mini-visible .dock,body.mini-visible .mini-workout{bottom:max(12px,env(safe-area-inset-bottom));width:min(440px,calc((100% - 44px)/2))}body.mini-visible .dock{left:calc(50% - min(225px,calc((100% - 24px)/4)))}body.mini-visible .mini-workout{left:calc(50% + min(225px,calc((100% - 24px)/4)))}body.mini-visible main,body.training main,body.mini-visible main:has(#workouts-page:not([hidden])),body.mini-visible main:has(#profile-shell:not([hidden])){padding-bottom:calc(86px + env(safe-area-inset-bottom))}}
+@media (orientation:landscape) and (min-width:700px){body.training .dock{display:grid}body.mini-visible .dock,body.mini-visible .mini-workout{bottom:max(12px,env(safe-area-inset-bottom));width:min(440px,calc((100% - 44px)/2))}body.mini-visible .dock{left:calc(50% - min(225px,calc((100% - 24px)/4)))}body.mini-visible .mini-workout{left:calc(50% + min(225px,calc((100% - 24px)/4)))}body.mini-visible main,body.training main,body.mini-visible main:has(#workouts-page:not([hidden])),body.mini-visible main:has(#profile-shell:not([hidden])){padding-bottom:calc(var(--timer-height) + 30px + env(safe-area-inset-bottom))}}
 @media(max-width:360px){.mini-workout{grid-template-columns:80px minmax(0,1fr) 80px;padding-inline:3px}.mini-workout .rest-adjust{min-width:40px;flex-basis:40px}}
 @media(prefers-reduced-motion:reduce){.dock,.mini-workout,.mini-workout::before{transition:none;animation:none}}
 @media(prefers-reduced-transparency:reduce){.mini-workout,.dock{backdrop-filter:none;-webkit-backdrop-filter:none}.mini-workout:not([data-resting=true]):not([data-ready=true]),.dock{background:var(--paper)}}
 
 
 /* Balanced timer controls and identical countdown-mask geometry. */
-.mini-workout{--rest-track:#D1D1D6;--timer-control-size:44px;grid-template-columns:calc(2 * var(--timer-control-size)) minmax(0,1fr) calc(2 * var(--timer-control-size));}
+.mini-workout{--rest-track:#D1D1D6;--timer-control-size:48px;grid-template-columns:calc(2 * var(--timer-control-size)) minmax(0,1fr) calc(2 * var(--timer-control-size));}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) .mini-workout{--rest-track:#3A3A3C}}
 :root[data-theme=dark] .mini-workout{--rest-track:#3A3A3C}
-.mini-workout .rest-adjust{display:grid;place-items:center;width:var(--timer-control-size);height:44px;min-width:var(--timer-control-size);min-height:var(--touch-target);flex:0 0 var(--timer-control-size);line-height:1;margin:0;padding:0}
-.mini-workout .rest-adjust svg{display:block;width:20px;height:20px;flex:none}
+.mini-workout .rest-adjust{display:grid;place-items:center;width:var(--timer-control-size);height:48px;min-width:var(--timer-control-size);min-height:var(--touch-target);flex:0 0 var(--timer-control-size);line-height:1;margin:0;padding:0}
+.mini-workout .rest-adjust svg{display:block;width:22px;height:22px;flex:none}
 .mini-workout .rest-adjust:not(.rest-skip)::before{inset:4px;border-radius:var(--radius-full)}
 .mini-workout .mini-right{gap:0}
 .mini-workout .mini-copy{min-width:0;justify-self:stretch;margin:0}
 .mini-workout .mini-color-mask{grid-template-columns:inherit;padding:inherit}
-@media(max-width:360px){.mini-workout{grid-template-columns:88px minmax(0,1fr) 88px;padding-inline:3px}}
+@media(max-width:360px){.mini-workout{--timer-control-size:44px;grid-template-columns:88px minmax(0,1fr) 88px;padding-inline:3px}}
 `;document.head.append(miniStyle);
 function formatElapsed(sec){const h=Math.floor(sec/3600),m=Math.floor(sec/60)%60;return (h?h+":":"")+String(m).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
 function homeRoutine(){return routines[0]||(showSamples?samples[0]:null)}
@@ -316,10 +316,10 @@ body.training #active-workout:not([hidden]){height:100%;min-height:0;display:gri
    The scrollport reaches the viewport bottom; reserve space inside it, not above it. */
 body.training.mini-visible main{padding-bottom:0}
 body.training.mini-visible #active-workout .session-scroll{
-  padding-bottom:calc(110px + env(safe-area-inset-bottom));
-  scroll-padding-bottom:calc(110px + env(safe-area-inset-bottom));
-  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 max(0px,calc(100% - 156px - env(safe-area-inset-bottom))),rgba(0,0,0,.98) max(0px,calc(100% - 138px - env(safe-area-inset-bottom))),rgba(0,0,0,.80) max(0px,calc(100% - 100px - env(safe-area-inset-bottom))),rgba(0,0,0,.34) max(0px,calc(100% - 52px - env(safe-area-inset-bottom))),transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 0,#000 max(0px,calc(100% - 156px - env(safe-area-inset-bottom))),rgba(0,0,0,.98) max(0px,calc(100% - 138px - env(safe-area-inset-bottom))),rgba(0,0,0,.80) max(0px,calc(100% - 100px - env(safe-area-inset-bottom))),rgba(0,0,0,.34) max(0px,calc(100% - 52px - env(safe-area-inset-bottom))),transparent 100%);
+  padding-bottom:calc(var(--timer-height) + 54px + env(safe-area-inset-bottom));
+  scroll-padding-bottom:calc(var(--timer-height) + 54px + env(safe-area-inset-bottom));
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 max(0px,calc(100% - var(--timer-height) - 100px - env(safe-area-inset-bottom))),rgba(0,0,0,.98) max(0px,calc(100% - var(--timer-height) - 82px - env(safe-area-inset-bottom))),rgba(0,0,0,.80) max(0px,calc(100% - var(--timer-height) - 44px - env(safe-area-inset-bottom))),rgba(0,0,0,.34) max(0px,calc(100% - var(--timer-height) + 4px - env(safe-area-inset-bottom))),transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0,#000 max(0px,calc(100% - var(--timer-height) - 100px - env(safe-area-inset-bottom))),rgba(0,0,0,.98) max(0px,calc(100% - var(--timer-height) - 82px - env(safe-area-inset-bottom))),rgba(0,0,0,.80) max(0px,calc(100% - var(--timer-height) - 44px - env(safe-area-inset-bottom))),rgba(0,0,0,.34) max(0px,calc(100% - var(--timer-height) + 4px - env(safe-area-inset-bottom))),transparent 100%);
   isolation:auto;
 }
 body::after{
@@ -327,7 +327,7 @@ body::after{
   height:calc(180px + env(safe-area-inset-bottom));pointer-events:none;transition:height var(--motion-swipe) var(--motion-gesture-ease);
   background:linear-gradient(to bottom,transparent 0%,transparent 15%,color-mix(in srgb,var(--canvas) 12%,transparent) 35%,color-mix(in srgb,var(--canvas) 70%,transparent) 80%,var(--canvas) 100%);
 }
-@media (orientation:portrait), (max-width:699px){body.mini-visible:not(.training)::after{height:calc(180px + var(--floating-height) + var(--floating-gap) + env(safe-area-inset-bottom))}}
+@media (orientation:portrait), (max-width:699px){body.mini-visible:not(.training)::after{height:calc(180px + var(--timer-height) + var(--floating-gap) + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){body::after{transition:none}}
 @supports ((-webkit-mask-image:linear-gradient(transparent,#000)) or (mask-image:linear-gradient(transparent,#000))){
   body::after{
@@ -338,7 +338,7 @@ body::after{
   }
 }
 @media(prefers-reduced-transparency:reduce){
-  body.training.mini-visible main{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+  body.training.mini-visible main{padding-bottom:calc(var(--timer-height) + 30px + env(safe-area-inset-bottom))}
   body.training.mini-visible #active-workout .session-scroll{padding-bottom:0;scroll-padding-bottom:0;-webkit-mask-image:none;mask-image:none}
   body::after{display:none}
 }
@@ -382,13 +382,13 @@ function homeFoldGeometry(rects,folded,viewportWidth=Infinity,viewportHeight=Inf
   const gap=horizontal?r.x-l.x-l.w:r.y-l.y-l.h;
   const overlap=horizontal?Math.min(l.y+l.h,r.y+r.h)-Math.max(l.y,r.y):Math.min(l.x+l.w,r.x+r.w)-Math.max(l.x,r.x);
   if(gap< -1||overlap<Math.min(horizontal?l.h:l.w,horizontal?r.h:r.w)*.8)return null;
-  if(horizontal?(l.w<260||r.w<260||l.h<336||r.h<(hasTimer?396:332)):(l.h<(hasTimer?316:252)||r.h<296||Math.min(l.w,r.w)<280))return null;
+  if(horizontal?(l.w<260||r.w<260||l.h<336||r.h<(hasTimer?412:332)):(l.h<(hasTimer?332:252)||r.h<296||Math.min(l.w,r.w)<280))return null;
   return {mode:horizontal?"side":"stack",a:l,b:r};
 }
 function homeFoldVariables(g,viewportHeight,hasTimer,pad=16,base=12,clearance=64){
   const {a,b,mode}=g,stack=mode==="stack",nav=stack?b:a,timer=stack?a:b,vars={};
   for(const [k,r] of [["a",a],["b",b]]){vars[k+"-left"]=r.x+pad;vars[k+"-top"]=r.y+pad;vars[k+"-width"]=r.w-2*pad;vars[k+"-height"]=r.h-2*pad}
-  vars["a-clearance"]=stack?(hasTimer?clearance:0):clearance;vars["b-clearance"]=stack||hasTimer?clearance:0;vars["b-header"]=stack?0:100;
+  vars["a-clearance"]=stack?(hasTimer?clearance+16:0):clearance;vars["b-clearance"]=stack?clearance:hasTimer?clearance+16:0;vars["b-header"]=stack?0:100;
   for(const [k,r] of [["nav",nav],["timer",timer]]){vars[k+"-center"]=r.x+r.w/2;vars[k+"-width"]=r.w-2*pad;vars[k+"-bottom"]=Math.max(base,viewportHeight-r.y-r.h+base)}
   return vars
 }
