@@ -406,3 +406,11 @@ for(const [width,height] of [[390,844],[466,678],[626,890]])test('partner header
   await page.locator('#detail-edit').click();const name=await rect('#routine-name');close(name.x,detail.x);close(name.y,detail.y);close((await rect('#detail-start')).y,start.y);
   await page.locator('#detail-edit').click();await page.locator('#detail-back').click();close((await rect('#routine-list .partner-header h2')).x,title.x);
 });
+
+for(const theme of ['light','dark'])test('global headline measurements '+theme,async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
+ await page.addInitScript(t=>localStorage.setItem('form-preview-theme',t),theme);await page.goto(url);
+ const check=async selector=>{const title=page.locator(selector);await expect(title).toBeVisible();for(const [property,value] of [['font-size','28px'],['font-weight','700'],['line-height','44px'],['height','44px'],['letter-spacing','-0.7px']])await expect(title).toHaveCSS(property,value);expect(await title.evaluate(e=>getComputedStyle(e).fontFamily)).toContain('Inter')};
+ await check('#home-page .form-headline');await page.locator('#nav-workouts').click();await check('#routine-list .form-headline');await page.locator('#routine-items .routine-entry').first().click();await check('#detail-title');await page.locator('#detail-edit').click();await check('#routine-name');await page.locator('#detail-back').click();
+ await page.locator('#nav-progress').click();await check('#progress-page .form-headline');await page.locator('#nav-profile').click();await check('#profile-page .form-headline');await page.locator('#personal-open').click();await check('#personal-page .form-headline');await page.locator('#personal-back').click();await page.locator('#appearance-open').click();await check('#appearance-page .form-headline');
+});
