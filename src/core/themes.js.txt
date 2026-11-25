@@ -26,18 +26,20 @@ const formThemes=Object.freeze([
     "scheme": "light",
     "legacy": null,
     "palette": {
-      "canvas": "#F0EEE8",
-      "paper": "#FAF9F5",
-      "elevated": "#E0DED7",
-      "ink": "#252525",
-      "muted": "#696762",
-      "brand": "#252525",
-      "action": "#252525",
+      "canvas": "#F5F4F0",
+      "paper": "#FFFFFF",
+      "elevated": "#EAE8E3",
+      "ink": "#1C1C1C",
+      "muted": "#66645F",
+      "brand": "#1C1C1C",
+      "action": "#1C1C1C",
       "onAction": "#FFFFFF",
-      "success": "#42633F",
-      "warning": "#79582B",
+      "success": "#45634D",
+      "warning": "#806033",
       "danger": "#A43D3D",
-      "completion": "#42633F"
+      "completion": "#45634D",
+      "recovery": "#1C1C1C",
+      "streakAccent": "#1C1C1C"
     }
   },
   {

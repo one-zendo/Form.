@@ -72,7 +72,9 @@ function applyTheme(value){
     const p=selectedTheme.palette,dark=selectedTheme.scheme==="dark",prefix="--palette-"+selectedTheme.scheme+"-";
     const roles={canvas:p.canvas,paper:p.paper,elevated:p.elevated,ink:p.ink,muted:p.muted,brand:p.brand,action:p.action,danger:p.danger,warning:p.warning,"switch-off":p.elevated,insight:p.action,line:dark?"#ffffff18":"#00000012"};
     const vars=Object.fromEntries(Object.entries(roles).map(([k,v])=>[prefix+k,v]));
-    Object.assign(vars,{"--palette-light-success-ink":p.success,"--palette-light-system-red":p.danger,"--palette-dark-success":p.success,"--palette-timer-complete":p.completion,"--palette-light-contrast-green":p.success,"--palette-dark-contrast-green":p.success,"--palette-light-dock":"color-mix(in srgb,"+p.paper+" 87.45%,transparent)","--theme-action":p.action,"--theme-action-ink":p.onAction,"--theme-completion":p.completion,"--theme-completion-ink":dark?p.canvas:"#FFFFFF","--theme-danger":p.danger,"--theme-danger-ink":dark?p.canvas:"#FFFFFF","--theme-success":p.success,"--theme-warning":p.warning,"--theme-recovery":"#0066CC","--theme-recovery-ink":"#FFFFFF"});
+    Object.assign(vars,{"--palette-light-success-ink":p.success,"--palette-light-system-red":p.danger,"--palette-dark-success":p.success,"--palette-timer-complete":p.completion,"--palette-light-contrast-green":p.success,"--palette-dark-contrast-green":p.success,"--palette-light-dock":"color-mix(in srgb,"+p.paper+" 87.45%,transparent)","--theme-action":p.action,"--theme-action-ink":p.onAction,"--theme-completion":p.completion,"--theme-completion-ink":dark?p.canvas:"#FFFFFF","--theme-danger":p.danger,"--theme-danger-ink":dark?p.canvas:"#FFFFFF","--theme-success":p.success,"--theme-warning":p.warning,"--theme-recovery":p.recovery||"#0066CC","--theme-recovery-ink":"#FFFFFF"});
+    if(p.recovery&&!dark)vars["--palette-light-contrast-blue"]=p.recovery;
+    if(p.streakAccent)vars["--streak-ink"]=p.streakAccent;
     for(const [k,v] of Object.entries(vars)){root.style.setProperty(k,v);themeProperties.push(k)}
   }
   activeFormTheme=selectedTheme;

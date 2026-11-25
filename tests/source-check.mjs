@@ -354,6 +354,13 @@ for(const {id,palette:p} of themeManifest){
   for(const role of ['canvas','paper','elevated','ink','muted','brand','action','onAction','success','warning','danger','completion'])assert.match(p[role],/^#[0-9a-f]{6}$/i);
   for(const [fg,bg] of [[p.action,p.onAction],[p.ink,p.paper],[p.muted,p.paper],[p.success,p.paper],[p.warning,p.paper],[p.danger,p.paper]])assert.ok(contrast(fg,bg)>=4.5,id+' insufficient contrast '+fg+' / '+bg);
 }
+const paperInk=themeManifest.find(t=>t.id==='paper-ink').palette;
+for(const role of ['brand','action','recovery','streakAccent'])assert.equal(paperInk[role],paperInk.ink);
+for(const bg of [paperInk.canvas,paperInk.paper,paperInk.elevated])assert.ok(contrast(paperInk.muted,bg)>=4.5);
+assert.ok(contrast(paperInk.recovery,paperInk.onAction)>=4.5);
+assert.ok(contrast(paperInk.completion,paperInk.onAction)>=4.5);
+assert.equal(themeManifest.filter(t=>t.palette.recovery!==undefined).length,1);
+assert.ok(browser.includes('p.recovery||"#0066CC"')&&browser.includes('vars["--palette-light-contrast-blue"]=p.recovery'));
 console.log('Ten theme identities and manifest text/action contrast checks passed');
 
 const monthly=vm.runInNewContext(core.calendar+';monthlyTrainingDays');

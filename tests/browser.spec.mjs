@@ -569,7 +569,7 @@ test('appearance gallery browses categories without applying a theme and persist
   await gotoWithRoutines(page);
   await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
   const root=page.locator('html'),gallery=page.locator('#theme-gallery');
-  const choices=[['light','studio-blue','light','rgb(242, 242, 247)'],['paper-ink','paper-ink','light','rgb(240, 238, 232)'],['ballet-pink','ballet-pink','light','rgb(255, 240, 245)'],['sage-botanical','sage-botanical','light','rgb(240, 245, 236)'],['peach-pop','peach-pop','light','rgb(255, 244, 235)'],['dark','graphite-lime','dark','rgb(23, 23, 31)'],['charcoal-silver','charcoal-silver','dark','rgb(20, 20, 20)'],['midnight-violet','midnight-violet','dark','rgb(24, 21, 34)'],['sapphire-night','sapphire-night','dark','rgb(16, 21, 34)'],['obsidian-red','obsidian-red','dark','rgb(18, 18, 18)']];
+  const choices=[['light','studio-blue','light','rgb(242, 242, 247)'],['paper-ink','paper-ink','light','rgb(245, 244, 240)'],['ballet-pink','ballet-pink','light','rgb(255, 240, 245)'],['sage-botanical','sage-botanical','light','rgb(240, 245, 236)'],['peach-pop','peach-pop','light','rgb(255, 244, 235)'],['dark','graphite-lime','dark','rgb(23, 23, 31)'],['charcoal-silver','charcoal-silver','dark','rgb(20, 20, 20)'],['midnight-violet','midnight-violet','dark','rgb(24, 21, 34)'],['sapphire-night','sapphire-night','dark','rgb(16, 21, 34)'],['obsidian-red','obsidian-red','dark','rgb(18, 18, 18)']];
   await expect(gallery.locator('.theme-choice')).toHaveCount(10);
   for(const [value,id,scheme,canvas] of choices){
     const before=await root.getAttribute('data-theme-id');
@@ -661,6 +661,13 @@ for(const theme of ['light','dark','paper-ink','ballet-pink','sage-botanical','p
  const contrast=async(loc,min=4.5)=>{await expect(loc).toBeVisible();expect.soft(await renderedContrast(loc),theme+' '+width+' '+await loc.evaluate(e=>e.id||e.className||e.tagName)).toBeGreaterThanOrEqual(min)};
  const noOverflow=async loc=>expect(await loc.evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
  const main=page.locator('main');await noOverflow(main);await touch(page.locator('#home-workout-card'));await touch(page.locator('#home-activity'));await contrast(page.locator('#home-greeting'),3);
+ if(theme==='paper-ink'){
+  const ink='rgb(28, 28, 28)';
+  await expect(page.locator('#home-page .form-headline')).toHaveCSS('color',ink);
+  await expect(page.locator('#home-page .global-leading')).toHaveCSS('color',ink);
+  await expect(page.locator('#nav-home')).toHaveCSS('color',ink);
+  await expect(page.locator('#home-workout-action')).toHaveCSS('background-color',ink);
+ }
  await contrast(page.locator('#home-workout-meta'));await contrast(page.locator('#home-workout-action'));
  await page.locator('#nav-profile').click();await page.locator('#appearance-open').click();
  const gallery=page.locator('#theme-gallery'),selected=gallery.locator('input:checked');await expect(selected).toHaveCount(1);await expect(selected).toBeVisible();await noOverflow(gallery);
@@ -673,8 +680,16 @@ for(const theme of ['light','dark','paper-ink','ballet-pink','sage-botanical','p
  await touch(page.locator('#detail-edit'));await touch(page.locator('#detail-start'));await contrast(page.locator('#detail-edit'),3);await contrast(page.locator('#detail-start'));
  await page.locator('#detail-edit').click();await expect(page.locator('#routine-name')).toBeVisible();await expect(page.locator('#detail-start')).toBeDisabled();await contrast(page.locator('#detail-edit'),3);await page.locator('#detail-edit').click();
  await page.locator('#detail-start').click();await expect(page.locator('#active-workout')).toBeVisible();await touch(page.locator('.session-finish'));await contrast(page.locator('.session-finish'));
+ if(theme==='paper-ink'){
+  const ink='rgb(28, 28, 28)';
+  await expect(page.locator('#active-workout .form-headline')).toHaveCSS('color',ink);
+  const colors=await page.locator('#active-workout').evaluate(e=>{const s=getComputedStyle(e);return [s.getPropertyValue('--system-blue').trim(),s.getPropertyValue('--workout-accent').trim()]});
+  expect(colors.map(c=>c.toUpperCase())).toEqual(['#1C1C1C','#1C1C1C']);
+ }
  const check=page.locator('.session-selected .session-check').first();await touch(check);await check.click();await expect(check).toHaveClass(/session-done/);
- const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();await timer.getByRole('button',{name:'Minimize Active Workout'}).click();await expect(page.locator('.dock')).toBeVisible();
+ const timer=page.locator('.mini-workout');await expect(timer).toBeVisible();
+ if(theme==='paper-ink')expect((await timer.evaluate(e=>getComputedStyle(e).getPropertyValue('--rest-fill').trim())).toUpperCase()).toBe('#1C1C1C');
+ await timer.getByRole('button',{name:'Minimize Active Workout'}).click();await expect(page.locator('.dock')).toBeVisible();
  await page.locator('#nav-home').click();await expect(page.locator('#home-workout-action')).toHaveText('Resume');await contrast(page.locator('#home-workout-action'));await noOverflow(main);
  const streak=page.locator('.streak-card');await streak.scrollIntoViewIfNeeded();await main.evaluate(e=>e.scrollTop=e.scrollHeight);await expect.poll(async()=>{const s=await streak.boundingBox(),t=await timer.boundingBox(),d=await page.locator('.dock').boundingBox();return !!s&&!!t&&!!d&&s.y+s.height<=Math.min(t.y,d.y)+2}).toBe(true);
  expect(errors).toEqual([]);
