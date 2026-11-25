@@ -236,3 +236,6 @@ Home workout selection uses elevated routine rows (44px minimum touch target, 8p
 
 ### Active Workout headline refinement
 Use the shared brand leading slot and form-headline with a 44px toolbar and zero extra vertical padding. Remove the separate minimize chevron; the persistent timer's central control expands and minimizes the workout, preserving existing transition and timer actions. Finish retains the shared header height. No change to exercise card geometry or workout state.
+
+### Persistent timer discoverability
+Replace the decorative grabber with a 12px chevron beside the existing timer label, 1.75px rounded stroke, 70% inherited foreground opacity and a shared 4px inline gap. Down indicates minimize; up indicates expand. Rotate using the existing collapse motion token and respect reduced motion. Keep the 72px timer height, 30px/650 tabular countdown, dynamic exercise/workout/Continue Workout labels, rest controls, progress mask and timing behavior unchanged. The masked color layer repeats the chevron but remains inert. The central target retains its existing dimensions and accessible expanded state; subtle press feedback scales only the central content.
