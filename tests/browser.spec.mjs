@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 const url='http://127.0.0.1:8787';
 test.use({colorScheme:'dark'});
-async function gotoWithRoutines(page){await page.addInitScript(()=>{if(localStorage.getItem('form-routines')===null)localStorage.setItem('form-routines',JSON.stringify({version:1,data:[["Push Day",["Bench Press","Incline Dumbbell Press","Shoulder Press","Triceps Pushdown"]],["Pull Day",["Lat Pulldown","Seated Cable Row","Biceps Curl"]],["Leg Day",["Squat","Leg Press","Leg Curl"]]].map(([name,names],i)=>({id:"fixture-"+i,name,description:"",exercises:names.map(name=>({name,sets:Array.from({length:3},()=>({weight:0,reps:10,rest:90}))}))}))}));});await page.goto(url)}
+async function gotoWithRoutines(page){await page.addInitScript(()=>{if(localStorage.getItem('form-routines')===null)localStorage.setItem('form-routines',JSON.stringify({version:1,data:[["Push Day",["Bench Press","Incline Dumbbell Press","Shoulder Press","Triceps Pushdown"]],["Pull Day",["Lat Pulldown","Seated Cable Row","Biceps Curl"]],["Leg Day",["Squat","Leg Press","Leg Curl"]]].map(([name,names],i)=>({id:"fixture-"+i,name,description:"",exercises:names.map(name=>({name,sets:Array.from({length:3},()=>({weight:0,reps:10,rest:90}))}))}))}));});return page.goto(url)}
 
 async function startFromHome(page){await page.locator('#home-workout-card').click();await page.locator('#home-routine-picker .home-picker-list button').first().click()}
 for(const [name,width,height] of [['folded',466,678],['portrait',626,890],['landscape',890,626]]){
