@@ -303,11 +303,17 @@ html[data-input-mode="pointer"] :is(button,a,summary,[role="button"]):focus{outl
 #routine-detail.is-editing #routine-name{border:1px solid var(--line);border-radius:var(--radius-control);background:var(--paper);padding:var(--space-2);font-size:24px;min-height:44px}#routine-detail.is-editing #detail-edit{background:var(--system-blue);color:#fff}#routine-detail.is-editing #detail-start:disabled{background:var(--line);color:var(--muted);opacity:1}#routine-detail.is-editing .routine-edit-label{flex:1;min-width:0}#routine-detail.is-editing #detail-exercises input{border:1px solid var(--line);border-radius:var(--radius-small);background:var(--canvas)}
 
 /* Keep the entire routine header stationary; only the exercise body scrolls. */
-#routine-detail:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;overflow:hidden;padding-bottom:0;isolation:isolate}
+/* Give the dedicated exercise scrollport a definite available height in every orientation. */
+main:has(#workouts-page:not([hidden])):has(#routine-detail:not([hidden])){overflow:hidden;padding-bottom:88px}
+#workouts-page:has(#routine-detail:not([hidden])),#workouts-page:has(#routine-detail:not([hidden])) .workout-layout{height:100%;min-height:0}
+#workouts-page:has(#routine-detail:not([hidden])) .workout-layout{align-items:stretch;grid-template-rows:minmax(0,1fr)}
+#routine-detail:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;overflow:hidden;padding-bottom:0;isolation:isolate;height:100%;min-width:0}
 #routine-detail .routine-detail-header-area{flex:0 0 auto;position:relative;z-index:2;background:var(--canvas);padding-bottom:var(--space-2)}
 #routine-detail :is(.routine-detail-header,#detail-title,#detail-meta){position:static;z-index:auto}
-#routine-detail .routine-detail-body{position:relative;flex:1 1 0;min-height:0;min-width:0;overflow:hidden;isolation:isolate}
-#routine-detail .routine-detail-scroll{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-top:24px;padding-top:20px;padding-bottom:var(--space-4)}
+#routine-detail .routine-detail-body{position:relative;flex:1 1 0;min-height:0;min-width:0;overflow:hidden;isolation:isolate;display:grid;grid-template-rows:minmax(0,1fr)}
+#routine-detail .routine-detail-scroll{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-top:24px;padding-top:20px;padding-bottom:var(--space-4)}
 #routine-detail .routine-detail-scroll::-webkit-scrollbar{display:none}
 #routine-detail .routine-detail-body::before{content:"";position:absolute;inset:0 0 auto;height:24px;z-index:2;pointer-events:none;background:linear-gradient(to bottom,var(--canvas) 0%,color-mix(in srgb,var(--canvas) 84%,transparent) 25%,color-mix(in srgb,var(--canvas) 40%,transparent) 65%,transparent 100%)}
 @media(prefers-reduced-transparency:reduce){#routine-detail .routine-detail-body::before{height:8px;background:var(--canvas)}}
+
+body.mini-visible main:has(#workouts-page:not([hidden])):has(#routine-detail:not([hidden])){padding-bottom:calc(var(--timer-height) + 30px + env(safe-area-inset-bottom))}
