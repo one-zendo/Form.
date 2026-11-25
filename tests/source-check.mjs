@@ -304,3 +304,11 @@ assert.ok(css.includes('#rest-days-dialog>.row{justify-content:center}'));
 assert.ok(css.includes('#rest-days-dialog .rest-day-totals>div{justify-items:center;text-align:center}'));
 assert.ok(css.includes('#rest-days-dialog>p{font-size:var(--font-footnote);line-height:1.45;text-align:center'));
 console.log('Smaller trophy and centered rest-day dialog passed');
+
+assert.ok(!source.includes('id="routine-editor"'));
+assert.ok(!browser.includes('$("routine-editor")'));
+assert.ok(browser.includes('function setRoutineEditing(on)'));
+assert.ok(browser.includes('if(routineEditing)commitRoutine()'));
+assert.ok(browser.includes('const root=$("detail-exercises");root.replaceChildren();if(!draft)'));
+assert.ok(css.includes('#routine-detail.is-editing #detail-exercises input{border:1px solid var(--line)'));
+console.log('Unified routine detail and inline edit mode checks passed');
