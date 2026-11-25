@@ -365,3 +365,6 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #routine-detail .routine-detail-header{gap:var(--space-2)}
 #routine-detail :is(#detail-title,#routine-name){padding-inline:0}
 #routine-detail.is-editing #routine-name{padding-inline:var(--space-2)}
+
+/* Routine exercise cards: text-only identity, retain expansion chevron. */
+#routine-detail .detail-exercise>summary>span:first-child{display:none}
