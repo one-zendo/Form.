@@ -324,3 +324,23 @@ test('pointer focus does not display keyboard focus rings',async({page})=>{
  expect(await page.locator('#rest-days-save').evaluate(e=>{e.focus();return getComputedStyle(e).outlineStyle})).toBe('none');
  await page.keyboard.press('Tab');await expect(page.locator('html')).toHaveAttribute('data-input-mode','keyboard');
 });
+
+
+test('editing weight keeps set controls mounted and allows immediate completion',async({page})=>{
+ await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);
+ const row=page.locator('.session-selected .set-line').filter({has:page.locator('input')}).first();
+ const weight=row.locator('input').first();await weight.evaluate(e=>e.dataset.editProbe='true');await weight.fill('42.5');
+ await row.locator('.session-check').click();
+ const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
+ expect(state.exercises[0].sets[0].weight).toBe(42.5);expect(state.exercises[0].sets[0].done).toBe(true);
+});
+test('undo selected exercise restores its running rest deadline and selection',async({page})=>{
+ await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);
+ await page.locator('.session-selected .session-check').first().click();
+ const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
+ const before=await saved();
+ await page.locator('.session-selected.exercise-swipe-card').evaluate(e=>{e._exerciseSwipe.begin();e._exerciseSwipe.move(-e.clientWidth);e._exerciseSwipe.end()});
+ await page.locator('.exercise-undo button').click();
+ const after=await saved();expect(after.exercises).toEqual(before.exercises);expect(after.restUntil).toBe(before.restUntil);expect(after.restSet).toEqual(before.restSet);
+ await expect(page.locator('.session-selected .session-exercise-name')).toHaveText(before.exercises[0].name);
+});
