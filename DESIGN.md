@@ -245,3 +245,6 @@ Exercise selection updates mounted set-body visibility and accessibility attribu
 
 ### Original recovery timer restored
 Restore the pre-sensor horizontal blue depletion and original shared wave mask, green ready pulse, dimensions and controls. No motion sensor permissions or canvas renderer. Active Workout card interaction changes remain intact.
+
+### Final horizontal replenishment and ready alert
+Supersedes the original horizontal depletion direction. Preserve the original subtle liquid edge and shared foreground mask, but fill from left to right using elapsed recovery fraction. At completion hide the blue layer and transition its full blue color to semantic green over 450ms; continuously pulse the outer glow every 1.6s while ready, ending when recovery restarts or workout ends. Reduced Motion skips the transition and pulse. No gyroscope, canvas, or changes to timer geometry or deadline.
