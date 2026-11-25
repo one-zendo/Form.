@@ -395,3 +395,12 @@ for(let failure=0;failure<12;failure++){
 console.log('Explicit reset, synthetic history and interruption recovery checks passed');
 
 assert.ok(!source.includes('id="clean-slate-dialog"'));assert.ok(!source.includes('src/development'));assert.ok(!source.includes('./development'));assert.ok(!browser.includes('resetAndPopulate'));assert.ok(!core.storage.includes('buildCleanSlate'));assert.ok(!browser.includes('form-preview-page'));assert.ok(!source.includes('id="state"'));assert.ok(!source.includes('FORM. preview'));assert.ok(!css.includes('#toggle-samples'));assert.ok(!css.includes('.sample-switch'));assert.ok(!browser.includes('>Push Day</text>'));assert.ok(!browser.includes('>+12%</text>'));assert.ok(developmentEntry.includes('./development/reset.js.txt'));const devIds=[...developmentMarkup.matchAll(/\bid="([\w-]+)"/g)].map(m=>m[1]);for(const m of developmentUI.matchAll(/\$\("([\w-]+)"\)/g))assert.ok(ids.includes(m[1])||devIds.includes(m[1]));console.log('Clean release source and isolated development entry checks passed');
+
+// Graphite Lime Home Screen asset: opaque 180px PNG and versioned iOS/favicon links.
+const iconPayload=source.match(/const homeIconBase64 = "([A-Za-z0-9+/=]+)"/)?.[1];
+assert.ok(iconPayload);const iconBytes=Buffer.from(iconPayload,'base64');
+assert.equal(iconBytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+assert.equal(iconBytes.readUInt32BE(16),180);assert.equal(iconBytes.readUInt32BE(20),180);
+assert.ok(iconBytes.includes(Buffer.from([23,23,31])));assert.ok(iconBytes.includes(Buffer.from([176,255,0])));assert.ok(iconBytes.includes(Buffer.from([255,255,255])));
+assert.equal(source.split('/apple-touch-icon.png?v=2').length-1,2);assert.ok(!source.includes('/apple-touch-icon.png?v=1'));
+console.log('Graphite Lime Home Screen asset checks passed');
