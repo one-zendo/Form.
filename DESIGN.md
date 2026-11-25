@@ -221,3 +221,6 @@ The editable routine name is a borderless transparent headline, not a separate f
 
 ### Graphite Lime — cooler surfaces restored
 Restore the approved original cool graphite canvas #17171F and paper #24242E globally. Use #30303C as the coordinated elevated surface for editable fields and raised controls. Derive translucent navigation and rest controls from the same palette. Preserve current soft white #F5F5F5, muted #A3A3A3, restrained lime accents, semantic colors, layout and Default theme.
+
+### Rest Days dialog cohesion
+Use the shared dialog max width, radius, spacing, action height, day marker sizes, statistic value typography and theme action tokens. Empty markers use the shared elevated field surface; selected recovery markers remain blue with white checks. Keep summary cards equally sized, centered and icon-free, with a concise instruction and no redundant decorative glyphs. Preserve weekly scheduling, reduced-motion behavior and history.
