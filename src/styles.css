@@ -630,7 +630,7 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 #finish-workout .finish-icon{display:grid;place-items:center;color:var(--ink)}
 #finish-workout .finish-icon svg{width:var(--icon-large);height:var(--icon-large);stroke-width:var(--icon-stroke)}
 #finish-workout .finish-icon-confirm{color:var(--workout-accent)}
-#finish-workout .finish-icon-danger{color:var(--system-red)}
+#finish-workout .finish-icon-danger{color:var(--danger)}
 #finish-workout h2{font-size:var(--font-dialog-title);line-height:var(--type-heading-line);margin:0;font-weight:var(--type-semibold)}
 #finish-workout .finish-name,#finish-workout p{margin:0;font-size:var(--font-footnote);line-height:var(--type-body-line)}
 :root{--switch-off:#D1D1D6}
@@ -645,7 +645,9 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 #finish-workout .finish-save{background:var(--workout-action-fill);color:var(--workout-action-ink)}
 #finish-workout #finish-confirm{min-height:var(--dialog-action-height)}
 #finish-workout #finish-discard{background:transparent;color:var(--system-red);min-height:var(--touch-target)}
-#finish-workout .finish-danger{background:var(--system-red);color:var(--on-danger)}
+#finish-workout .finish-danger{background:var(--danger);color:var(--on-danger)}
+#finish-workout.discard-mode #finish-copy{margin-top:calc(-1 * var(--space-2));color:var(--muted)}
+#finish-workout.discard-mode #finish-keep{background:transparent;color:var(--ink);margin-top:calc(-1 * var(--space-2))}
 #finish-workout [hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){#finish-workout[open]{animation:none}.finish-update input::before{transition:none}}
 @media(prefers-reduced-transparency:reduce){#finish-workout::backdrop{background:#0006;backdrop-filter:none;-webkit-backdrop-filter:none}}

@@ -260,3 +260,6 @@ Retain the confirmation icon as a theme-accent action indicator (lime in Graphit
 
 ### Continue Workout accent
 In Graphite Lime the ready timer uses the shared lime action fill (#B0FF00) and graphite foreground (#17171F), including the continuous pulse and final color transition. Default retains its existing recovery-ready colors. Blue drainage, timing, geometry and reduced-motion behavior remain unchanged. High-contrast text uses the same graphite foreground on lime.
+
+### Compact destructive confirmation
+Discard Workout preserves shared 360px maximum width, 24px radius, 16px padding and major gaps, 24px Lucide Trash 2 with 1.75px stroke, 48px destructive action and 44px Cancel. Use 8px title-to-description and action-to-cancel spacing. Cancel is transparent with neutral primary ink. Copy: This workout will not be saved. This action cannot be undone. Use existing --danger and --on-danger roles for filled destructive actions (Graphite Lime #FF6961 / #17171F; Default #D51028 / white), without introducing new colors or changing other confirmation behavior. Preserve focus, safe cancellation and actual workout data until explicitly confirmed.
