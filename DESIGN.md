@@ -233,3 +233,6 @@ Use the same floating dialog dimensions, typography, motion, spacing and corner 
 
 ### Selection dialog final hierarchy
 Home workout selection uses elevated routine rows (44px minimum touch target, 8px gaps, 12px horizontal padding, shared control radius). Separate the scrollable routines from centered, transparent secondary actions with a single semantic divider and 16px major spacing. Start Empty Workout and Create Routine use the theme action ink; Cancel uses muted ink. Secondary actions retain 44px minimum targets with zero extra row gap. No decorative icons or new color overrides. Hide the divider when there are no routine choices.
+
+### Active Workout headline refinement
+Use the shared brand leading slot and form-headline with a 44px toolbar and zero extra vertical padding. Remove the separate minimize chevron; the persistent timer's central control expands and minimizes the workout, preserving existing transition and timer actions. Finish retains the shared header height. No change to exercise card geometry or workout state.
