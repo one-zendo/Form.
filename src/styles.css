@@ -737,6 +737,12 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 @media(orientation:landscape) and (min-width:700px){
  #home-page .home-workout-card{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;align-items:start;align-content:start}
  #home-page .home-workout-expanded{grid-column:1/-1;align-self:center}
+ :root[data-theme-id=graphite-lime] #home-page .home-workout-expanded{align-self:start;gap:var(--space-3);padding-top:var(--space-3);border-top:1px solid var(--line)}
+ :root[data-theme-id=graphite-lime] #home-page .streak-card>.row:first-child{align-items:flex-start}
+ :root[data-theme-id=graphite-lime] #home-page .home-month-controls button{color:var(--muted)}
+ :root[data-theme-id=graphite-lime] #home-page .home-month{gap:var(--space-2)}
+ :root[data-theme-id=graphite-lime] #home-page #home-exercise-names{white-space:pre-line}
+ :root[data-theme-id=graphite-lime] .has-session #home-page #home-landscape-meta{display:none}
  #home-page .home-workout-cta{align-self:start}
  #home-page .streak-card{gap:var(--space-1);overflow-y:auto;scrollbar-width:none}
  #home-page .home-month{margin-block:0}
