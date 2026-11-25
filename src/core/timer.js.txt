@@ -1,0 +1,13 @@
+const MAX_REST_MS=24*60*60*1000;
+function restTimeLeft(state,now){return Math.max(0,Math.min(MAX_REST_MS,(state?.restUntil||0)-now))}
+function restAdjustment(state,delta,now){
+ if(!state||!Number.isFinite(now)||(delta!==null&&!Number.isFinite(delta)))return null;
+ const left=restTimeLeft(state,now),original=Math.min(MAX_REST_MS,state.restOriginal??state.restTotal??0);
+ if(!left&&delta!==null&&delta<=0)return null;
+ const remaining=Math.max(0,Math.min(MAX_REST_MS,delta===null?original:delta===0?0:left+delta*1000));
+ if(delta===null&&!remaining)return null;
+ const total=delta===null?remaining:remaining?Math.min(MAX_REST_MS,Math.max(remaining,(left?state.restTotal||left:0)+Math.max(0,remaining-left))):Math.min(MAX_REST_MS,state.restTotal||left);
+ return {...state,restUntil:remaining?now+remaining:0,restTotal:total,restOriginal:original||((!left&&remaining)?remaining:0)};
+}
+function clearSessionRest(state){state.restUntil=0;state.restTotal=0;state.restOriginal=0;delete state.restExercise;delete state.restSet}
+function beginSessionRest(state,index,setIndex,now){const ex=state.exercises[index],set=ex.sets[setIndex],duration=Math.min(MAX_REST_MS,set.rest*1000);state.restUntil=duration?now+duration:0;state.restTotal=duration;state.restOriginal=duration;state.restExercise=ex.name;state.restSet={exercise:index,set:setIndex}}
