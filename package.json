@@ -6,7 +6,15 @@
     "deploy": "wrangler deploy",
     "test": "node tests/source-check.mjs",
     "test:browser": "playwright test",
-    "dev": "wrangler dev --config wrangler.development.jsonc --local"
+    "dev": "wrangler dev --config wrangler.development.jsonc --local",
+    "test:design": "playwright test --grep \"navigation and appearance|global headline measurements|appearance gallery browses\"",
+    "test:engineering": "playwright test --grep \"navigation and appearance|routine edits, discard and persistence|rest deadline survives reload|release starts genuinely empty\"",
+    "test:engineering:workouts": "playwright test --grep \"routine edits, discard and persistence|routine exercise cards|active workout semantic set styling|exercise selection changes|active workout reorder|finish modal|editing weight|added set inherits\"",
+    "test:engineering:timers": "playwright test --grep \"rest controls and navigation|rest deadline survives reload|active floating timer|persistent workout capsule|horizontal recovery|repeated landscape timer capsule|repeated portrait cross-tab capsule|timer label chevron\"",
+    "test:engineering:storage": "playwright test --grep \"storage |clean install|release starts genuinely empty|release preserves existing records|another tab changing|fresh launch|routine edits, discard and persistence\"",
+    "test:engineering:themes": "playwright test --grep \"cross-theme runtime accessibility|appearance gallery browses|appearance legacy and canonical|routine semantic edit|global headline measurements\"",
+    "test:engineering:progress": "playwright test --grep \"real progress and saved summary|History scoped metrics|history shares workout geometry|shared history search|history landscape|weekly streak schedule|streak card\"",
+    "preview:lan": "wrangler dev --config wrangler.development.jsonc --local --ip 0.0.0.0 --port 8787"
   },
   "devDependencies": {
     "wrangler": "^4.0.0",

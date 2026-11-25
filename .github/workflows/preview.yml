@@ -1,0 +1,44 @@
+name: FORM isolated preview
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type PREVIEW to publish to the dedicated preview account
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: form-isolated-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    if: github.ref_type == 'branch' && (startsWith(github.ref_name, 'design/') || startsWith(github.ref_name, 'engineering/')) && inputs.confirm == 'PREVIEW'
+    environment: form-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - name: Validate isolated preview configuration
+        run: |
+          node --input-type=module -e 'import {readFileSync} from "node:fs"; const p=JSON.parse(readFileSync("wrangler.preview.jsonc","utf8")); if(p.name!=="form-design-preview"||p.main!=="src/development.js"||p.workers_dev!==true||p.preview_urls!==false||p.routes||p.route||p.env) throw Error("Unsafe preview configuration")'
+          npx wrangler deploy --config wrangler.preview.jsonc --dry-run --outdir preview-dist
+      - name: Publish preview to separate Cloudflare account
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.FORM_PREVIEW_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.FORM_PREVIEW_CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo "::error::Configure preview-only Cloudflare credentials in the form-preview environment."
+            exit 1
+          fi
+          npx wrangler deploy --config wrangler.preview.jsonc
