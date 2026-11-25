@@ -590,3 +590,23 @@ test('appearance legacy and canonical preference migration',async({page})=>{
     await expect(page.locator('html')).toHaveAttribute('data-theme-id',id);await expect(page.locator('html')).toHaveAttribute('data-theme',scheme);
   }
 });
+
+for(const [theme,accent,muted] of [['light','rgb(0, 102, 204)','rgb(99, 99, 102)'],['dark','rgb(176, 255, 0)','rgb(163, 163, 163)'],['ballet-pink','rgb(173, 54, 101)','rgb(121, 97, 109)']])test('routine semantic edit controls and invalid draft protection '+theme,async({page})=>{
+  await page.setViewportSize({width:466,height:678});await page.goto(url);
+  await page.evaluate(theme=>{localStorage.setItem('form-preview-theme',theme);localStorage.setItem('form-routines',JSON.stringify([{id:'edit-validity',name:'Validity routine',description:'',exercises:[{name:'Squat',sets:[{weight:20,reps:10,rest:90}]}]}]))},theme);
+  await page.reload();await page.locator('#nav-workouts').click();
+  await page.locator('.routine-entry').filter({hasText:'Validity routine'}).click();
+  const edit=page.locator('#detail-edit'),save=page.locator('#detail-start'),name=page.locator('#routine-name');
+  await expect(edit).toHaveCSS('color',accent);await expect(edit).toHaveCSS('width','44px');await expect(edit).toHaveCSS('height','44px');
+  const before=await edit.boundingBox();await edit.click();
+  await expect(edit).toHaveCSS('color',muted);await expect(edit).toHaveAttribute('aria-pressed','true');await expect(save).toHaveText('Save Changes');await expect(save).toBeDisabled();
+  const after=await edit.boundingBox();expect(Math.abs(before.x-after.x)).toBeLessThan(1);expect(Math.abs(before.y-after.y)).toBeLessThan(1);
+  await name.fill('');await expect(save).toBeDisabled();await edit.click();
+  const dialog=page.locator('#leave-routine');await expect(dialog).toBeVisible();await expect(page.locator('#leave-apply')).toBeDisabled();
+  await page.locator('#leave-cancel').click();await expect(name).toHaveValue('');
+  await name.fill('Valid rename');await expect(save).toBeEnabled();
+  const reps=page.getByRole('spinbutton',{name:'Squat set 1 reps'});await reps.fill('0');await expect(save).toBeDisabled();await reps.fill('12');await expect(save).toBeEnabled();
+  await save.click();await expect(page.locator('#detail-title')).toHaveText('Valid rename');await expect(save).toHaveText('Start Workout');
+  await edit.click();await name.fill('');await page.locator('#nav-home').click();await expect(dialog).toBeVisible();await page.locator('#leave-discard').click();await expect(page.locator('#home-page')).toBeVisible();
+  const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-routines')).data);expect(stored[0].name).toBe('Valid rename');expect(stored[0].exercises[0].sets[0].reps).toBe(12);
+});
