@@ -39,7 +39,7 @@
   #routine-detail .detail-exercise summary>span:first-child{display:none}
   #routine-detail .detail-exercise[open]{padding-bottom:16px}
   #detail-description{order:10;margin:8px 0 16px;overflow-wrap:anywhere}
-  #sample-history .card{border-radius:var(--radius-card);padding:16px}
+
   #detail-exercises{animation:form-detail-in 180ms ease-out}
 }
 @keyframes form-selection-in{from{opacity:0;scale:1 .65}to{opacity:1;scale:1}}
@@ -410,6 +410,16 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #workouts-page #routine-items .routine-row{display:flex;align-items:center;gap:var(--space-2);background:var(--paper);min-height:var(--workout-row-height);padding:0 var(--space-4);border-radius:var(--radius-card)}
 #workouts-page #routine-items .routine-row .routine-entry{flex:1;min-width:0;width:auto;text-align:left;box-shadow:none;background:transparent;border:0;padding:var(--space-3) 0;gap:var(--space-1);font-size:var(--type-card)}
 #workouts-page #empty-workout{height:var(--workout-control-height);min-height:var(--workout-control-height);margin:0 0 var(--space-4);border-radius:var(--radius-control);background:var(--paper);flex-shrink:0}
+/* History uses the routine list's shared card and section geometry. */
+#workouts-page #routine-list .history-title-row{min-height:var(--workout-section-height);display:flex;align-items:center;margin:0 0 var(--space-3)}
+#workouts-page #routine-list .history-title-row h3{font-size:var(--type-section);font-weight:var(--type-semibold);margin:0}
+#workouts-page #sample-history{display:grid;gap:var(--space-3);margin:0 0 var(--space-4)}
+#workouts-page #sample-history .workout-history-card{display:grid;align-content:center;gap:var(--space-2);width:100%;min-height:var(--workout-row-height);text-align:left;padding:var(--space-4);margin:0;border-radius:var(--radius-card);background:var(--paper);box-sizing:border-box}
+#workouts-page .history-copy{display:grid;gap:var(--space-1);min-width:0;overflow-wrap:anywhere}
+#workouts-page .history-date{font-size:var(--font-caption);font-weight:var(--type-regular);color:var(--muted)}
+#workouts-page.show-workout-history .workout-layout{display:block}
+#workouts-page.show-workout-history .workout-layout::before{display:none}
+#workouts-page.show-workout-history #routine-list{max-width:760px;margin:auto}
 #workouts-page #empty-workout .icon svg{width:var(--icon-small);height:var(--icon-small);stroke-width:var(--icon-stroke)}
 #workouts-page .routine-search-wrap svg{width:var(--icon-standard);height:var(--icon-standard);stroke-width:var(--icon-stroke)}
 
