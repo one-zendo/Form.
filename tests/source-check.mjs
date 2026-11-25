@@ -223,3 +223,8 @@ assert.ok(headers['Content-Security-Policy'].includes("frame-ancestors 'none'"))
 assert.ok(source.includes('nonce="FORM_SCRIPT_NONCE"'));
 assert.ok(browser.includes('previous:assertRecordCurrent(localStorage,key)'));
 console.log('Security headers and stale storage snapshot regression checks passed');
+
+assert.ok(browser.includes('const initialPage="home";'));
+assert.ok(browser.includes('navigate(initialPage);renderHomeData();refreshMini();'));
+assert.ok(!browser.includes('navigate(initialPage);renderHomeData();if(session)renderSession();'));
+console.log('Fresh launch resets navigation without clearing persisted data');
