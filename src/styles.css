@@ -131,19 +131,19 @@
 :root{--streak-fire:#FF9500;--streak-ink:#FF9500;--streak-on-fire:#FFFFFF;--recovery-ink:#0066CC;--recovery-fill:#E8F2FF}
 :root[data-theme=dark]{--streak-ink:#FF9500;--recovery-ink:#80BFFF;--recovery-fill:#20354D}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--streak-ink:#FFB340;--recovery-ink:#80BFFF;--recovery-fill:#20354D}}
-.streak-heading{display:flex;align-items:center;min-width:0}.streak-title-row{display:flex;align-items:center;gap:var(--space-2)}.streak-trophy-button{color:var(--streak-fire)}
-.streak-trophy-button{padding:0;width:28px;height:28px;min-width:28px;min-height:28px;background:transparent;border-radius:var(--radius-control);-webkit-tap-highlight-color:transparent;flex:none}
+.streak-heading{display:flex;align-items:center;min-width:0}.streak-title-row{display:flex;align-items:center;gap:var(--space-2)}.streak-trophy-button{--streak-trophy-size:18px;color:var(--streak-fire)}
+.streak-trophy-button{padding:0;width:22px;height:24px;min-width:22px;min-height:24px;background:transparent;border-radius:var(--radius-control);-webkit-tap-highlight-color:transparent;flex:none}
 .streak-trophy-button:active{transform:none}
 .streak-trophy-button svg{transform-origin:50% 85%}
 .streak-card .day[aria-current=date]>span:first-child{color:var(--ink);font-weight:650}
 .streak-card .day[aria-current=date] .dot{outline:1px solid var(--streak-ink);outline-offset:2px}
-.streak-trophy-button svg{width:24px;height:24px;stroke:currentColor;flex:none}#streak-title,#streak-best{color:var(--ink)}.streak-heading p{margin:0;font-size:var(--font-caption)}
+.streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size);stroke:currentColor;flex:none}#streak-title,#streak-best{color:var(--ink)}.streak-heading p{margin:0;font-size:var(--font-caption)}
 .streak-card #home-activity{position:relative;isolation:isolate;flex:0 0 44px;width:44px;height:44px;padding:0;background:transparent;color:var(--muted);-webkit-tap-highlight-color:transparent}
 .streak-card #home-activity::before{content:"";position:absolute;inset:var(--space-1);border-radius:var(--radius-full);background:var(--canvas);z-index:-1}
 .streak-card #home-activity .icon svg{width:18px;height:18px}
 .dot.rest{background:var(--system-blue);color:#fff}.streak-footer{font-size:var(--font-footnote);border-top:1px solid var(--line);padding-top:var(--space-3)}.floating-dialog{text-align:left}.floating-dialog .days{margin:0}.rest-day-option{display:grid;justify-items:center;gap:var(--space-2);min-width:0;min-height:var(--touch-target);padding:0;font-size:var(--font-caption);color:var(--muted)}.rest-day-option .dot{width:32px;height:32px}.rest-day-option[aria-pressed=true] .dot{background:var(--system-blue);color:#fff}.rest-day-totals{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}.rest-day-totals>div{display:grid;gap:var(--space-1);background:var(--canvas);padding:var(--space-3);border-radius:var(--radius-control)}.rest-day-totals strong{font-size:24px}.rest-day-totals span{font-size:var(--font-caption)}#rest-days-save{min-height:52px;width:100%}#rest-days-save:disabled{opacity:.45}#rest-days-effective{font-size:var(--font-caption)}
 /* Rest-day editor follows the floating confirmation design. */
-#rest-days-dialog{width:min(360px,calc(100% - 32px));border-radius:var(--radius-dialog);padding:var(--space-4);text-align:left;gap:var(--space-4);box-sizing:border-box}#rest-days-dialog>.row{justify-content:flex-start}#rest-days-title{font-size:var(--font-dialog-title);line-height:1.25;font-weight:650;letter-spacing:normal}#rest-days-dialog>p{font-size:var(--font-footnote);line-height:1.45;text-align:left;margin:0}#rest-days-dialog .rest-day-totals>div{justify-items:start;text-align:left}#rest-days-dialog .rest-day-totals strong{font-size:24px;font-variant-numeric:tabular-nums}#rest-days-dialog .rest-total-icon{display:flex;align-items:center}#rest-days-dialog .rest-total-icon svg{width:20px;height:20px}#rest-days-dialog .training-total-icon{color:var(--streak-fire)}#rest-days-dialog .recovery-total-icon{color:var(--system-blue)}#rest-days-dialog .rest-day-option{background:transparent;border:0}#rest-days-dialog .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-1)}@media(max-width:360px){#rest-days-dialog .rest-day-option .dot{width:28px;height:28px}}#rest-days-dialog #rest-days-effective{font-size:var(--font-caption)}#rest-days-dialog #rest-days-save{min-height:48px;padding:0 var(--space-3);border-radius:var(--radius-full);font-size:var(--font-control);background:var(--system-blue);color:#fff}
+#rest-days-dialog{width:min(360px,calc(100% - 32px));border-radius:var(--radius-dialog);padding:var(--space-4);text-align:center;gap:var(--space-4);box-sizing:border-box}#rest-days-dialog>.row{justify-content:center}#rest-days-title{font-size:var(--font-dialog-title);line-height:1.25;font-weight:650;letter-spacing:normal}#rest-days-dialog>p{font-size:var(--font-footnote);line-height:1.45;text-align:center;margin:0}#rest-days-dialog .rest-day-totals>div{justify-items:center;text-align:center}#rest-days-dialog .rest-day-totals strong{font-size:24px;font-variant-numeric:tabular-nums}#rest-days-dialog .rest-total-icon{display:flex;align-items:center}#rest-days-dialog .rest-total-icon svg{width:20px;height:20px}#rest-days-dialog .training-total-icon{color:var(--streak-fire)}#rest-days-dialog .recovery-total-icon{color:var(--system-blue)}#rest-days-dialog .rest-day-option{background:transparent;border:0}#rest-days-dialog .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-1)}@media(max-width:360px){#rest-days-dialog .rest-day-option .dot{width:28px;height:28px}}#rest-days-dialog #rest-days-effective{font-size:var(--font-caption)}#rest-days-dialog #rest-days-save{min-height:48px;padding:0 var(--space-3);border-radius:var(--radius-full);font-size:var(--font-control);background:var(--system-blue);color:#fff}
 
 /* Home layout: single source of truth. Floating controls share their existing dimensions. */
 body:not(.training) main:has(#home-page:not([hidden])){
@@ -206,7 +206,7 @@ body.mini-visible:not(.training):has(#home-page:not([hidden]))::after{--home-blu
 /* Keep the streak content legible when the floating timer consumes vertical space. */
 #home-page .streak-card .dot{width:32px;height:32px}
 body.mini-visible #home-page .streak-card .dot{width:28px;height:28px}
-@media(max-height:650px),(max-width:360px){#home-page .streak-card .dot{width:26px;height:26px}#home-page .streak-trophy-button svg{width:24px;height:24px}#home-page .streak-footer{padding-top:var(--space-2)}}
+@media(max-height:650px),(max-width:360px){#home-page .streak-card .dot{width:26px;height:26px}#home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}#home-page .streak-footer{padding-top:var(--space-2)}}
 
 /* Apple system green for the completed-rest pill, independent of other success surfaces. */
 .mini-workout[data-ready=true]{--success-fill:var(--timer-complete-fill);--on-success:var(--timer-complete-ink)}
@@ -265,7 +265,7 @@ body:has(#home-page:not([hidden]))::after{transition:none}
 @media(max-height:760px){
   #home-page .home-header{margin-bottom:var(--space-3);padding-block:var(--space-1)}
   #home-page .streak-card .days{margin-block:var(--space-2)}
-  #home-page .streak-trophy-button svg{width:24px;height:24px}
+  #home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}
 }
 @media(max-height:550px){
   body:not(.training) main:has(#home-page:not([hidden])){padding-top:max(var(--space-2),env(safe-area-inset-top));}
@@ -277,7 +277,7 @@ body:has(#home-page:not([hidden]))::after{transition:none}
   #home-page .home-workout-cta{padding:var(--space-2)}
   #home-page .streak-heading{gap:var(--space-2)}
   #home-page .streak-heading h3{font-size:var(--font-body)}
-  #home-page .streak-trophy-button svg{width:24px;height:24px}
+  #home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}
   #home-page .streak-card .days{margin-block:var(--space-1)}
   #home-page .streak-card .dot{width:22px;height:22px}
   #home-page .day{gap:2px;font-size:11px}
