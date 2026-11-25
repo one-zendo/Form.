@@ -109,3 +109,26 @@ assert.equal(fold.homeFoldGeometry([{...side[0],width:NaN},side[1]],true,820,800
 assert.equal(fold.homeFoldGeometry([{x:0,y:0,width:300,height:210},{x:0,y:230,width:300,height:210}],true,300,440,true),null);
 assert.ok(browser.includes('--floating-safe-width:calc(100% - var(--floating-safe-left) - var(--floating-safe-right))'));
 console.log('Fold geometry, safe-area references and floating control regression checks passed');
+
+const routineStart=browser.indexOf('function routineDraftDirty(');
+const routineEnd=browser.indexOf('const finishJournalKey=',routineStart);
+assert.ok(routineStart>=0&&routineEnd>routineStart);
+const routineChecks=vm.runInNewContext(browser.slice(routineStart,routineEnd)+';({routineDraftDirty,validDateStamp,uniqueRecordIds})');
+const cleanRoutine={id:'a',name:'Push Day',description:'',exercises:[]};
+const emptyRoutine={id:'b',name:'',description:'',exercises:[]};
+assert.equal(routineChecks.routineDraftDirty(null,null),false);
+assert.equal(routineChecks.routineDraftDirty(emptyRoutine,null),false);
+assert.equal(routineChecks.routineDraftDirty(cleanRoutine,null),true);
+assert.equal(routineChecks.routineDraftDirty(cleanRoutine,cleanRoutine),false);
+assert.equal(routineChecks.routineDraftDirty({...cleanRoutine,name:'Pull Day'},cleanRoutine),true);
+assert.equal(routineChecks.routineDraftDirty(cleanRoutine,null,JSON.stringify(cleanRoutine)),false);
+assert.equal(routineChecks.uniqueRecordIds([cleanRoutine,emptyRoutine]),true);
+assert.equal(routineChecks.uniqueRecordIds([cleanRoutine,cleanRoutine]),false);
+for(const value of [NaN,Infinity,1e20,-1e20,'2026'])assert.equal(routineChecks.validDateStamp(value),false);
+assert.equal(routineChecks.validDateStamp(0),true);
+assert.equal(routineChecks.validDateStamp(1800000000000),true);
+const statsStart=browser.indexOf('function recordStats('),statsEnd=browser.indexOf('function numberLabel(',statsStart);
+const stats=vm.runInNewContext(browser.slice(statsStart,statsEnd)+';recordStats');
+const result=stats({started:0,finished:120000,exercises:[{sets:[{done:true,weight:20,reps:10},{done:false,weight:100,reps:100}]},{sets:[{done:true,weight:30,reps:5}]}]});
+assert.equal(result.sets,2);assert.equal(result.reps,15);assert.equal(result.volume,350);assert.equal(result.minutes,2);assert.equal(result.exercises,2);
+console.log('Routine draft, record identity, timestamp and history summary regression checks passed');
