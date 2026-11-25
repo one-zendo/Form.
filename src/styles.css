@@ -161,12 +161,12 @@ body:not(.training) main:has(#home-page:not([hidden])){
 }
 #home-page .home-header{
   display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;
-  gap:var(--space-3);padding-block:var(--space-2);margin-bottom:calc(var(--space-5) + var(--space-1));flex:none;
+  gap:var(--space-3);padding-block:0;margin-bottom:var(--space-4);flex:none;
 }
 .home-brand{display:grid;grid-template-rows:auto auto;gap:var(--space-1);min-width:0}
 
 .home-header time{display:grid;grid-template-rows:auto auto;gap:var(--space-1);text-align:right;font-weight:600;white-space:nowrap}
-#home-weekday{font-size:var(--font-body);line-height:28px}
+#home-weekday{font-size:var(--font-body);line-height:var(--header-height);height:var(--header-height)}
 .home-tagline,#home-calendar-date{font-size:var(--font-footnote);line-height:18px}
 .home-tagline{margin:0;white-space:normal;overflow-wrap:break-word}
 #home-calendar-date{color:var(--muted);font-weight:400}
@@ -265,7 +265,7 @@ body:has(#home-page:not([hidden]))::after{transition:none}
 
 /* Compact Home: retain all dashboard content above floating controls. */
 @media(max-height:760px){
-  #home-page .home-header{margin-bottom:var(--space-3);padding-block:var(--space-1)}
+  #home-page .home-header{margin-bottom:var(--space-3);padding-block:0}
   #home-page .streak-card .days{margin-block:var(--space-2)}
   #home-page .streak-trophy-button svg{width:var(--streak-trophy-size);height:var(--streak-trophy-size)}
 }
@@ -503,7 +503,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #home-page .global-brand>.global-leading{grid-column:1;grid-row:1}
 #home-page .global-brand>h1{grid-column:2;grid-row:1}
 #home-page .global-brand>.home-tagline{grid-column:2;grid-row:2}
-#home-page .home-header time{padding-top:var(--space-2)}
+#home-page .home-header time{padding-top:0}
 .global-leading .global-back{position:absolute;inset:0 auto auto calc((var(--partner-leading) - var(--touch-target))/2);display:grid;place-items:center;width:var(--touch-target);min-width:var(--touch-target);height:var(--touch-target);min-height:var(--touch-target);padding:0;margin:0;color:var(--nav-accent);background:transparent}
 .global-wide-accent{display:none}
 .global-session-heading{display:flex;align-items:center;gap:var(--partner-gap);min-height:var(--header-height)}
@@ -569,3 +569,8 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
  overflow:hidden;text-overflow:ellipsis;translate:var(--brand-title-optical-offset) 0;
 }
 #active-workout .global-session-heading{min-width:0}
+
+/* Home follows the shared headline baseline; date and tagline share row geometry. */
+#home-page .home-header :is(.global-brand,time){grid-template-rows:var(--header-height) auto;row-gap:var(--space-1);align-items:start}
+#home-page .global-brand>.home-tagline{overflow-wrap:normal;min-width:0}
+@media(max-width:420px){#home-page .home-header{column-gap:var(--space-2)}}
