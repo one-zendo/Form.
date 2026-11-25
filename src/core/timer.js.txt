@@ -11,3 +11,6 @@ function restAdjustment(state,delta,now){
 }
 function clearSessionRest(state){state.restUntil=0;state.restTotal=0;state.restOriginal=0;delete state.restExercise;delete state.restSet}
 function beginSessionRest(state,index,setIndex,now){const ex=state.exercises[index],set=ex.sets[setIndex],duration=Math.min(MAX_REST_MS,set.rest*1000);state.restUntil=duration?now+duration:0;state.restTotal=duration;state.restOriginal=duration;state.restExercise=ex.name;state.restSet={exercise:index,set:setIndex}}
+
+// Repair timer metadata independently of recorded training data.
+function normalizeRestOwner(state){if(!state)return state;const owner=state.restSet;if(owner!==undefined){const set=Number.isInteger(owner?.exercise)&&Number.isInteger(owner?.set)&&state.exercises[owner.exercise]?.sets[owner.set];if(!set?.done){clearSessionRest(state);return state}state.restExercise=state.exercises[owner.exercise].name}else if(state.restExercise){const matches=state.exercises.flatMap((e,i)=>e.name===state.restExercise?e.sets.flatMap((set,j)=>set.done?[{exercise:i,set:j}]:[]):[]);if(matches.length===1)state.restSet=matches[0];else if(!matches.length)clearSessionRest(state)}return state}
