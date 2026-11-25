@@ -414,3 +414,16 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #workouts-page #detail-exercises .detail-exercise[open]{padding-bottom:var(--space-4)}
 #workouts-page #detail-exercises .detail-exercise>summary{height:var(--workout-row-height);min-height:var(--workout-row-height);padding:0}
 #workouts-page #routine-detail #detail-exercises .routine-set-row:not(.caption){height:var(--workout-set-row-height);min-height:var(--workout-set-row-height)}
+
+/* Fixed Workouts headline, independent clipped content and continuous soft blur. */
+main:has(#workouts-page:not([hidden])){overflow:hidden;padding-bottom:88px}
+body.mini-visible main:has(#workouts-page:not([hidden])){padding-bottom:calc(var(--timer-height) + 30px + env(safe-area-inset-bottom))}
+#workouts-page:not([hidden]),#workouts-page .workout-layout{height:100%;min-height:0}
+#workouts-page .workout-layout{grid-template-rows:minmax(0,1fr);align-items:stretch}
+#workouts-page #routine-list:not([hidden]){display:flex;flex-direction:column;align-items:stretch;min-height:0;height:100%;overflow:hidden;padding-bottom:0;isolation:isolate}
+#workouts-page #routine-list>.row:first-child{position:relative;top:auto;z-index:2;flex:0 0 var(--header-height);margin:0;background:var(--canvas)}
+#workouts-page .workout-list-body{position:relative;flex:1 1 0;min-height:0;overflow:hidden;isolation:isolate}
+#workouts-page .workout-list-scroll{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-top:var(--space-3);padding-bottom:var(--space-4);scroll-padding-top:var(--space-4)}
+#workouts-page .workout-list-scroll::-webkit-scrollbar{display:none}
+#workouts-page .workout-list-body::before{content:"";position:absolute;inset:0 0 auto;height:var(--space-3);z-index:3;pointer-events:none;backdrop-filter:blur(var(--space-2));-webkit-backdrop-filter:blur(var(--space-2));background:var(--canvas);mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000b 35%,transparent 100%)}
+@media(prefers-reduced-transparency:reduce){#workouts-page .workout-list-body::before{backdrop-filter:none;-webkit-backdrop-filter:none}}
