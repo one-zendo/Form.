@@ -491,3 +491,42 @@ body.mini-visible .mini-workout{left:calc(var(--floating-safe-center) + min(225p
 #active-workout .exercise-swipe-face{min-width:0}
 .exercise-remove-confirm{max-height:calc(100dvh - max(16px,env(safe-area-inset-top)) - max(16px,env(safe-area-inset-bottom)));overflow:auto}
 `;document.head.append(responsiveStyle)}
+
+
+/* Shared full-surface back gesture. Existing navigation handlers own data safety. */
+{
+ let backTouch=null, suppressBackClickUntil=0;
+ function backAction(target){
+   if(document.querySelector("dialog[open]"))return null;
+   if(target.closest("input,textarea,select,[contenteditable],.dock,.mini-workout,[role=slider]"))return null;
+   if(activePage==="session"){
+     if(target.closest(".exercise-swipe-card,.session-card-select,.session-choice")||activeExerciseSwipe||exerciseGestureOwner)return null;
+     return ()=>minimizeActiveWorkout();
+   }
+   if(activePage==="workouts"&&!$("routine-detail").hidden&&(!wide.matches||target.closest("#routine-detail")))return ()=>$("detail-back").click();
+   if(activePage==="profile"&&!wide.matches&&detail)return ()=>$(selected==="appearance"?"appearance-back":"personal-back").click();
+   return null;
+ }
+ document.addEventListener("touchstart",e=>{
+   backTouch=null;if(e.touches.length!==1||!(e.target instanceof Element))return;
+   const action=backAction(e.target);if(!action)return;
+   const t=e.touches[0];backTouch={id:t.identifier,x:t.clientX,y:t.clientY,time:performance.now(),page:activePage,action,locked:false};
+ },{capture:true,passive:true});
+ document.addEventListener("touchmove",e=>{
+   const b=backTouch;if(!b)return;
+   if(e.touches.length!==1||activePage!==b.page){backTouch=null;return}
+   const t=Array.from(e.touches).find(t=>t.identifier===b.id);if(!t){backTouch=null;return}
+   const dx=t.clientX-b.x,dy=t.clientY-b.y;
+   if(!b.locked&&Math.hypot(dx,dy)>12){if(dx<=0||dx<Math.abs(dy)*1.6){backTouch=null;return}b.locked=true}
+   if(b.locked&&e.cancelable)e.preventDefault();
+ },{capture:true,passive:false});
+ document.addEventListener("touchend",e=>{
+   const b=backTouch;backTouch=null;if(!b||!b.locked||activePage!==b.page||document.querySelector("dialog[open]"))return;
+   const t=Array.from(e.changedTouches).find(t=>t.identifier===b.id);if(!t)return;
+   const dx=t.clientX-b.x,dy=t.clientY-b.y,elapsed=Math.max(1,performance.now()-b.time);
+   if(dx<64||dx<Math.abs(dy)*1.6||(dx<100&&dx/elapsed<.3))return;
+   if(e.cancelable)e.preventDefault();suppressBackClickUntil=performance.now()+350;b.action();
+ },{capture:true,passive:false});
+ document.addEventListener("touchcancel",()=>{backTouch=null},{capture:true,passive:true});
+ document.addEventListener("click",e=>{if(e.detail!==0&&performance.now()<suppressBackClickUntil){e.preventDefault();e.stopImmediatePropagation();suppressBackClickUntil=0}},{capture:true});
+}
