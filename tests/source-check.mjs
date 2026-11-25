@@ -280,8 +280,8 @@ console.log('Independent timer and navigation heights passed');
 assert.ok(source.includes('class="streak-title-row"'));
 assert.ok(browser.includes('if(done||rest)dot.append(streakIcon("check"))'));
 assert.ok(css.includes('.dot.rest{background:var(--system-blue);color:#fff}'));
-assert.ok(css.includes('.streak-flame-button svg{width:24px;height:24px;stroke:currentColor'));
-console.log('Compact streak flame and recovery checkmark styling passed');
+assert.ok(css.includes('.streak-trophy-button svg{width:24px;height:24px;stroke:currentColor'));
+console.log('Compact streak trophy and recovery checkmark styling passed');
 
 assert.ok(browser.includes('dot.append(streakIcon(selected?"check":"dumbbell"))'));
 assert.ok(css.includes('.rest-day-option[aria-pressed=true] .dot{background:var(--system-blue);color:#fff}'));
@@ -291,5 +291,10 @@ console.log('Rest-day picker matches streak styling and recovery summary');
 assert.equal((source.match(/from "lucide\/icons\/dumbbell\.svg"/g)||[]).length,1);
 assert.ok(source.includes('id="streak-dumbbell">${icon("dumbbell")}'));
 assert.ok(source.includes('training-total-icon" aria-hidden="true">${icon("dumbbell")}'));
-assert.ok(source.includes('aria-label="Animate training streak flame">${icons.flame}'));
-console.log('Shared Lucide dumbbell and flame sources passed');
+assert.ok(source.includes('aria-label="Animate training streak trophy">${icons.trophy}'));
+console.log('Shared Lucide dumbbell and trophy sources passed');
+
+assert.ok(source.includes('import trophyIcon from "lucide/icons/trophy.svg"'));
+assert.ok(source.includes('<div class="row streak-footer"><span class="muted">Personal best</span>'));
+assert.ok(css.includes('#streak-title,#streak-best{color:var(--ink)}'));
+console.log('Single trophy and neutral streak typography passed');
