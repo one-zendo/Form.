@@ -499,7 +499,9 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #workouts-page #routine-detail.is-editing .partner-header #routine-name:focus-visible{outline:none;text-decoration:underline;text-decoration-color:var(--workout-accent);text-decoration-thickness:1px;text-underline-offset:4px}
 #workouts-page .partner-header :is(#new-routine,#detail-edit){grid-column:3;grid-row:1;display:grid;place-items:center;width:var(--partner-action);height:var(--partner-action);min-height:var(--partner-action);min-width:var(--partner-action);padding:0;margin:0;border-radius:var(--radius-full);background:var(--paper);color:var(--ink)}
 #workouts-page .partner-header :is(#new-routine,#detail-edit) .icon svg{width:var(--icon-small);height:var(--icon-small)}
-#workouts-page #routine-detail.is-editing .partner-header #detail-edit{color:var(--system-red)}
+/* Routine editing: reversible cancel is neutral; destructive actions retain danger. */
+#workouts-page #routine-detail .partner-header #detail-edit{color:var(--workout-accent-ink);background:color-mix(in srgb,var(--workout-accent) 10%,var(--paper))}
+#workouts-page #routine-detail.is-editing .partner-header #detail-edit{color:var(--muted);background:var(--paper)}
 #workouts-page .partner-header [hidden]{display:none!important}
 @media(min-width:760px) and (orientation:landscape){#workouts-page #detail-back{display:none}#workouts-page .partner-wide-accent{display:grid;place-items:center}}
 
