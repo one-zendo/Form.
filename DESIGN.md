@@ -215,3 +215,6 @@ Graphite surfaces carry the Home workout card in both idle and active states. Us
 
 ### Graphite Lime — cross-page accent consistency
 Keep routine, progress, profile and active workout surfaces neutral. Use the shared lime action accent for selected controls, completed set checks and progress segments, and the compact training-streak trophy and completed training-day markers. Use graphite foreground on filled lime. Preserve blue planned recovery and rest timer, green timer completion, amber resume, red destructive actions and purple strength insights. No geometry or motion changes. Default is unchanged.
+
+### Inline routine editor — shared geometry
+The editable routine name is a borderless transparent headline, not a separate field card. It inherits .form-headline, the shared partner grid and optical offset; its caret and keyboard focus underline use the theme accent. The viewing and editing title retain identical bounds, typography and alignment. Set rows and fields inherit the global touch-target, field-height, spacing, typography and radius tokens. Preserve inline editing, expanded cards, scroll behavior and existing responsive layout.

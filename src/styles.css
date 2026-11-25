@@ -323,22 +323,22 @@ main:has(#workouts-page:not([hidden])):has(#routine-detail:not([hidden])){overfl
 body.mini-visible main:has(#workouts-page:not([hidden])):has(#routine-detail:not([hidden])){padding-bottom:var(--page-clearance)}
 
 /* View and edit share the same title, exercise summary and set geometry. */
-#routine-detail .routine-detail-header{height:44px;min-height:44px;gap:var(--space-3)}
-#routine-detail :is(#detail-title,#routine-name){flex:1;min-width:0;width:0;height:44px;min-height:44px;margin:0;padding:0 var(--space-2);border:1px solid transparent;border-radius:var(--radius-control);font:var(--type-bold) var(--type-detail)/42px var(--type-family);letter-spacing:-.7px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-#routine-detail.is-editing #routine-name{border-color:var(--line);background:var(--paper)}
+#routine-detail .routine-detail-header{height:var(--header-height);min-height:var(--header-height);gap:var(--space-3)}
+#routine-detail :is(#detail-title,#routine-name){flex:1;width:0}
+
 #routine-detail #detail-edit{flex:0 0 var(--touch-target);width:var(--touch-target);height:var(--touch-target);padding:0;border-radius:var(--radius-full)}
 #routine-detail #detail-meta{height:24px;line-height:24px;margin:var(--space-2) 0}
-#routine-detail .detail-heading{height:44px;min-height:44px;margin:0 0 var(--space-3)}
-#routine-detail .detail-heading h3{font-size:19px;font-weight:600}
+#routine-detail .detail-heading{height:var(--header-height);min-height:var(--header-height);margin:0 0 var(--space-3)}
+
 #routine-detail .detail-exercise>summary{height:var(--routine-card-height);min-height:var(--routine-card-height);padding:0;font-size:16px}
 #routine-detail .detail-exercise>summary>span:nth-child(2){display:grid;flex:1;min-width:0;gap:var(--space-1);overflow-wrap:anywhere}
 #routine-detail .detail-exercise>summary>.detail-chevron{display:flex;flex:none}
 #routine-detail .detail-exercise[open]{padding-bottom:var(--space-4)}
-#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:24px repeat(3,minmax(0,1fr)) 44px;gap:var(--space-2);height:44px;min-height:44px;margin:0 0 var(--space-1);align-items:center;text-align:center;font-variant-numeric:tabular-nums}
+#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:var(--space-6) repeat(3,minmax(0,1fr)) var(--touch-target);gap:var(--space-2);height:var(--touch-target);min-height:var(--touch-target);margin:0 0 var(--space-1);align-items:center;text-align:center;font-variant-numeric:tabular-nums}
 #routine-detail #detail-exercises .routine-set-row.caption{height:24px;min-height:24px;margin-top:var(--space-2);font-size:var(--font-caption)}
-#routine-detail .routine-read-value{display:grid;place-items:center;min-width:0;height:40px;font-size:var(--font-control);font-weight:500}
-#routine-detail.is-editing #detail-exercises input{border:1px solid var(--line);border-radius:var(--radius-small);background:var(--canvas);width:100%;min-width:0;height:40px;min-height:40px;margin:0;padding:var(--space-1);text-align:center;font-size:var(--font-control);font-weight:500;line-height:1.2;font-family:inherit;box-sizing:border-box;font-variant-numeric:tabular-nums}
-#routine-detail .routine-set-row button{width:44px;height:44px;min-width:44px;min-height:44px}#routine-detail .routine-set-row button:disabled{opacity:.3}
+#routine-detail .routine-read-value{display:grid;place-items:center;min-width:0;height:var(--field-height);font-size:var(--font-control);font-weight:500}
+#routine-detail.is-editing #detail-exercises input{border:1px solid var(--line);border-radius:var(--radius-small);background:var(--canvas);width:100%;min-width:0;height:var(--field-height);min-height:var(--field-height);margin:0;padding:var(--space-1);text-align:center;font-size:var(--font-control);font-weight:500;line-height:var(--type-heading-line);font-family:var(--type-family);box-sizing:border-box;font-variant-numeric:tabular-nums}
+#routine-detail .routine-set-row button{width:var(--touch-target);height:var(--touch-target);min-width:var(--touch-target);min-height:var(--touch-target)}#routine-detail .routine-set-row button:disabled{opacity:.3}
 #routine-detail .routine-add-set{width:100%;background:var(--canvas);color:var(--system-blue-ink);margin-top:var(--space-2);border-radius:var(--radius-small);min-height:var(--touch-target)}
 #routine-detail .routine-remove-exercise{width:100%;min-height:var(--touch-target);background:transparent;color:var(--system-red);font-size:var(--font-control);font-weight:500;margin:0}
 #routine-detail #detail-description{margin:var(--space-3) 0;overflow-wrap:anywhere}
@@ -366,8 +366,8 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 .page-back{margin:0;padding:0;flex:0 0 var(--touch-target);width:var(--touch-target);height:var(--touch-target);justify-content:center;align-items:center}
 .back-chevron{display:inline-flex;transform:rotate(180deg)}
 #routine-detail .routine-detail-header{gap:var(--space-2)}
-#routine-detail :is(#detail-title,#routine-name){padding-inline:0}
-#routine-detail.is-editing #routine-name{padding-inline:var(--space-2)}
+
+
 
 /* Routine exercise cards: text-only identity, retain expansion chevron. */
 #routine-detail .detail-exercise>summary>span:first-child{display:none}
@@ -380,7 +380,7 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #routine-detail.is-editing #detail-exercises input{background:var(--field-fill);border-color:transparent;color:var(--ink);transition:background-color var(--motion-fast) var(--motion-ease),border-color var(--motion-fast) var(--motion-ease)}
 #routine-detail.is-editing #detail-exercises input:focus{border-color:var(--system-blue);outline:2px solid var(--system-blue);outline-offset:-2px}
 #routine-detail.is-editing #detail-exercises input[aria-invalid=true]{border-color:var(--system-red)}
-#routine-detail.is-editing #routine-name{padding-inline:0}
+
 
 /* Sample routine visibility is a Profile preference. */
 #profile-page #toggle-samples{width:100%;min-width:0;height:auto;margin:0;display:flex;align-items:center;text-align:left;color:var(--ink)}
@@ -449,7 +449,8 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #workouts-page #detail-back{position:absolute;inset:0 auto auto calc((var(--partner-leading) - var(--touch-target))/2);display:grid;place-items:center;width:var(--touch-target);min-width:var(--touch-target);height:var(--touch-target);min-height:var(--touch-target);margin:0;padding:0;background:transparent;color:var(--system-blue)}
 #workouts-page .partner-wide-accent{display:none}
 #workouts-page #routine-list>.partner-header h2,#workouts-page #routine-detail .partner-header :is(#detail-title,#routine-name){grid-column:2;grid-row:1;min-width:0;width:100%;height:var(--header-height);min-height:var(--header-height);margin:0;padding:0;border:0;box-sizing:border-box;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--ink)}
-#workouts-page #routine-detail.is-editing .partner-header #routine-name{box-shadow:inset 0 0 0 1px var(--line);border:0;padding:0}
+#workouts-page #routine-detail.is-editing .partner-header #routine-name{appearance:none;-webkit-appearance:none;background:transparent;box-shadow:none;border:0;padding:0;caret-color:var(--workout-accent);outline:none;text-align:start}
+#workouts-page #routine-detail.is-editing .partner-header #routine-name:focus-visible{outline:none;text-decoration:underline;text-decoration-color:var(--workout-accent);text-decoration-thickness:1px;text-underline-offset:4px}
 #workouts-page .partner-header :is(#new-routine,#detail-edit){grid-column:3;grid-row:1;display:grid;place-items:center;width:var(--partner-action);height:var(--partner-action);min-height:var(--partner-action);min-width:var(--partner-action);padding:0;margin:0;border-radius:var(--radius-full);background:var(--paper);color:var(--ink)}
 #workouts-page .partner-header :is(#new-routine,#detail-edit) .icon svg{width:var(--icon-small);height:var(--icon-small)}
 #workouts-page #routine-detail.is-editing .partner-header #detail-edit{color:var(--system-red)}
