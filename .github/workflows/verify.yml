@@ -1,24 +1,37 @@
 name: FORM checks
 on:
   push:
+    branches: [main]
   pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: form-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run build
       - run: npx wrangler deploy --dry-run --outdir dist
       - run: npx playwright install --with-deps webkit
-      - run: npm run test:browser
+      - name: Design smoke checks
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft
+        run: npm run test:browser -- --grep 'navigation and appearance|release starts genuinely empty|Demo Mode'
+      - name: Full release regression
+        if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+        run: npm run test:browser
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
