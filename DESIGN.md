@@ -224,3 +224,6 @@ Restore the approved original cool graphite canvas #17171F and paper #24242E glo
 
 ### Rest Days dialog cohesion
 Use the shared dialog max width, radius, spacing, action height, day marker sizes, statistic value typography and theme action tokens. Empty markers use the shared elevated field surface; selected recovery markers remain blue with white checks. Keep summary cards equally sized, centered and icon-free, with a concise instruction and no redundant decorative glyphs. Preserve weekly scheduling, reduced-motion behavior and history.
+
+### Workouts / routine partner motion
+Keep header title, action, metadata and primary control anchored to shared geometry. Crossfade these parts with one global motion duration and easing; only the scrollable content translates a restrained 16px in the navigation direction. Preserve the live line-to-chevron glyph, dock, timer, and landscape split layout. Avoid overlapping page and partner animations; clean up interrupted transitions and respect reduced motion.
