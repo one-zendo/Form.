@@ -423,8 +423,8 @@ body[data-home-fold]:not(.training) main:has(#home-page:not([hidden])){max-width
 body[data-home-fold]:not(.training) #home-page:not([hidden]){position:absolute;inset:0;display:block;--home-card-padding:var(--space-4);--home-card-gap:var(--space-3)}
 body[data-home-fold] #home-page .home-header,body[data-home-fold] #home-page .dashboard{display:contents}
 body[data-home-fold] #home-page .home-brand{position:absolute;left:var(--fold-a-left);top:var(--fold-a-top);width:var(--fold-a-width)}
-body[data-home-fold] #home-page #home-greeting{position:absolute;left:var(--fold-a-left);top:calc(var(--fold-a-top) + 64px);width:var(--fold-a-width);margin:0}
-body[data-home-fold] #home-page .primary{position:absolute;left:var(--fold-a-left);width:var(--fold-a-width);top:calc(var(--fold-a-top) + 100px);height:max(0px,calc(var(--fold-a-height) - 100px - var(--fold-a-clearance)))}
+body[data-home-fold] #home-page #home-greeting{position:absolute;left:var(--fold-a-left);top:calc(var(--fold-a-top) + var(--home-fold-brand-height,66px) + var(--space-2));width:var(--fold-a-width);margin:0}
+body[data-home-fold] #home-page .primary{position:absolute;left:var(--fold-a-left);width:var(--fold-a-width);top:calc(var(--fold-a-top) + var(--home-fold-brand-height,66px) + 44px);height:max(0px,calc(var(--fold-a-height) - var(--home-fold-brand-height,66px) - 44px - var(--fold-a-clearance)))}
 body[data-home-fold] #home-page .support{position:absolute;left:var(--fold-b-left);width:var(--fold-b-width);top:calc(var(--fold-b-top) + var(--fold-b-header));height:max(0px,calc(var(--fold-b-height) - var(--fold-b-header) - var(--fold-b-clearance)))}
 body[data-home-fold=side] #home-page .home-header time{position:absolute;right:calc(100% - var(--fold-b-left) - var(--fold-b-width));top:var(--fold-b-top)}
 body[data-home-fold=stack] #home-page .home-header time{position:absolute;right:calc(100% - var(--fold-a-left) - var(--fold-a-width));top:var(--fold-a-top)}
@@ -440,6 +440,7 @@ body[data-home-fold]:not(.training):has(#home-page:not([hidden])) .mini-workout{
 body[data-home-fold]:not(.training):has(#home-page:not([hidden]))::after{display:none}
 `;document.head.append(style);
 let foldFrame=0,foldAnimations=new Map(),foldLastGeometry=null,foldSignature="";
+if(typeof ResizeObserver!=="undefined"){const brand=$("home-page").querySelector(".home-brand");new ResizeObserver(()=>{if(document.body.hasAttribute("data-home-fold")){const height=Math.ceil(brand.getBoundingClientRect().height);if(height>0)document.body.style.setProperty("--home-fold-brand-height",height+"px")}}).observe(brand)}
 function foldNodes(){return [$("home-page").querySelector(".home-brand"),$("date"),$("home-greeting"),$("home-workout-card"),$("home-page").querySelector(".streak-card"),document.querySelector(".dock"),mini].filter(n=>n&&!n.hidden&&n.getBoundingClientRect().width>0)}
 function foldSnapshot(){return new Map(foldNodes().map(n=>[n,n.getBoundingClientRect()]))}
 function animateFoldChange(before){
