@@ -794,3 +794,6 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 @media(prefers-reduced-motion:reduce){#workouts-page #routine-items .routine-row,#workouts-page #workout-history-list .workout-history-card{transition:none}}
 
 
+
+/* Studio Blue idle Home card only. */
+:root[data-theme-id=studio-blue]{--home-workout-idle:#D51028}
