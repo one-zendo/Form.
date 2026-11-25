@@ -292,3 +292,7 @@ html,body{touch-action:pan-y pinch-zoom}
 :where(button,input,select,textarea,summary,a):focus-visible{outline:2px solid var(--system-blue-ink);outline-offset:2px}
 @media(prefers-reduced-transparency:reduce){dialog::backdrop{background:#0009!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
 @media(prefers-contrast:more){:root{--muted:var(--ink)}:where(button,input,select,textarea,summary,a):focus-visible{outline:3px solid var(--ink);outline-offset:2px}}
+
+/* Global touch feedback: keep custom press motion and keyboard focus, suppress native tap overlay. */
+:root{-webkit-tap-highlight-color:transparent}
+:where(button,a,input,select,textarea,summary,[role="button"], [tabindex]){-webkit-tap-highlight-color:transparent}
