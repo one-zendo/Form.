@@ -10,8 +10,10 @@
 @media(min-width:760px) and (orientation:landscape){.routine-row,.session-choice{position:relative;padding-inline-start:16px}:is(.routine-row.selected,.session-choice[aria-pressed=true])::before{content:"";position:absolute;inset-inline-start:5px;top:50%;transform:translateY(-50%);width:3px;height:34px;border-radius:var(--radius-full);background:var(--action);pointer-events:none}}.routine-entry[aria-current=true]{outline:none}.routine-entry:focus-visible{outline:2px solid var(--action)}.detail-exercise:not([open])>:not(summary){display:none!important}.detail-exercise summary{min-height:64px;padding:10px 0}.detail-exercise[open]{padding-bottom:14px}.detail-chevron{transform:rotate(90deg)}.detail-exercise[open] .detail-chevron{transform:rotate(-90deg)}.detail-chevron svg{width:18px!important;height:18px!important} .action,.routine-save:not(:disabled){background:var(--action);color:var(--on-action)}.action .icon,.routine-save:not(:disabled) .icon{color:inherit}.dot.done{background:var(--streak-fire);color:var(--streak-on-fire)}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}}html,body,main{touch-action:pan-y pinch-zoom}.action .icon svg{width:18px;height:18px;stroke-width:1.75}
 /* Workouts: shared landscape geometry, without changing portrait. */
 @media (min-width:760px) and (orientation:landscape){
-  #workouts-page .workout-layout{grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:32px;position:relative}
-  #workouts-page .workout-layout::before{content:"";position:absolute;left:calc((100% - 32px)*.4 + 16px);top:0;bottom:0;width:1px;background:var(--line);pointer-events:none}
+  #workouts-page .workout-layout,#profile-shell.detail-open{grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:32px;position:relative}
+  #profile-shell.detail-open{max-width:none;width:100%;margin:0}
+  #profile-shell.detail-open #appearance-page,#profile-shell.detail-open #personal-page{border-left:0;padding-left:0}
+  #workouts-page .workout-layout::before,#profile-shell.detail-open::before{content:"";position:absolute;left:calc((100% - 32px)*.4 + 16px);top:0;bottom:0;width:1px;background:var(--line);pointer-events:none}
   #routine-detail,#routine-editor{border-left:0;padding-left:0}
   #routine-list,#routine-detail{min-width:0;scrollbar-width:none}
   #routine-list:not([hidden]),#routine-detail:not([hidden]){display:flex;flex-direction:column;align-items:stretch}
