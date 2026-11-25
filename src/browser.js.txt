@@ -127,10 +127,13 @@ function collapseWorkoutTransition(source,target,reverse,complete,prepare,previo
   const style=document.createElement("style");let rules="";
   for(const sheet of document.styleSheets){try{for(const rule of sheet.cssRules){if(rule.cssText.includes("#active-workout"))rules+=rule.cssText.replaceAll("#active-workout",".workout-collapse-surface")+"\n"}}catch{}}
   style.textContent=rules;document.head.append(style);document.body.append(overlay);
+  const blurredChildren=Array.from(overlay.children);for(const child of blurredChildren)child.style.willChange="filter,opacity";
   const copyScroll=overlay.querySelector(".session-scroll");if(copyScroll)copyScroll.scrollTop=originalScroll;
-  const elements=[mini,dock],saved=elements.map(n=>({transition:n.style.transition,translate:n.style.translate,opacity:n.style.opacity,willChange:n.style.willChange}));
+  const elements=[mini,dock],saved=elements.map(n=>({transition:n.style.transition,translate:n.style.translate,opacity:n.style.opacity,willChange:n.style.willChange,zIndex:n.style.zIndex,animation:n.style.animation}));
   elements.forEach(n=>{n.style.transition="none";n.style.willChange="translate,opacity"});
   if(prepare)prepare();
+  mini.style.zIndex="1001";dock.style.zIndex="999";
+  // Preserve timer animation (including the ready pulse) and live rest state.
   const after={timer:mini.getBoundingClientRect(),dock:dock.getBoundingClientRect()};
   target=reverse?target:after.timer;
   if(!target.width||!target.height){overlay.remove();style.remove();elements.forEach((n,i)=>Object.assign(n.style,saved[i]));complete();return}
@@ -150,10 +153,14 @@ function collapseWorkoutTransition(source,target,reverse,complete,prepare,previo
     const corner=Math.min(target.height/2,width/2,height/2)*(1-Math.pow(1-p,2));
     overlay.style.transform="translate3d("+(x-source.left-left)+"px,"+(y-source.top)+"px,0)";
     overlay.style.clipPath="inset(0px "+right+"px "+bottom+"px "+left+"px round "+corner+"px)";
-    overlay.style.opacity=String(p<.72?1:Math.max(0,(1-p)/.28));
+    const blurPhase=Math.max(0,Math.min(1,(p-.10)/.75));
+    const blur=8*blurPhase*blurPhase*(3-2*blurPhase);
+    const contentFade=1-Math.max(0,Math.min(1,(p-.48)/.48));
+    for(const child of blurredChildren){child.style.filter=blur>0?"blur("+blur.toFixed(2)+"px)":"none";child.style.opacity=String(contentFade)}
+    const fade=Math.max(0,Math.min(1,(p-.62)/.38));overlay.style.opacity=String(1-fade*fade*(3-2*fade));
   }
   draw(reverse?1:0,0);
-  function frame(now){if(start===null)start=now;const t=Math.min(1,(now-start)/duration),e=t*t*(3-2*t);draw(reverse?1-e:e,e);if(t<1)raf=requestAnimationFrame(frame);else cleanup()}raf=requestAnimationFrame(frame)
+  function frame(now){if(start===null)start=now;const t=Math.min(1,(now-start)/duration),e=t*t*t*(t*(6*t-15)+10);draw(reverse?1-e:e,e);if(t<1)raf=requestAnimationFrame(frame);else cleanup()}raf=requestAnimationFrame(frame)
 }
 function minimizeActiveWorkout(){
   if(minimizingWorkout||workout.hidden)return;
@@ -351,3 +358,5 @@ function updateHomeFold(){
 }
 function queueFold(){if(!foldFrame)foldFrame=requestAnimationFrame(updateHomeFold)}
 window.addEventListener("resize",queueFold);window.addEventListener("pageshow",queueFold);document.addEventListener("visibilitychange",queueFold);try{navigator.devicePosture?.addEventListener("change",queueFold)}catch{}for(const q of ["(device-posture: folded)","(device-posture: continuous)","(vertical-viewport-segments: 2)","(horizontal-viewport-segments: 2)"])matchMedia(q).addEventListener("change",queueFold);new MutationObserver(queueFold).observe(document.body,{attributes:true,attributeFilter:["class"]});new MutationObserver(()=>{if($("home-page").hidden){for(const a of foldAnimations.values())a.cancel();foldAnimations.clear();foldLastGeometry=null}else{foldLastGeometry=foldSnapshot();queueFold()}}).observe($("home-page"),{attributes:true,attributeFilter:["hidden"]});updateHomeFold();}
+
+{const layerStyle=el("style");layerStyle.textContent=".mini-workout{z-index:1001}.mini-workout[hidden]{display:none}";document.head.append(layerStyle);}
