@@ -15,6 +15,24 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Classify release changes
+        id: lane
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          lane=full
+          if [[ "$EVENT" == pull_request || "$EVENT" == push ]] && [[ -n "$BASE" ]] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            files=$(git diff --name-only "$BASE" "$HEAD")
+            if [[ "$files" == src/styles.css ]]; then lane=design; fi
+          fi
+          echo "lane=$lane" >> "$GITHUB_OUTPUT"
+          echo "Release lane: $lane"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -23,7 +41,10 @@ jobs:
       - run: npm run build
       - run: npx wrangler deploy --dry-run --outdir dist
       - run: npx playwright install --with-deps webkit
+      - run: npm run test:design
+        if: steps.lane.outputs.lane == 'design'
       - run: npm run test:browser
+        if: steps.lane.outputs.lane != 'design'
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
