@@ -296,3 +296,6 @@ html,body{touch-action:pan-y pinch-zoom}
 /* Global touch feedback: keep custom press motion and keyboard focus, suppress native tap overlay. */
 :root{-webkit-tap-highlight-color:transparent}
 :where(button,a,input,select,textarea,summary,[role="button"], [tabindex]){-webkit-tap-highlight-color:transparent}
+
+/* Pointer focus remains functional, but decorative rings are reserved for keyboard navigation. */
+html[data-input-mode="pointer"] :is(button,a,summary,[role="button"]):focus{outline:none!important}
