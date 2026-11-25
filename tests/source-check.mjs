@@ -73,7 +73,7 @@ assert.ok(!browser.includes(':root{--motion-fast:'),'Motion tokens must live in 
 assert.ok(!browser.includes('animation:finish-enter'),'Removal dialog must use a defined animation');
 assert.ok(browser.includes('@keyframes form-finish-float-in'));
 assert.ok(browser.includes('prefers-reduced-motion:reduce){.exercise-remove-confirm[open]{animation:none}'));
-const motionSource=browser.slice(0,browser.indexOf('function motionAllowed'));
+const motionSource=browser.slice(browser.indexOf('const formMotion='),browser.indexOf('function motionAllowed'));
 const motion=vm.runInNewContext(motionSource+';formMotion',{document:{documentElement:{}},getComputedStyle:()=>({getPropertyValue:key=>globalTokens.get(key)||''})});
 for(const key of ['fast','tab','back','edit','standard','sheet','collapse','settle','celebrate','swipe','glide','drop'])assert.ok(Number.isFinite(motion[key])&&motion[key]>0,'Invalid motion token '+key);
 for(const key of ['ease','spring','gesture-ease','system-ease'])assert.ok(motion[key].startsWith('cubic-bezier('));
@@ -228,3 +228,10 @@ assert.ok(browser.includes('const initialPage="home";'));
 assert.ok(browser.includes('navigate(initialPage);renderHomeData();refreshMini();'));
 assert.ok(!browser.includes('navigate(initialPage);renderHomeData();if(session)renderSession();'));
 console.log('Fresh launch resets navigation without clearing persisted data');
+
+assert.ok(browser.includes('if(!cancel&&armed){removeSessionExercise(index,card,true)}'));
+assert.ok(browser.includes('if(recorded&&!fullSwipe)'));
+assert.ok(browser.includes('(fullSwipe||!recorded)&&session?.id===id'));
+assert.ok(css.includes('html[data-input-mode="pointer"]'));
+assert.ok(browser.includes('setInteractionMode("keyboard")'));
+console.log('Full swipe removal, undo and input-modality focus checks passed');
