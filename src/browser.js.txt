@@ -69,11 +69,33 @@ function restControl(label,delta,aria){const b=action(label,()=>adjustRest(delta
 const miniMinus=restControl("−",-15,"Subtract 15 Seconds"),miniPlus=restControl("+",15,"Add 15 Seconds"),miniSkip=action("",()=>adjustRest(restRemaining()?0:null));miniSkip.classList.add("rest-adjust","rest-skip");miniMinus.classList.add("mini-minus");for(const [button,path] of [[miniMinus,"M5 12h14"],[miniPlus,"M12 5v14M5 12h14"]]){button.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+path+'"/></svg>'}miniName.className="mini-name";miniCopy.append(miniClock);const miniRight=el("div","","mini-right");miniRight.append(miniPlus,miniSkip);mini.append(miniMinus,miniCopy,miniRight,miniProgress);document.querySelector(".dock").before(mini);
 const miniMask=el("div","","mini-color-mask");miniMask.setAttribute("aria-hidden","true");miniMask.inert=true;const maskMinus=miniMinus.cloneNode(true),maskCopy=miniCopy.cloneNode(true),maskRight=miniRight.cloneNode(true);miniMask.append(maskMinus,maskCopy,maskRight);mini.append(miniMask);const maskName=maskCopy.querySelector(".mini-name"),maskClock=maskCopy.querySelector(".mini-clock"),maskPlus=maskRight.firstElementChild,maskSkip=maskRight.lastElementChild;
 
+// A completed primary pointer tap activates the stable capsule button directly.
+ // WebKit can omit click after pointerup during repeated workout transitions.
+ // Retain native keyboard/assistive activation and suppress only the follow-up
+ // pointer click for a gesture already resolved here.
 let miniSwipe=null,miniSwipeHandled=false;
-miniCopy.addEventListener("pointerdown",e=>{miniSwipeHandled=false;if(document.body.classList.contains("training")||!e.isPrimary||e.button!==0)return;miniSwipe={id:e.pointerId,x:e.clientX,y:e.clientY};miniCopy.setPointerCapture(e.pointerId)});
-miniCopy.addEventListener("pointerup",e=>{const start=miniSwipe;miniSwipe=null;if(!start||start.id!==e.pointerId||document.body.classList.contains("training"))return;const up=start.y-e.clientY;if(up>=24&&up>Math.abs(e.clientX-start.x)){miniSwipeHandled=true;guardLeave(()=>renderSession())}});
-miniCopy.addEventListener("pointercancel",()=>{miniSwipe=null;miniSwipeHandled=false});miniCopy.addEventListener("lostpointercapture",()=>{miniSwipe=null});
-miniCopy.addEventListener("click",e=>{if(miniSwipeHandled&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();miniSwipeHandled=false}},true);
+miniCopy.addEventListener("pointerdown",e=>{
+  if(!e.isPrimary||e.button!==0)return;
+  miniSwipeHandled=false;
+  miniSwipe={id:e.pointerId,x:e.clientX,y:e.clientY,page:activePage};
+  try{miniCopy.setPointerCapture(e.pointerId)}catch{}
+});
+miniCopy.addEventListener("pointerup",e=>{
+  const start=miniSwipe;
+  if(!start||start.id!==e.pointerId)return;
+  miniSwipe=null;miniSwipeHandled=true;
+  if(!e.isPrimary||e.button!==0||activePage!==start.page)return;
+  const dx=e.clientX-start.x,dy=e.clientY-start.y;
+  if(start.page!=="session"&&-dy>=24&&-dy>Math.abs(dx)){
+    guardLeave(()=>renderSession());return;
+  }
+  if(Math.hypot(dx,dy)<=12&&miniCopy.contains(document.elementFromPoint(e.clientX,e.clientY)))toggleWorkoutView();
+});
+miniCopy.addEventListener("pointercancel",e=>{if(miniSwipe?.id===e.pointerId){miniSwipe=null;miniSwipeHandled=false}});
+miniCopy.addEventListener("lostpointercapture",e=>{if(miniSwipe?.id===e.pointerId)miniSwipe=null});
+miniCopy.addEventListener("click",e=>{
+  if(miniSwipeHandled&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();miniSwipeHandled=false}
+},true);
 const miniStyle=el("style");miniStyle.textContent=`
 :root{--floating-height:56px;--timer-height:72px;--floating-gap:10px;}
 .dock,.mini-workout{height:var(--floating-height);border-radius:var(--radius-full);bottom:max(12px,env(safe-area-inset-bottom));width:min(440px,calc(100% - 32px));background:var(--dock);border:1px solid var(--line);box-shadow:0 8px 32px var(--shadow-float);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
