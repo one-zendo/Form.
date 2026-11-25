@@ -118,13 +118,13 @@
 :root{--danger:var(--palette-light-danger);--on-danger:#fff}:root[data-theme=dark]{--danger:var(--palette-dark-danger)}@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--danger:var(--palette-dark-danger)}}.floating-dialog{position:fixed;inset:0;margin:auto;width:min(360px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;text-align:center;padding:24px;border-radius:var(--radius-card);background:var(--paper)}.floating-dialog[open]{display:grid;gap:var(--space-3);animation:finish-enter 220ms cubic-bezier(.2,.8,.2,1)}.floating-dialog::backdrop{background:transparent;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}#finish-confirm:disabled{opacity:.45;cursor:default}#finish-discard[hidden]{display:none}@keyframes finish-enter{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}@media(prefers-reduced-motion:reduce){.floating-dialog[open]{animation:none}}
 
 /* Home workout: one semantic button in every appearance. */
-.home-workout-card{display:flex;min-height:0;width:100%;border-radius:var(--radius-card);padding:var(--home-card-padding);background:var(--home-workout-idle);color:var(--home-workout-ink);text-align:left;align-items:center;justify-content:space-between;gap:var(--space-3);transition:background 260ms ease,transform 320ms cubic-bezier(.2,.8,.2,1.25)}
+.home-workout-card{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(min-content,1fr) auto;min-height:0;overflow-y:auto;scrollbar-width:none;width:100%;border-radius:var(--radius-card);padding:var(--home-card-padding);background:var(--home-workout-idle);color:var(--home-workout-ink);text-align:left;align-items:start;justify-content:stretch;gap:var(--space-3);transition:background 260ms ease,transform 320ms cubic-bezier(.2,.8,.2,1.25)}
 .home-workout-card:active{transform:scale(.97);transition-duration:100ms}
 .home-workout-copy{display:grid;gap:var(--space-1);min-width:0;flex:1}
 .home-workout-copy strong{font-size:24px;line-height:1.2;letter-spacing:-.5px;overflow-wrap:anywhere}
 #home-workout-meta{font-size:var(--font-control);color:var(--home-workout-meta-ink,inherit)}
 .has-session .home-workout-card{background:var(--home-workout-active)}
-.home-workout-cta{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-full);background:var(--home-workout-capsule);color:var(--home-workout-cta-ink,inherit);font-weight:600;flex:none}
+.home-workout-cta{grid-row:3;justify-self:end;display:flex;align-items:center;justify-content:center;min-width:88px;min-height:44px;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-full);background:var(--home-workout-capsule);color:var(--home-workout-cta-ink,inherit);font-weight:600;flex:none}
 .has-session .home-workout-cta{background:var(--home-workout-resume-capsule,var(--home-workout-capsule))}
 #home-routine-picker{width:min(var(--dialog-max-width),calc(100% - 2 * var(--space-4)));max-height:min(80dvh,calc(100% - 2 * var(--space-4)));border-radius:var(--radius-dialog);padding:var(--space-4);text-align:center;overflow:hidden;box-sizing:border-box}
 #home-routine-picker[open]{grid-template-rows:auto minmax(0,1fr) auto;gap:var(--space-4)}
@@ -364,7 +364,7 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 #routine-detail .routine-read-value,#routine-detail.is-editing #detail-exercises input{height:var(--field-height);min-height:var(--field-height);line-height:var(--type-heading-line);font-family:var(--type-family)}
 #routine-detail.is-editing #detail-exercises input[type=number]{appearance:textfield;-moz-appearance:textfield}
 #routine-detail.is-editing #detail-exercises input::-webkit-inner-spin-button,#routine-detail.is-editing #detail-exercises input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-@media(max-height:550px){#home-page .home-workout-copy strong{font-size:var(--font-dialog-title)}}
+@media(max-height:550px){#home-page .home-workout-copy strong{font-size:clamp(20px,4vw,28px)}}
 
 /* Unified page headlines and inline back navigation. */
 
@@ -710,8 +710,8 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 @media(prefers-reduced-motion:no-preference){.theme-choice,.theme-categories button{transition:background-color var(--motion-fast),border-color var(--motion-fast),color var(--motion-fast)}}
 
 /* Adaptive Home: the existing cards remain the sole action and calendar surfaces. */
-.home-workout-expanded{display:grid;gap:var(--space-2);min-width:0;width:100%;font-size:var(--font-control);line-height:var(--type-body-line)}
-#home-landscape-meta,#home-exercise-names{overflow-wrap:anywhere}
+.home-workout-expanded{grid-row:2;align-self:start;display:grid;gap:var(--space-2);padding-top:var(--space-2);border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);min-width:0;width:100%;font-size:var(--font-control);line-height:var(--type-body-line)}
+#home-landscape-meta,#home-exercise-names{overflow-wrap:anywhere} #home-landscape-meta{display:grid;gap:var(--space-1)} .home-routine-name{font-size:var(--type-card);font-weight:var(--type-semibold)}
 #home-set-progress{display:grid;gap:var(--space-2)}
 .home-progress-track{display:block;height:5px;border-radius:var(--radius-full);background:color-mix(in srgb,currentColor 22%,transparent);overflow:hidden}
 #home-progress-fill{display:block;height:100%;background:currentColor;border-radius:inherit;transition:width var(--motion-fast) var(--motion-ease)}
@@ -735,14 +735,14 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 .home-month-day.future{background:transparent;color:var(--muted)}
 .home-month-day[aria-current=date]{outline:1px solid var(--streak-ink);outline-offset:1px}
 @media(orientation:landscape) and (min-width:700px){
- #home-page .home-workout-card{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;align-items:start;align-content:start}
+ #home-page .home-workout-card{grid-template-rows:auto minmax(min-content,1fr) auto;align-items:start}
  #home-page .home-workout-expanded{grid-column:1/-1;align-self:start;gap:var(--space-3);padding-top:var(--space-3);border-top:1px solid color-mix(in srgb,currentColor 25%,transparent)}
- #home-page .home-workout-cta{align-self:start}
+ #home-page .home-workout-cta{align-self:end}
  #home-page .streak-card{gap:var(--space-2);overflow-y:auto;scrollbar-width:none}
  #home-page .home-month{flex:1 0 auto;grid-template-rows:auto minmax(min-content,1fr);margin-block:0;gap:var(--space-2)}
  #home-page .streak-footer{margin-top:auto}
  #home-page .streak-card>.row:first-child{align-items:flex-start}
- #home-page .home-workout-copy strong{font-size:var(--type-card)}
+ #home-page .home-workout-copy strong{font-size:clamp(20px,3vw,28px)}
  #home-page #home-workout-meta{font-size:var(--type-secondary)}
  #home-page .dashboard{gap:var(--space-4)}
  #home-page:not([hidden]){--home-card-padding:var(--space-5)}
