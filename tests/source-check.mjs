@@ -218,7 +218,7 @@ assert.equal(checkCurrent({getItem:()=> 'original'},'record',snapshots),'origina
 assert.throws(()=>checkCurrent({getItem:()=> 'changed'},'record',snapshots),/another tab/);
 assert.throws(()=>checkCurrent({getItem:()=> 'created'},'deleted',snapshots),/another tab/);
 assert.equal(checkCurrent({getItem:()=>null},'unknown',snapshots),null);
-const headerStart=source.indexOf('function securityHeaders('),headerEnd=source.indexOf('export default',headerStart);
+const headerStart=source.indexOf('function securityHeaders('),headerEnd=source.indexOf('return {fetch(request)',headerStart);
 const headers=vm.runInNewContext(source.slice(headerStart,headerEnd)+';securityHeaders')('testnonce');
 assert.equal(headers['X-Content-Type-Options'],'nosniff');
 assert.equal(headers['X-Frame-Options'],'DENY');
