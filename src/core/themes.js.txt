@@ -21,6 +21,28 @@ const formThemes=Object.freeze([
     }
   },
   {
+    "id": "paper-ink",
+    "name": "Paper Ink",
+    "scheme": "light",
+    "legacy": null,
+    "palette": {
+      "canvas": "#F5F4F0",
+      "paper": "#FFFFFF",
+      "elevated": "#EAE8E3",
+      "ink": "#1C1C1C",
+      "muted": "#66645F",
+      "brand": "#1C1C1C",
+      "action": "#1C1C1C",
+      "onAction": "#FFFFFF",
+      "success": "#45634D",
+      "warning": "#806033",
+      "danger": "#A43D3D",
+      "completion": "#45634D",
+      "recovery": "#1C1C1C",
+      "streakAccent": "#1C1C1C"
+    }
+  },
+  {
     "id": "graphite-lime",
     "name": "Graphite Lime",
     "scheme": "dark",
