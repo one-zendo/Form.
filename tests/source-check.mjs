@@ -329,3 +329,8 @@ assert.ok(css.includes('#routine-detail #detail-start{height:48px;min-height:48p
 assert.ok(css.includes('#routine-detail #detail-exercises .routine-set-row{display:grid;grid-template-columns:24px repeat(3,minmax(0,1fr)) 44px'));
 assert.ok(browser.includes('routine-read-value'));
 console.log('Shared view/edit routine dimensions and simplified exercise card passed');
+
+assert.ok(!browser.includes(' · Sample routine'));
+assert.ok(!source.includes('>Hide Sample Routines</button>'));
+assert.ok(browser.includes('querySelector(".sample-eye-off").hidden=showSamples'));
+console.log('Sample routine text hidden without removing sample toggle passed');
