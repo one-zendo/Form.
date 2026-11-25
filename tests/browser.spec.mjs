@@ -344,3 +344,13 @@ test('undo selected exercise restores its running rest deadline and selection',a
  const after=await saved();expect(after.exercises).toEqual(before.exercises);expect(after.restUntil).toBe(before.restUntil);expect(after.restSet).toEqual(before.restSet);
  await expect(page.locator('.session-selected .session-exercise-name')).toHaveText(before.exercises[0].name);
 });
+
+
+test('added set inherits the latest edited values without requiring a screen rebuild',async({page})=>{
+ await page.setViewportSize({width:466,height:678});await page.goto(url);await startFromHome(page);
+ const card=page.locator('.session-selected'),row=card.locator('.set-line').filter({has:page.locator('input')}).last();
+ await row.locator('input').first().fill('37.5');await row.locator('input').last().fill('8');
+ await card.getByRole('button',{name:'+ Add Set',exact:true}).click();
+ const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('form-active-workout')).data);
+ expect(state.exercises[0].sets.at(-1)).toMatchObject({weight:37.5,reps:8,done:false});
+});
