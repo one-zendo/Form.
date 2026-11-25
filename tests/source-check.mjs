@@ -184,3 +184,19 @@ const seriesChecks=progressChecks.exerciseSeries([dayRecord('2026-11-23'),duplic
 assert.equal(seriesChecks.length,2);assert.equal(seriesChecks[0].weight,40);
 assert.equal(progressChecks.progressChartPoints([{date:0,weight:0},{date:1,weight:1},{date:4,weight:2}],0,2),'8,92 84,50 312,8');
 console.log('Weekly streak, schedule validation, progress filtering and chart spacing regression checks passed');
+
+assert.ok(!source.includes('user-scalable=no'));
+assert.ok(!source.includes('maximum-scale=1'));
+for(const id of ['workout-summary','dialog','leave-routine'])assert.ok(new RegExp('<dialog id="'+id+'" aria-label=').test(source));
+assert.ok(source.includes('aria-controls="exercise-picker" aria-expanded="false"'));
+assert.ok(browser.includes('setAttribute("aria-expanded",String(!p.hidden))'));
+assert.ok(browser.includes('cell.setAttribute("role","img")'));
+assert.ok(browser.includes('cell.setAttribute("aria-label",weekdays[j]'));
+assert.ok(browser.includes('$("leave-cancel").focus({preventScroll:true})'));
+assert.ok(browser.includes('()=>moveSessionExercise(index,index-1)'));
+assert.ok(browser.includes('()=>moveSessionExercise(index,index+1)'));
+assert.ok(browser.includes('miniCopy.setAttribute("aria-controls","active-workout")'));
+assert.ok(css.includes('touch-action:pan-y pinch-zoom'));
+assert.ok(css.includes('prefers-reduced-transparency:reduce'));
+assert.ok(css.includes('prefers-contrast:more'));
+console.log('Accessibility markup, disclosure, focus and gesture alternative source checks passed');
