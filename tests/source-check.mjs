@@ -3,16 +3,18 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
 const browser=readFileSync(new URL("../src/browser.js.txt",import.meta.url),"utf8");
+const core=Object.fromEntries(["storage","timer","calendar","progress"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
+const assembled=[...Object.values(core),browser].join("\n");
+new vm.Script(assembled);
+for(const [name,code] of Object.entries(core)){new vm.Script(code);assert.ok(source.includes('./core/'+name+'.js.txt'));}
+assert.ok(source.includes('${browserScript}</script>'));
 new vm.Script(browser);
 const ids=[...source.matchAll(/\bid="([\w-]+)"/g)].map(m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,'Duplicate HTML IDs');
 for(const m of browser.matchAll(/\$\("([\w-]+)"\)/g)) assert.ok(ids.includes(m[1]),'Missing element: '+m[1]);
 console.log('Browser syntax and static DOM references passed');
 
-const start=browser.indexOf('const validRoutine=');
-const end=browser.indexOf('let routines=[];',start);
-assert.ok(start>=0&&end>start,'Storage helpers missing');
-const storage=vm.runInNewContext(browser.slice(start,end)+';({validRoutine,decodeRecord,encodeRecord})');
+const storage=vm.runInNewContext(core.storage+';({validRoutine,decodeRecord,encodeRecord})');
 const routine={id:'test',name:'Test',description:'',exercises:[{name:'Squat',sets:[{weight:20,reps:8,rest:90}]}]};
 const validate=v=>Array.isArray(v)&&v.every(storage.validRoutine);
 assert.ok(storage.validRoutine(routine));
@@ -27,10 +29,7 @@ assert.equal((browser.match(/function navigate\(p\)/g)||[]).length,1);
 assert.ok(browser.includes('onclick=()=>guardLeave(()=>navigate(p))'));
 console.log('Storage and navigation source regression checks passed');
 
-const journalStart=browser.indexOf('const finishJournalKey=');
-const journalEnd=browser.indexOf('let finishRecoveryBlocked=',journalStart);
-assert.ok(journalStart>=0&&journalEnd>journalStart);
-const recoverFinish=vm.runInNewContext(browser.slice(journalStart,journalEnd)+';finishJournal');
+const recoverFinish=vm.runInNewContext(core.storage+';finishJournal');
 const entries=[{key:'form-workout-history',previous:'old',next:'new'},{key:'form-routines',previous:'oldr',next:'newr'},{key:'form-active-workout',previous:'active',next:'null'}];
 for(let fail=1;fail<=9;fail++){
  const m=new Map(entries.map(x=>[x.key,x.previous]));let n=0;
@@ -110,10 +109,7 @@ assert.equal(fold.homeFoldGeometry([{x:0,y:0,width:300,height:210},{x:0,y:230,wi
 assert.ok(browser.includes('--floating-safe-width:calc(100% - var(--floating-safe-left) - var(--floating-safe-right))'));
 console.log('Fold geometry, safe-area references and floating control regression checks passed');
 
-const routineStart=browser.indexOf('function routineDraftDirty(');
-const routineEnd=browser.indexOf('const finishJournalKey=',routineStart);
-assert.ok(routineStart>=0&&routineEnd>routineStart);
-const routineChecks=vm.runInNewContext(browser.slice(routineStart,routineEnd)+';({routineDraftDirty,validDateStamp,uniqueRecordIds})');
+const routineChecks=vm.runInNewContext(core.storage+';({routineDraftDirty,validDateStamp,uniqueRecordIds})');
 const cleanRoutine={id:'a',name:'Push Day',description:'',exercises:[]};
 const emptyRoutine={id:'b',name:'',description:'',exercises:[]};
 assert.equal(routineChecks.routineDraftDirty(null,null),false);
@@ -127,15 +123,12 @@ assert.equal(routineChecks.uniqueRecordIds([cleanRoutine,cleanRoutine]),false);
 for(const value of [NaN,Infinity,1e20,-1e20,'2026'])assert.equal(routineChecks.validDateStamp(value),false);
 assert.equal(routineChecks.validDateStamp(0),true);
 assert.equal(routineChecks.validDateStamp(1800000000000),true);
-const statsStart=browser.indexOf('function recordStats('),statsEnd=browser.indexOf('function numberLabel(',statsStart);
-const stats=vm.runInNewContext(browser.slice(statsStart,statsEnd)+';recordStats');
+const stats=vm.runInNewContext(core.progress+';recordStats');
 const result=stats({started:0,finished:120000,exercises:[{sets:[{done:true,weight:20,reps:10},{done:false,weight:100,reps:100}]},{sets:[{done:true,weight:30,reps:5}]}]});
 assert.equal(result.sets,2);assert.equal(result.reps,15);assert.equal(result.volume,350);assert.equal(result.minutes,2);assert.equal(result.exercises,2);
 console.log('Routine draft, record identity, timestamp and history summary regression checks passed');
 
-const timerStart=browser.indexOf('const MAX_REST_MS='),timerEnd=browser.indexOf('function adjustRest(',timerStart);
-assert.ok(timerStart>=0&&timerEnd>timerStart);
-const timer=vm.runInNewContext(browser.slice(timerStart,timerEnd)+';({restTimeLeft,restAdjustment,beginSessionRest,clearSessionRest})');
+const timer=vm.runInNewContext(core.timer+';({restTimeLeft,restAdjustment,beginSessionRest,clearSessionRest})');
 const resting={restUntil:91000,restTotal:90000,restOriginal:90000};
 assert.equal(timer.restTimeLeft(resting,1000),90000);
 assert.equal(timer.restTimeLeft(resting,31000),60000);
@@ -161,10 +154,7 @@ assert.equal(timerState.restExercise,undefined);
 assert.ok(!browser.includes('setInterval(tickSession'));
 console.log('Rest deadline, adjustment, expiration and set association regression checks passed');
 
-const calendarStart=browser.indexOf('function localDay('),calendarEnd=browser.indexOf('let schedules=',calendarStart);
-const streakStart=browser.indexOf('function calculateStreak('),streakEnd=browser.indexOf('function streakStats(',streakStart);
-assert.ok(calendarStart>=0&&calendarEnd>calendarStart&&streakStart>=0&&streakEnd>streakStart);
-const calendar=vm.runInNewContext(browser.slice(calendarStart,calendarEnd)+browser.slice(streakStart,streakEnd)+';({validWeekKey,validSchedules,calculateStreak})');
+const calendar=vm.runInNewContext(core.calendar+';({validWeekKey,validSchedules,calculateStreak})');
 const dayRecord=(day,done=true,weight=20)=>({finished:new Date(day+'T12:00:00').getTime(),exercises:[{name:'Squat',sets:[{done,weight,reps:10}]}]});
 const plan=[{from:'2026-11-02',rest:[2,3,4,5,6]}];
 const streakRecords=['2026-11-02','2026-11-03','2026-11-09','2026-11-10','2026-11-16','2026-11-17','2026-11-23'].map(d=>dayRecord(d));
@@ -174,8 +164,7 @@ assert.equal(calendar.calculateStreak(new Date('2026-11-24T18:00:00'),[...streak
 assert.equal(calendar.calculateStreak(new Date('2026-12-01T18:00:00'),streakRecords,plan).run,0);
 assert.equal(calendar.calculateStreak(new Date('2026-11-24T18:00:00'),[...streakRecords,dayRecord('2026-11-23'),dayRecord('2026-11-24',false),dayRecord('2026-11-25')],plan).days.size,1);
 assert.equal(calendar.validWeekKey('2026-02-30'),false);assert.equal(calendar.validWeekKey('2026-11-03'),false);assert.equal(calendar.validSchedules(plan),true);
-const progressStart=browser.indexOf('function progressRecords('),progressEnd=browser.indexOf('function renderProgress(',progressStart);
-const progressChecks=vm.runInNewContext(browser.slice(progressStart,progressEnd)+';({progressRecords,exerciseSeries,progressChartPoints})');
+const progressChecks=vm.runInNewContext(core.progress+';({progressRecords,exerciseSeries,progressChartPoints})');
 const progressNow=new Date('2026-11-24T18:00:00').getTime();
 assert.equal(progressChecks.progressRecords([dayRecord('2026-11-25'),dayRecord('2026-11-23',false),dayRecord('2026-11-22')],'all',progressNow).length,1);
 assert.equal(progressChecks.progressRecords([dayRecord('2026-10-01'),dayRecord('2026-11-22')],'30',progressNow).length,1);
@@ -208,8 +197,7 @@ assert.equal(refreshChecks.sameRefreshKey(refreshChecks.homeRefreshKey(activeSam
 assert.equal(refreshChecks.sameRefreshKey(refreshChecks.homeRefreshKey(activeSample,routineSample,1000),refreshChecks.homeRefreshKey(activeSample,routineSample,60000)),false);
 assert.equal(refreshChecks.sameRefreshKey(refreshChecks.homeRefreshKey(activeSample,routineSample,1000),refreshChecks.homeRefreshKey({...activeSample},routineSample,1000)),false);
 assert.equal(refreshChecks.sameRefreshKey(refreshChecks.homeRefreshKey(null,routineSample,1000),refreshChecks.homeRefreshKey(null,routineSample,60000)),true);
-const prevStart=browser.indexOf('function buildPreviousSetIndex('),prevEnd=browser.indexOf('function previousLoggedSet(',prevStart);
-const buildIndex=vm.runInNewContext(browser.slice(prevStart,prevEnd)+';buildPreviousSetIndex');
+const buildIndex=vm.runInNewContext(core.progress+';buildPreviousSetIndex');
 const previous=buildIndex([{finished:100,exercises:[{name:'Squat',sets:[{done:true,weight:20},{done:true,weight:30}]}]},{finished:200,exercises:[{name:'Squat',sets:[{done:true,weight:40},{done:false,weight:99}]}]}]);
 assert.equal(previous.get('Squat').get(0).weight,40);
 assert.equal(previous.get('Squat').get(1).weight,30);
