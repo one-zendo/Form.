@@ -24,7 +24,7 @@ function renderThemeGallery(){
   }
   document.querySelectorAll("[data-theme-category]").forEach(b=>b.onclick=()=>browseThemes(b.dataset.themeCategory));
 }
-function applyTheme(value){
+function applyTheme(value,persist=true){
   const selectedTheme=resolveFormTheme(value,matchMedia("(prefers-color-scheme: dark)").matches);
   const root=document.documentElement;
   for(const k of themeProperties)root.style.removeProperty(k);
@@ -39,7 +39,7 @@ function applyTheme(value){
     for(const [k,v] of Object.entries(vars)){root.style.setProperty(k,v);themeProperties.push(k)}
   }
   activeFormTheme=selectedTheme;
-  save("form-preview-theme",selectedTheme.legacy||selectedTheme.id);
+  if(persist)save("form-preview-theme",selectedTheme.legacy||selectedTheme.id);
   $("current-theme").textContent=selectedTheme.name;
   document.querySelectorAll('input[name="theme"]').forEach(r=>r.checked=r.value===(selectedTheme.legacy||selectedTheme.id));
 }

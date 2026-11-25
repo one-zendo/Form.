@@ -1,0 +1,41 @@
+// A fixed example training program. Charts, records and streaks consume ordinary completed sets.
+function buildDemoDataset(now = new Date()) {
+  const programs = [
+    ["Push Day", [["Bench Press", 45, 8, 2.5], ["Incline Dumbbell Press", 16, 10, 1], ["Shoulder Press", 20, 8, 1.25], ["Triceps Pushdown", 17.5, 12, 1.25]]],
+    ["Pull Day", [["Lat Pulldown", 37.5, 10, 2.5], ["Seated Cable Row", 35, 10, 2.5], ["Biceps Curl", 10, 12, 0.5]]],
+    ["Leg Day", [["Squat", 55, 8, 2.5], ["Romanian Deadlift", 45, 8, 2.5], ["Leg Press", 95, 10, 5], ["Leg Curl", 25, 12, 1.25]]]
+  ];
+  const dates = [];
+  const day = new Date(now);
+  day.setHours(12, 0, 0, 0);
+  if (+day >= +now) day.setDate(day.getDate() - 1);
+  while (dates.length < 48) {
+    if ([1, 2, 4, 6].includes(day.getDay())) dates.unshift(+day);
+    day.setDate(day.getDate() - 1);
+  }
+  const routines = programs.map(([name], index) => ({
+    id: "demo-routine-" + index, name, description: "", exercises: []
+  }));
+  const records = dates.map((finished, index) => {
+    const routineIndex = index % programs.length;
+    const routine = routines[routineIndex];
+    const week = Math.floor(index / 4);
+    const exercises = programs[routineIndex][1].map(([name, base, reps, increment], position) => {
+      const stage = Math.max(0, Math.floor(week / 2) - (week === 6 ? 1 : 0));
+      const weight = base + increment * stage;
+      return { name, sets: Array.from({length: position === 0 ? 4 : 3}, (_, set) => ({
+        weight, reps: reps + ((index + position) % 3 === 0 ? 1 : 0) - (set === 3 ? 1 : 0),
+        rest: position === 0 ? 120 : 90, done: true
+      })) };
+    });
+    routine.exercises = exercises.map(exercise => ({
+      name: exercise.name, sets: exercise.sets.map(({weight, reps, rest}) => ({weight, reps, rest}))
+    }));
+    return {
+      id: "demo-workout-" + index, sourceRoutineId: routine.id, name: routine.name,
+      description: "", started: finished - (48 + (index * 7) % 25) * 60000, finished, exercises
+    };
+  });
+  const schedules = [{from: localDay(weekStart(dates[0])), rest: [2, 4, 6]}];
+  return {routines, records, schedules};
+}

@@ -1,5 +1,7 @@
+if (!formWorkspace.demo && !formWorkspace.preview) {
 $("data-management").disabled=false;
 $("data-management").onclick=()=>{$("reset-confirm-text").value="";$("reset-confirm").disabled=true;$("reset-status").textContent="";$("clean-slate-dialog").showModal()};
 $("reset-cancel").onclick=()=>$("clean-slate-dialog").close();
 $("reset-confirm-text").oninput=()=>{$("reset-confirm").disabled=$("reset-confirm-text").value!=="RESET"};
 $("reset-confirm").onclick=()=>{if($("reset-confirm-text").value!=="RESET")return;$("reset-confirm").disabled=true;try{resetAndPopulate(localStorage,true);location.reload()}catch{$("reset-status").textContent="Reset could not finish. Reload to recover the confirmed reset, or retry if storage is available.";sessionBlocked=true;storageIssue=true;streakBlocked=true;$("reset-confirm").disabled=false}};
+}

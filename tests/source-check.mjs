@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/index.js',import.meta.url),'utf8');
 const browser=["ui/motion","ui/appearance","ui/history","browser"].map(name=>readFileSync(new URL("../src/"+name+".js.txt",import.meta.url),"utf8")).join("\n");
-const core=Object.fromEntries(["storage","timer","calendar","progress","themes","fold"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
+const core=Object.fromEntries(["storage","timer","calendar","progress","themes","fold","demo","workspace"].map(name=>[name,readFileSync(new URL("../src/core/"+name+".js.txt",import.meta.url),"utf8")]));
 const developmentStorage=readFileSync(new URL('../src/development/reset.js.txt',import.meta.url),'utf8');
 const developmentUI=readFileSync(new URL('../src/development/ui.js.txt',import.meta.url),'utf8');
 const developmentMarkup=readFileSync(new URL('../src/development/dialog.js.txt',import.meta.url),'utf8');
@@ -224,7 +224,7 @@ assert.ok(headers['Content-Security-Policy'].includes("script-src 'nonce-testnon
 assert.ok(!headers['Content-Security-Policy'].includes("script-src 'unsafe-inline'"));
 assert.ok(headers['Content-Security-Policy'].includes("frame-ancestors 'none'"));
 assert.ok(source.includes('nonce="FORM_SCRIPT_NONCE"'));
-assert.ok(browser.includes('previous:assertRecordCurrent(localStorage,key)'));
+assert.ok(browser.includes('previous:assertRecordCurrent(appStorage,key)'));
 console.log('Security headers and stale storage snapshot regression checks passed');
 
 assert.ok(browser.includes('const initialPage="home";'));
@@ -377,7 +377,7 @@ assert.equal(historyMetrics.historyExercisePoints(historyFixture('single',900000
 assert.equal(historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',Array.from({length:8},(_,i)=>historyFixture('old-'+i,1000000+i*10000,30,5))).length,5);
 console.log('Historical duration, previous sets, scoped chart metrics and estimated 1RM checks passed');
 
-const resetChecks=vm.runInNewContext(core.storage+'\n'+core.calendar+'\n'+developmentStorage+';({buildCleanSlate,validCleanSlate,resetAndPopulate,completeCleanSlate})');
+const resetChecks=vm.runInNewContext(core.storage+'\n'+core.calendar+'\n'+core.demo+'\n'+developmentStorage+';({buildCleanSlate,validCleanSlate,resetAndPopulate,completeCleanSlate})');
 const resetDate=new Date(2026,10,25,13);
 const seeded=resetChecks.buildCleanSlate(resetDate);
 assert.equal(seeded.records.length,48);assert.ok(resetChecks.validCleanSlate(seeded));assert.ok(seeded.records.every(r=>r.finished<+resetDate));

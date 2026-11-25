@@ -1,0 +1,73 @@
+// Each loaded document owns one immutable scope, including its timer, drafts and journals.
+function createFormWorkspace(storage, {preview = false, development = false} = {}) {
+  const base = preview ? "form-design:v1:" : "";
+  const modeKey = base + "form-mode-v1";
+  const demoPrefix = base + "form-demo:v1:";
+  const seedKey = demoPrefix + "seed";
+  let demo = false;
+  try { demo = storage.getItem(modeKey) === "demo"; } catch {}
+  const prefix = demo ? demoPrefix : base;
+  let seed;
+  const seededKeys = ["form-routines", "form-workout-history", "form-rest-schedules"];
+
+  // Logical record keys cannot address another scope, the seed, or the mode preference.
+  const recordKeys = new Set([
+    ...seededKeys, "form-active-workout", "form-routine-draft", "form-finish-journal",
+    "form-preview-theme", "form-personal-name", "form-personal-goal"
+  ]);
+  function physicalKey(key) {
+    const baseKey = key.replace(/-(backup|quarantine)$/, "");
+    if (!recordKeys.has(baseKey)) throw Error("Unknown FORM record key");
+    return prefix + key;
+  }
+
+  function readSeed() {
+    if (seed) return seed;
+    const raw = storage.getItem(seedKey);
+    if (raw === null) throw Error("Demo data is unavailable");
+    const parsed = JSON.parse(raw);
+    if (parsed?.version !== 1 || !seededKeys.every(key => typeof parsed.data?.[key] === "string")) {
+      throw Error("Invalid demo data");
+    }
+    seed = parsed.data;
+    return seed;
+  }
+
+  function changeMode(enable) {
+    if (enable) {
+      if (storage.getItem(seedKey) === null) {
+        const {routines, records, schedules} = buildDemoDataset();
+        const data = {
+          "form-routines": encodeRecord(routines),
+          "form-workout-history": encodeRecord(records),
+          "form-rest-schedules": encodeRecord(schedules)
+        };
+        // Publish the complete seed in one write. A failed selection can safely retry.
+        storage.setItem(seedKey, encodeRecord(data));
+      }
+      readSeed();
+    }
+    storage.setItem(modeKey, enable ? "demo" : "personal");
+  }
+
+  const data = Object.freeze({
+    getItem(key) {
+      const value = storage.getItem(physicalKey(key));
+      if (value === null && demo && seededKeys.includes(key)) return readSeed()[key];
+      return value;
+    },
+    setItem(key, value) { storage.setItem(physicalKey(key), value); },
+    removeItem(key) { storage.removeItem(physicalKey(key)); }
+  });
+  return Object.freeze({
+    data, demo, preview, changeMode,
+    ownsChange(physicalKey, keys) {
+      return physicalKey === null || keys.some(key => prefix + key === physicalKey) ||
+        (demo && physicalKey === seedKey);
+    },
+    personalTransferSource() {
+      if (demo || preview || development) return null;
+      return Object.freeze({getItem: data.getItem});
+    }
+  });
+}

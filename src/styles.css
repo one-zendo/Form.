@@ -515,7 +515,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 :root[data-theme=dark] .dock[data-dragging=true] .form-nav-indicator{background:color-mix(in srgb,var(--nav-accent) 16%,transparent)}
 :root[data-theme=dark] :is(#active-workout,.workout-collapse-surface){--action:var(--palette-dark-brand);--on-action:var(--palette-dark-canvas)}
 :root[data-theme=dark] :is(#active-workout,.workout-collapse-surface) .set-line input:focus{outline-color:var(--palette-dark-brand)}
-:root[data-theme=dark] .finish-update input{--switch-off:var(--palette-dark-switch-off)}
+:root[data-theme=dark] .form-switch{--switch-off:var(--palette-dark-switch-off)}
 :root[data-theme=dark] :is(#finish-workout .finish-danger,:is(#active-workout,.workout-collapse-surface) .exercise-swipe-delete,.exercise-remove-yes){color:var(--on-danger)}
 
 :root[data-theme=dark] #workouts-page #routine-detail.is-editing #detail-start:disabled{background:var(--palette-dark-elevated);color:var(--muted)}
@@ -524,7 +524,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 :root:not([data-theme=light]) .dock[data-dragging=true] .form-nav-indicator{background:color-mix(in srgb,var(--nav-accent) 16%,transparent)}
 :root:not([data-theme=light]) :is(#active-workout,.workout-collapse-surface){--action:var(--palette-dark-brand);--on-action:var(--palette-dark-canvas)}
 :root:not([data-theme=light]) :is(#active-workout,.workout-collapse-surface) .set-line input:focus{outline-color:var(--palette-dark-brand)}
-:root:not([data-theme=light]) .finish-update input{--switch-off:var(--palette-dark-switch-off)}
+:root:not([data-theme=light]) .form-switch{--switch-off:var(--palette-dark-switch-off)}
 :root:not([data-theme=light]) :is(#finish-workout .finish-danger,:is(#active-workout,.workout-collapse-surface) .exercise-swipe-delete,.exercise-remove-yes){color:var(--on-danger)}
 
 :root:not([data-theme=light]) #workouts-page #routine-detail.is-editing #detail-start:disabled{background:var(--palette-dark-elevated);color:var(--muted)}
@@ -652,9 +652,9 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 :root[data-theme=dark]{--switch-off:var(--palette-dark-switch-off)}
 .finish-update{display:grid;gap:var(--space-2);border-block:1px solid var(--line);padding:var(--space-3) 0;text-align:left;font-size:var(--font-footnote)}.finish-update-label{display:grid;gap:2px;min-width:0}.finish-update .finish-changes-trigger{min-height:var(--touch-target)!important;background:transparent;color:var(--muted);padding:0;text-align:left;justify-self:start;font-size:var(--font-caption);border-radius:0!important}.finish-change-list{display:grid;gap:var(--space-2);max-height:160px;overflow:auto}.finish-change-row{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-2);font-size:var(--font-caption)}.finish-change-row>span:first-child{min-width:0;overflow-wrap:anywhere}.finish-change-row>span:last-child{flex:none}.finish-change-add{color:var(--success)}.finish-change-remove{color:var(--system-red)}.finish-change-order{color:var(--muted)}
 .finish-update-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
-.finish-update input{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:var(--radius-full);background:var(--switch-off, #D1D1D6);margin:0;position:relative;flex:none;cursor:pointer}
-.finish-update input::before{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:var(--radius-full);background:#fff;transition:transform 180ms ease}
-.finish-update input:checked{background:var(--system-green)}.finish-update input:checked::before{transform:translateX(20px)}
+.form-switch{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:var(--radius-full);background:var(--switch-off, #D1D1D6);margin:0;position:relative;flex:none;cursor:pointer}
+.form-switch::before{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:var(--radius-full);background:#fff;transition:transform var(--motion-fast) ease}
+.form-switch:checked{background:var(--system-green)}.form-switch:checked::before{transform:translateX(20px)}
 #finish-workout button:not(.finish-changes-trigger){min-height:var(--touch-target);border-radius:var(--radius-full);font-size:var(--font-control);font-weight:var(--type-semibold)}#finish-workout #finish-keep{background:var(--canvas);color:var(--ink)}
 #finish-workout .finish-save{background:var(--workout-action-fill);color:var(--workout-action-ink)}
 #finish-workout #finish-confirm{min-height:var(--dialog-action-height)}
@@ -663,7 +663,7 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 #finish-workout.discard-mode #finish-copy{margin-top:calc(-1 * var(--space-2));color:var(--muted)}
 #finish-workout.discard-mode #finish-keep{background:transparent;color:var(--ink);margin-top:calc(-1 * var(--space-2))}
 #finish-workout [hidden]{display:none!important}
-@media(prefers-reduced-motion:reduce){#finish-workout[open]{animation:none}.finish-update input::before{transition:none}}
+@media(prefers-reduced-motion:reduce){#finish-workout[open]{animation:none}.form-switch::before{transition:none}}
 @media(prefers-reduced-transparency:reduce){#finish-workout::backdrop{background:#0006;backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 
@@ -779,3 +779,6 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
  #workouts-page #routine-items .routine-row,#workouts-page #workout-history-list .workout-history-card{transition:background-color var(--motion-fast) var(--motion-ease)}
 }
 @media(prefers-reduced-motion:reduce){#workouts-page #routine-items .routine-row,#workouts-page #workout-history-list .workout-history-card{transition:none}}
+
+.setting-row:has(.form-switch){cursor:pointer}
+#workspace-indicator{color:var(--muted);font-weight:var(--type-semibold)}

@@ -4,7 +4,7 @@
   "scripts": {
     "build": "node --check src/index.js && node --check src/development.js && npm test",
     "deploy": "wrangler deploy",
-    "test": "node tests/source-check.mjs",
+    "test": "node tests/source-check.mjs && node tests/workspace-check.mjs",
     "test:browser": "playwright test",
     "dev": "wrangler dev --config wrangler.development.jsonc --local"
   },

@@ -1,0 +1,32 @@
+const demoToggle = document.getElementById("demo-mode");
+demoToggle.checked = formWorkspace.demo;
+demoToggle.addEventListener("change", async () => {
+  const enable = demoToggle.checked;
+  demoToggle.disabled = true;
+  try {
+    // Serialize initialization across tabs where Web Locks are available.
+    const switchMode = () => formWorkspace.changeMode(enable);
+    if (navigator.locks) await navigator.locks.request(formWorkspace.preview ? "form-design-mode" : "form-personal-mode", switchMode);
+    else switchMode();
+    // A fresh document disposes observers, gestures and timers and rehydrates the chosen store.
+    window.history.replaceState({...window.history.state, formModeSwitch: true}, "");
+    location.reload();
+  } catch {
+    demoToggle.checked = formWorkspace.demo;
+    demoToggle.disabled = false;
+    show("FORM could not switch modes. Check available device storage and try again.");
+  }
+});
+if (formWorkspace.demo || formWorkspace.preview) {
+  const indicator = document.getElementById("workspace-indicator");
+  indicator.textContent = formWorkspace.preview
+    ? (formWorkspace.demo ? "Design preview · Demo" : "Design preview")
+    : "Demo Mode";
+  indicator.hidden = false;
+}
+if (window.history.state?.formModeSwitch) {
+  const {formModeSwitch, ...rest} = window.history.state;
+  window.history.replaceState(rest, "");
+  navigate("profile");
+  demoToggle.focus({preventScroll: true});
+}
