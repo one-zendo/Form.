@@ -43,9 +43,9 @@ body:not(.training) .mini-workout[data-ready=true] .mini-copy::before,body:not(.
 .mini-workout .mini-color-mask .rest-adjust::before{display:none}
 .mini-workout[data-resting=true] .rest-adjust:not(.rest-skip)::before{background:#00000014}
 
-.mini-workout[data-ready=true]{background:var(--success-fill);color:var(--on-success);border-color:transparent;animation:form-ready-pulse 650ms ease-out}
+.mini-workout[data-ready=true]{background:var(--success-fill);color:var(--on-success);border-color:transparent;animation:form-ready-pulse 2.6s ease-in-out infinite}
 .mini-workout[data-ready=true] .rest-adjust:not(.rest-skip)::before{background:color-mix(in srgb,var(--on-success) 16%,transparent)}
-@keyframes form-ready-pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--success-fill) 55%,transparent)}100%{box-shadow:0 0 0 9px transparent}}
+@keyframes form-ready-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--success-fill) 0%,transparent),0 4px 16px var(--shadow-float)}50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--success-fill) 17%,transparent),0 4px 20px color-mix(in srgb,var(--success-fill) 24%,transparent)}}
 @media(prefers-reduced-motion:reduce){.mini-workout[data-ready=true]{animation:none}}
 .mini-workout progress{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);pointer-events:none}
 body.mini-visible main{padding-bottom:calc(144px + env(safe-area-inset-bottom))}
