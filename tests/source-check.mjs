@@ -271,3 +271,8 @@ assert.ok(browser.includes('const EXERCISE_HOLD_MS=350;'));
 assert.ok(browser.includes('cancelExerciseGesture();closeExerciseSwipe();if(sessionSelection===i)'));
 assert.ok(browser.includes('if(end===index){sessionCollapsed=d.originalCollapsed;renderSession()}'));
 console.log('Exercise tap versus hold and selection cleanup checks passed');
+
+assert.ok(browser.includes('--floating-height:56px;--timer-height:72px;'));
+assert.ok(browser.includes('.mini-workout{height:var(--timer-height)'));
+assert.ok(css.includes('var(--floating-height,56px) + var(--timer-height,72px)'));
+console.log('Independent timer and navigation heights passed');
