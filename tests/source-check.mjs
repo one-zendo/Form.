@@ -362,3 +362,15 @@ assert.equal(monthly(2026,1,new Date('2026-03-01T12:00:00'),[],[]).days.length,2
 const liveSample={started:0,exercises:[{name:'Squat',sets:[{done:false}]}]};
 const liveKey=refreshChecks.homeRefreshKey(liveSample,null,1000);liveSample.exercises[0].sets[0].done=true;assert.equal(refreshChecks.sameRefreshKey(liveKey,refreshChecks.homeRefreshKey(liveSample,null,1000)),false);
 console.log('Monthly calendar historical schedules, month boundaries and live Home progress cache passed');
+
+const historyMetrics=vm.runInNewContext(core.progress+';({historyDuration,historyExercisePoints,historyPreviousSets})');
+const historyFixture=(id,finished,weight,reps)=>({id,finished,started:finished-5040000,exercises:[{name:'Bench Press',sets:[{weight,reps,done:true},{weight:999,reps:10,done:false}]}]});
+const chosenHistory=historyFixture('selected',8000000,80,8),earlierHistory=historyFixture('earlier',7000000,70,8),laterHistory=historyFixture('later',9000000,100,5);
+assert.equal(historyMetrics.historyDuration(chosenHistory),'1:24');
+const scopedHistory=historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',[laterHistory,chosenHistory,earlierHistory]);
+assert.equal(scopedHistory.length,2);assert.equal(scopedHistory.at(-1).weight,80);assert.equal(scopedHistory.at(-1).volume,640);assert.ok(Math.abs(scopedHistory.at(-1).estimated-101.33333333333333)<1e-9);
+assert.equal(historyMetrics.historyPreviousSets(chosenHistory,'Bench Press',[laterHistory,earlierHistory]).get(0).weight,70);
+assert.equal(historyMetrics.historyExercisePoints(historyFixture('high-reps',9000000,30,15),'Bench Press',[])[0].estimated,null);
+assert.equal(historyMetrics.historyExercisePoints(historyFixture('single',9000000,100,1),'Bench Press',[])[0].estimated,100);
+assert.equal(historyMetrics.historyExercisePoints(chosenHistory,'Bench Press',Array.from({length:8},(_,i)=>historyFixture('old-'+i,1000000+i*10000,30,5))).length,5);
+console.log('Historical duration, previous sets, scoped chart metrics and estimated 1RM checks passed');
