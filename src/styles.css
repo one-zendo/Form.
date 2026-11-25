@@ -795,5 +795,3 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
 
 
 
-/* Studio Blue idle Home card only. */
-:root[data-theme-id=studio-blue]{--home-workout-idle:#D51028}
