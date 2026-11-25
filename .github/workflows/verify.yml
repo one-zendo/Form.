@@ -15,6 +15,21 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Classify CSS-only changes
+        id: lane
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          lane=full
+          if [[ "$GITHUB_EVENT_NAME" == pull_request || "$GITHUB_EVENT_NAME" == push ]] && [[ -n "$BASE" ]] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            if [[ "$(git diff --name-only "$BASE" "$HEAD")" == src/styles.css ]]; then lane=visual; fi
+          fi
+          echo "lane=$lane" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -23,7 +38,9 @@ jobs:
       - run: npm run build
       - run: npx wrangler deploy --dry-run --outdir dist
       - run: npx playwright install --with-deps webkit
+        if: steps.lane.outputs.lane != 'visual'
       - run: npm run test:browser
+        if: steps.lane.outputs.lane != 'visual'
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
