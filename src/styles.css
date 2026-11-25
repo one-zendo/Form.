@@ -391,10 +391,10 @@ h3,#routine-list h3,#routine-detail .detail-heading h3,.progress-layout .card h3
 
 /* Sample routine visibility is a Profile preference. */
 #profile-page #toggle-samples{width:100%;min-width:0;height:auto;margin:0;display:flex;align-items:center;text-align:left;color:var(--ink)}
-.sample-switch{position:relative;flex:none;width:44px;height:26px;border-radius:var(--radius-full);background:color-mix(in srgb,var(--ink) 18%,var(--paper));transition:background var(--motion-fast) var(--motion-ease)}
-.sample-switch::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:var(--radius-full);background:#fff;box-shadow:0 1px 4px #0002;transition:transform var(--motion-fast) var(--motion-ease)}
-#toggle-samples[aria-checked=true] .sample-switch{background:var(--system-blue)}
-#toggle-samples[aria-checked=true] .sample-switch::after{transform:translateX(18px)}
+
+
+
+
 
 /* Workouts list: shared spacing scale and consistent header geometry. */
 #workouts-page{--workout-control-height:48px;--workout-segment-height:calc(var(--touch-target) + 2 * var(--space-1));--workout-row-height:76px;--workout-section-height:28px;--workout-set-row-height:var(--touch-target)}
@@ -516,7 +516,7 @@ body:not(.training)::after{-webkit-backdrop-filter:blur(var(--edge-blur));backdr
 #workouts-page :is(.partner-leading,.partner-glyph,#detail-back){color:var(--workout-accent)}
 #routine-detail .routine-add-set{color:var(--workout-accent-ink)}
 #nav-workouts[aria-current=page]{color:var(--nav-accent-ink);background:color-mix(in srgb,var(--nav-accent) 12%,transparent)}
-#toggle-samples[aria-checked=true] .sample-switch{background:var(--nav-accent)}
+
 
 :root[data-theme=dark]{--workout-action-fill:var(--palette-dark-brand);--workout-action-ink:var(--palette-dark-canvas);--workout-accent-ink:var(--palette-dark-brand);--workout-accent:var(--palette-dark-brand);--streak-ink:var(--palette-dark-brand);--streak-fire:var(--palette-dark-brand);--streak-on-fire:var(--palette-dark-canvas);--set-complete-fill:var(--palette-dark-brand);--set-complete-ink:var(--palette-dark-canvas);--switch-off:var(--palette-dark-switch-off);--on-danger:var(--palette-dark-canvas)}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--workout-action-fill:var(--palette-dark-brand);--workout-action-ink:var(--palette-dark-canvas);--workout-accent-ink:var(--palette-dark-brand);--workout-accent:var(--palette-dark-brand);--streak-ink:var(--palette-dark-brand);--streak-fire:var(--palette-dark-brand);--streak-on-fire:var(--palette-dark-canvas);--set-complete-fill:var(--palette-dark-brand);--set-complete-ink:var(--palette-dark-canvas);--switch-off:var(--palette-dark-switch-off);--on-danger:var(--palette-dark-canvas)}}
@@ -793,3 +793,5 @@ body:not(.training).mini-visible main:has(#home-page:not([hidden])){--home-clear
  #workouts-page #routine-items .routine-row,#workouts-page #sample-history .workout-history-card{transition:background-color var(--motion-fast) var(--motion-ease)}
 }
 @media(prefers-reduced-motion:reduce){#workouts-page #routine-items .routine-row,#workouts-page #sample-history .workout-history-card{transition:none}}
+
+#clean-slate-dialog #reset-confirm:not(:disabled){background:var(--danger);color:var(--on-danger)}#reset-status:empty{display:none}
