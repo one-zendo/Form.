@@ -276,3 +276,9 @@ assert.ok(browser.includes('--floating-height:56px;--timer-height:72px;'));
 assert.ok(browser.includes('.mini-workout{height:var(--timer-height)'));
 assert.ok(css.includes('var(--floating-height,56px) + var(--timer-height,72px)'));
 console.log('Independent timer and navigation heights passed');
+
+assert.ok(source.includes('class="streak-title-row"'));
+assert.ok(browser.includes('if(done||rest)dot.append(streakIcon("check"))'));
+assert.ok(css.includes('.dot.rest{background:var(--system-blue);color:#fff}'));
+assert.ok(css.includes('.streak-flame-button svg{width:24px;height:24px;stroke:currentColor'));
+console.log('Compact streak flame and recovery checkmark styling passed');
