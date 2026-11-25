@@ -28,37 +28,6 @@ const homeIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAALQAAAC0BAMAAADP4xsBAAAAMFBMVEX/
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>FORM.</title><meta name="apple-mobile-web-app-title" content="FORM."><meta name="apple-mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1"><link rel="icon" type="image/png" href="/apple-touch-icon.png?v=1">
 <style>${styles}
-/* Home: two responsive cards, with clearance for the existing mini-workout dock. */
-#home-page{--home-card-size:clamp(164px,24dvh,224px);--home-card-padding:var(--space-5);--home-card-gap:var(--space-4);min-width:0}
-#home-page .home-header{position:relative;top:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:var(--space-3);padding-block:var(--space-2);margin-bottom:var(--space-4)}
-#home-page .home-header::before{display:none}
-.home-brand{min-width:0;display:grid;gap:var(--space-1)}
-#home-page .home-header h1{font-size:22px;line-height:1.3}
-#home-page .home-header time{grid-template-rows:auto auto;gap:var(--space-1);line-height:1.4;padding-top:3px}
-#home-page #home-weekday{font-size:17px;line-height:1.45}
-#home-page .home-tagline,#home-page #home-calendar-date{font-size:13px;line-height:1.4}
-#home-page .home-tagline{margin:0;overflow-wrap:break-word;white-space:normal}
-#home-page :is(.hero,#quick,.home-legacy,#home-greeting){display:none!important}
-#home-page .dashboard{gap:var(--home-card-gap);align-items:stretch}
-#home-page .home-workout-card{display:flex;min-height:var(--home-card-size);padding:var(--home-card-padding);transition:min-height 260ms ease,padding 260ms ease,background 260ms ease,transform 320ms cubic-bezier(.2,.8,.2,1.25)}
-#home-page .streak-card{display:flex;flex-direction:column;justify-content:space-between;min-height:var(--home-card-size);padding:var(--home-card-padding);transition:min-height 260ms ease,padding 260ms ease}
-#home-page .streak-card .days{margin-block:var(--home-card-gap);transition:margin 260ms ease}
-body.mini-visible #home-page{--home-card-size:clamp(136px,19dvh,184px);--home-card-padding:var(--space-4);--home-card-gap:var(--space-3)}
-body:not(.training) main:has(#home-page:not([hidden])){overflow-y:auto;touch-action:pan-y pinch-zoom;overscroll-behavior-y:contain}
-@media(orientation:landscape) and (min-width:700px){#home-page .dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}#home-page .primary,#home-page .support,#home-page .pair{align-content:stretch}}
-@media(prefers-reduced-motion:reduce){#home-page :is(.home-workout-card,.streak-card,.days){transition:none}}
-/* Home fits the available viewport by default; overflow remains accessible. */
-body:not(.training) main:has(#home-page:not([hidden])){display:flex;flex-direction:column}
-#home-page:not([hidden]){flex:1 0 auto;display:flex;flex-direction:column;min-height:0}
-#home-page .home-header{flex:none}
-#home-page .dashboard{flex:1 0 auto;grid-template-rows:repeat(2,minmax(min-content,1fr));max-height:480px}
-#home-page .primary,#home-page .support,#home-page .pair{grid-template-rows:minmax(min-content,1fr);align-content:stretch}
-#home-page .home-workout-card,#home-page .streak-card{height:100%}
-body.mini-visible #home-page .dashboard{max-height:380px}
-@media(orientation:landscape) and (min-width:700px){#home-page .dashboard{grid-template-rows:minmax(min-content,1fr);max-height:280px}body.mini-visible #home-page .dashboard{max-height:240px}}
-@media(max-height:650px){#home-page{--home-card-size:136px;--home-card-padding:var(--space-4);--home-card-gap:var(--space-3)}body.mini-visible #home-page{--home-card-size:120px;--home-card-padding:var(--space-3)}}
-
- 
 </style></head><body><main>
 <div id="home-page"><header class="home-header"><div class="home-brand"><h1>FORM</h1><p class="muted tag home-tagline">Train with focus, follow your progress.</p></div><time id="date"><span id="home-weekday"></span><span id="home-calendar-date"></span></time></header><h2 id="home-greeting" hidden>Hello.</h2>
 <div class="dashboard"><section class="primary"><button type="button" id="home-workout-card" class="home-workout-card"><span class="home-workout-copy"><strong id="home-workout-title">Ready to train?</strong><span id="home-workout-meta">Choose your workout</span></span><span class="home-workout-cta"><span id="home-workout-action">Start</span></span></button><article class="card hero" hidden><div class="row"><div><p class="muted" id="hero-label">Today's workout</p><h2 id="hero-title">Push Day</h2><p class="muted" id="hero-sub">6 exercises · 18 sets</p></div></div>
