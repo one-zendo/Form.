@@ -79,3 +79,33 @@ const motion=vm.runInNewContext(motionSource+';formMotion',{document:{documentEl
 for(const key of ['fast','tab','back','edit','standard','sheet','collapse','settle','celebrate','swipe','glide','drop'])assert.ok(Number.isFinite(motion[key])&&motion[key]>0,'Invalid motion token '+key);
 for(const key of ['ease','spring','gesture-ease','system-ease'])assert.ok(motion[key].startsWith('cubic-bezier('));
 console.log('Global design token and motion regression checks passed');
+
+const foldStart=browser.indexOf('function homeFoldGeometry(');
+const foldEnd=browser.indexOf('\n{const style=el("style");',foldStart);
+assert.ok(foldStart>=0&&foldEnd>foldStart);
+const fold=vm.runInNewContext(browser.slice(foldStart,foldEnd)+';({homeFoldGeometry,homeFoldVariables})');
+const side=[{x:0,y:0,width:400,height:800},{x:420,y:0,width:400,height:800}];
+const stack=[{x:0,y:0,width:400,height:400},{x:0,y:420,width:400,height:400}];
+for(const [rects,w,h,mode] of [[side,820,800,'side'],[stack,400,820,'stack']]){
+ for(const timer of [false,true]){
+  const g=fold.homeFoldGeometry([...rects].reverse(),true,w,h,timer);
+  assert.equal(g.mode,mode);
+  const v=fold.homeFoldVariables(g,h,timer);
+  for(const prefix of ['a','b']){
+   assert.ok(v[prefix+'-width']>0);
+   assert.ok(v[prefix+'-height']-v[prefix+'-clearance']-(prefix==='a'?100:v['b-header'])>0);
+  }
+  for(const [control,segment] of [['nav',mode==='side'?g.a:g.b],['timer',mode==='side'?g.b:g.a]]){
+   assert.ok(v[control+'-center']-v[control+'-width']/2>=segment.x);
+   assert.ok(v[control+'-center']+v[control+'-width']/2<=segment.x+segment.w);
+   assert.ok(h-v[control+'-bottom']<=segment.y+segment.h);
+  }
+ }
+}
+assert.equal(fold.homeFoldGeometry(side,false,820,800,true),null);
+assert.equal(fold.homeFoldGeometry([{...side[0]},{...side[1],x:380}],true,820,800,true),null);
+assert.equal(fold.homeFoldGeometry(stack,true,400,700,true),null);
+assert.equal(fold.homeFoldGeometry([{...side[0],width:NaN},side[1]],true,820,800,true),null);
+assert.equal(fold.homeFoldGeometry([{x:0,y:0,width:300,height:210},{x:0,y:230,width:300,height:210}],true,300,440,true),null);
+assert.ok(browser.includes('--floating-safe-width:calc(100% - var(--floating-safe-left) - var(--floating-safe-right))'));
+console.log('Fold geometry, safe-area references and floating control regression checks passed');
